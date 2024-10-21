@@ -1,4 +1,4 @@
-# Programsko inženjerstvo
+# PLATFORMA ZA VOLONTIRANJE
 
 > Ime projekta u naslovu ima cilj opisati namjenu projekta te pomoći u podizanju početnog interesa za projekt prezentirajući osnovnu svrhu projekta.
 > Isključivo ovisi o Vama!
@@ -23,8 +23,13 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
 
 #Instalcija
 # Članovi tima 
-> Popis članova tima/linkovi/ glavni doprinos
->
+> Viktor Bogojević
+> Ivana Debeljak
+> Marta Kekić
+> Jakov Malić
+> Patricija Marijanović
+> Jakov Mršo
+> Vito Stanić
 
 # Kontribucije
 >Pravila ovise o organizaciji tima i su često izdvojena u CONTRIBUTING.md
