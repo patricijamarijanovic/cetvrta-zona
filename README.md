@@ -23,12 +23,19 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
 
 #Instalcija
 # Članovi tima 
+
 > Viktor Bogojević
-> Ivana Debeljak
+
+>Ivana Debeljak
+
 > Marta Kekić
+
 > Jakov Malić
+
 > Patricija Marijanović
+
 > Jakov Mršo
+
 > Vito Stanić
 
 # Kontribucije
