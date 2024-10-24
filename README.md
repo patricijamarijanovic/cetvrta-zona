@@ -41,6 +41,12 @@ Za organizacije:
 
 # Tehnologije
 
+> Spring Boot - backend
+
+> PostgreSQL - baza podataka
+
+> React - frontend
+
 
 # Članovi tima 
 
