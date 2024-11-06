@@ -9,13 +9,6 @@ public class Organization extends MyUser{
     private String email;
     private String organizationName;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getOrganizationName() {
         return organizationName;
@@ -29,7 +22,6 @@ public class Organization extends MyUser{
     @Override
     public String toString() {
         return "Organization{" +
-                "email='" + email + '\'' +
                 ", organizationName='" + organizationName + '\'' +
                 '}';
     }

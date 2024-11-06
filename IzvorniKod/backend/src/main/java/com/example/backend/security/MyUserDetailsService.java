@@ -23,7 +23,6 @@ public class MyUserDetailsService implements UserDetailsService {
         return User.builder()
                 .username(myUser.getUsername())
                 .password(myUser.getPassword())
-//                .roles(myUser.getRole().name())
                 .roles(myUser.getRole().name())
                 .build();
 

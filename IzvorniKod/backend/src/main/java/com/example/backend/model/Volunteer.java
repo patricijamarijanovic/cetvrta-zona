@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Volunteer extends MyUser {
     private String firstName;
     private String lastName;
-    private String email;
+
     private LocalDate dateOfBirth;
 
     public String getFirstName() {
@@ -32,13 +32,6 @@ public class Volunteer extends MyUser {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
@@ -54,7 +47,7 @@ public class Volunteer extends MyUser {
         return "Volunteer{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
+
                 ", dateOfBirth=" + dateOfBirth +
                 '}';
     }

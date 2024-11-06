@@ -3,8 +3,10 @@ package com.example.backend.service;
 import com.example.backend.dto.OrganizationRegistrationDto;
 import com.example.backend.model.Organization;
 import com.example.backend.model.Role;
+import com.example.backend.repository.MyUserRepository;
 import com.example.backend.repository.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +18,28 @@ public class OrganizationService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MyUserRepository myUserRepository;
 
-    public Organization registerOrganization(OrganizationRegistrationDto dto) {
+
+    public ResponseEntity<String> registerOrganization(OrganizationRegistrationDto dto) {
+        if (myUserRepository.existsByUsername(dto.getUsername())) {
+            return ResponseEntity.badRequest().body("Username already taken. Please choose another one.");
+        }
+
+        if (myUserRepository.existsByEmail(dto.getEmail())) {
+            return ResponseEntity.badRequest().body("Email already registered. Please choose another one.");
+        }
+
         Organization organization = new Organization();
         organization.setOrganizationName(dto.getOrganizationName());
         organization.setEmail(dto.getEmail());
         organization.setPassword(passwordEncoder.encode(dto.getPassword()));
         organization.setUsername(dto.getUsername());
         organization.setRole(Role.ORGANIZATION);
-        return organizationRepository.save(organization);
+
+        organizationRepository.save(organization);
+
+        return ResponseEntity.ok("Organization registered successfully.");
     }
 }

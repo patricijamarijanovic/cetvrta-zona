@@ -12,6 +12,7 @@ import com.example.backend.repository.VolunteerRepository;
 import com.example.backend.service.OrganizationService;
 import com.example.backend.service.VolunteerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,12 +46,12 @@ public class RegistrationController {
 //    }
 
     @PostMapping("/volunteer")
-    public Volunteer registerVolunteer(@RequestBody VolunteerRegistrationDto volunteerDto) {
+    public ResponseEntity<String> registerVolunteer(@RequestBody VolunteerRegistrationDto volunteerDto) {
         return volunteerService.registerVolunteer(volunteerDto);
     }
 
     @PostMapping("/organization")
-    public Organization registerOrganization(@RequestBody OrganizationRegistrationDto organizationDto) {
+    public ResponseEntity<String> registerOrganization(@RequestBody OrganizationRegistrationDto organizationDto) {
         return organizationService.registerOrganization(organizationDto);
     }
 

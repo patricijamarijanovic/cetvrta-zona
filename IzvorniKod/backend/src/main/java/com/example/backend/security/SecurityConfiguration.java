@@ -4,6 +4,7 @@ import com.example.backend.repository.MyUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -45,6 +47,15 @@ public class SecurityConfiguration {
 //                        .successHandler(new AuthenticationSuccessHandler()) // sto napraviti kad je login uspjesan
 //                        .permitAll())  // obrazac za prijavu dostupan svima
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)) // 401 Unauthorized
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            // Kada korisnik pokušava pristupiti resursu bez odgovarajuće privilegije, vraća status 403
+                            response.setStatus(HttpStatus.FORBIDDEN.value()); // 403 Forbidden
+                            response.getWriter().write("{\"error\": \"You do not have permission to access this resource\"}");
+                            response.setContentType("application/json");
+                        })
+                )
                 .build();
     }
 
