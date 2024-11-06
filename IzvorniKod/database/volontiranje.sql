@@ -1,8 +1,15 @@
+CREATE SEQUENCE users_seq
+	START WITH 1
+	INCREMENT BY 1
+	NO MINVALUE
+	NO MAXVALUE
+	CACHE 1;
+	
 CREATE TABLE users
 (
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  id BIGINT NOT NULL PRIMARY KEY,
+  id BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('users_seq'), 
   username VARCHAR(255) NOT NULL,
   role VARCHAR(50) NOT NULL,
   UNIQUE (email)
@@ -20,14 +27,14 @@ CREATE TABLE volunteers
   last_name VARCHAR(255) NOT NULL,
   date_of_birth DATE NOT NULL,
   id BIGINT NOT NULL PRIMARY KEY,
-  FOREIGN KEY (id) REFERENCES users(id)
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE organizations
 (
   organization_name VARCHAR(255) NOT NULL,
   id BIGINT NOT NULL PRIMARY KEY,
-  FOREIGN KEY (id) REFERENCES users(id),
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   UNIQUE (organization_name)
 );
 
