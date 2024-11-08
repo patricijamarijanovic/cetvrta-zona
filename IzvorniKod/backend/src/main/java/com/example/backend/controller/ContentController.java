@@ -70,9 +70,15 @@ public class ContentController {
             if (authentication.isAuthenticated()) {
                 String token = jwtService.generateToken(myUserDetailsService.loadUserByUsername(loginDto.getUsername()));
 
+                String role = authentication.getAuthorities().stream()
+                        .map(grantedAuthority -> grantedAuthority.getAuthority())
+                        .findFirst()
+                        .orElse("ROLE_USER");
+
                 // Vraća JWT token u odgovoru
                 Map<String, String> response = new HashMap<>();
                 response.put("jwt", token);
+                response.put("role", role);
                 return ResponseEntity.ok(response);
             } else {
                 // Ovo neće biti izvršeno jer je autentifikacija provjerena prije
