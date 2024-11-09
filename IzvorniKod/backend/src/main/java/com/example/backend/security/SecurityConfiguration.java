@@ -20,6 +20,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -34,18 +36,15 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(withDefaults())
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/home", "/register/**", "/authenticate").permitAll(); // home dostupan svakome
                     registry.requestMatchers("/volunteer/**").hasRole("VOLUNTEER"); //samo user moze na user
                     registry.requestMatchers("/admin/**").hasRole("ADMIN");
                     registry.requestMatchers("/organization/**").hasRole("ORGANIZATION");
-//                    registry.anyRequest().authenticated(); // sve ostale putanje zahtijevaju login
                     registry.anyRequest().hasRole("ADMIN");
                 })
                 .formLogin(formLogin -> formLogin.permitAll())
-//                .formLogin(formLogin ->  formLogin
-//                        .successHandler(new AuthenticationSuccessHandler()) // sto napraviti kad je login uspjesan
-//                        .permitAll())  // obrazac za prijavu dostupan svima
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)) // 401 Unauthorized
