@@ -32,6 +32,10 @@ public class SecurityConfiguration {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @Autowired
+    private Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -44,6 +48,10 @@ public class SecurityConfiguration {
                     registry.requestMatchers("/organization/**").hasRole("ORGANIZATION");
                     registry.anyRequest().hasRole("ADMIN");
                 })
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oauth2AuthenticationSuccessHandler)
+                        .permitAll()
+                )
                 .formLogin(formLogin -> formLogin.permitAll())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
