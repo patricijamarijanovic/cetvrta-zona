@@ -27,7 +27,7 @@ import java.util.Map;
 import javax.net.ssl.SSLEngineResult.Status;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class ContentController {
 	
 	@Autowired

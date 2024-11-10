@@ -67,6 +67,7 @@ CREATE TABLE projects
   organizationID BIGINT NOT NULL,
   FOREIGN KEY (organizationID) REFERENCES organizations(id),
   CHECK(maksBrojVolontera >= brojPrijavljenihVolontera)
+
 );
 
 CREATE TABLE recenzije
