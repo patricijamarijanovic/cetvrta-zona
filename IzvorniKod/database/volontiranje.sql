@@ -4,6 +4,20 @@ CREATE SEQUENCE users_seq
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
+
+CREATE SEQUENCE project_seq
+	START WITH 1
+	INCREMENT BY 1
+	NO MINVALUE
+	NO MAXVALUE
+	CACHE 1;
+
+CREATE SEQUENCE prijava_seq
+	START WITH 1
+	INCREMENT BY 1
+	NO MINVALUE
+	NO MAXVALUE
+	CACHE 1;
 	
 CREATE TABLE users
 (
@@ -45,12 +59,15 @@ CREATE TABLE projects
   pocetak DATE NOT NULL,
   kraj DATE NOT NULL,
   lokacija VARCHAR(255) NOT NULL,
-  brojVolontera INT NOT NULL,
-  status VARCHAR(10) CHECK (status IN ('otvoren', 'zatvoren', 'u tijeku')) NOT NULL,
-  projektID INT NOT NULL PRIMARY KEY,
-  hitnost VARCHAR(3) CHECK (hitnost IN ('da', 'ne')) NOT NULL,
-  organization_id BIGINT NOT NULL,
-  FOREIGN KEY (organization_id) REFERENCES organizations(id)
+  brojPrijavljenihVolontera INT NOT NULL,
+  maksBrojVolontera INT NOT NULL,
+  status VARCHAR(10) CHECK (status IN ('OTVOREN', 'ZATVOREN', 'U_TIJEKU')) NOT NULL,
+  projektID BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('users_seq'),
+  hitan BOOLEAN NOT NULL,
+  organizationID BIGINT NOT NULL,
+  FOREIGN KEY (organizationID) REFERENCES organizations(id),
+  CHECK(maksBrojVolontera >= brojPrijavljenihVolontera)
+
 );
 
 CREATE TABLE recenzije
@@ -60,20 +77,20 @@ CREATE TABLE recenzije
   komentar VARCHAR(500) NOT NULL,
   datumRecenzije DATE NOT NULL,
   projektID INT NOT NULL,
-  organization_id BIGINT NOT NULL,
-  volunteer_id BIGINT NOT NULL,
+  organizationID BIGINT NOT NULL,
+  volunteerID BIGINT NOT NULL,
   FOREIGN KEY (projektID) REFERENCES projects(projektID),
-  FOREIGN KEY (organization_id) REFERENCES organizations(id),
-  FOREIGN KEY (volunteer_id) REFERENCES volunteers(id)
+  FOREIGN KEY (organizationID) REFERENCES organizations(id),
+  FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
 
 CREATE TABLE prijava
 (
-  prijavaID INT NOT NULL PRIMARY KEY,
+  prijavaID BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('prijava_seq'),
   datumPrijave DATE NOT NULL,
   statusPrijave VARCHAR(50) NOT NULL,
   projektID INT NOT NULL,
-  volunteer_id BIGINT NOT NULL,
+  volunteerID BIGINT NOT NULL,
   FOREIGN KEY (projektID) REFERENCES projects(projektID),
-  FOREIGN KEY (volunteer_id) REFERENCES volunteers(id)
+  FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
