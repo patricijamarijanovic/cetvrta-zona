@@ -39,7 +39,6 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
         // Dohvatiti email korisnika iz OAuth2User atributa
         String email = oauth2User.getAttribute("email");
 
-        // Logirati email korisnika (ili obraditi kako želiš)
         System.out.println("Email korisnika: " + email);
 
         Optional<MyUser> u = myUserRepository.findByEmail(email);
@@ -66,10 +65,8 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
 //
 //            objectMapper.writeValue(response.getOutputStream(), responseBody);
 
-            // Preusmjerenje na odgovarajuće stranice temeljem uloge
-            String redirectUrl;
-
-            redirectUrl = "http://localhost:3000?token=" + token + "&role=" + role;
+           // na ovoj putanji ce se token i role pohraniti na localstorage
+            String redirectUrl = "http://localhost:3000?token=" + token + "&role=" + role;
             response.sendRedirect(redirectUrl);
 
 

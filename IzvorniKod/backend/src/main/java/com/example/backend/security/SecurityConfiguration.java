@@ -42,8 +42,10 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/home", "/register/**", "/authenticate").permitAll(); // home dostupan svakome
-                    registry.requestMatchers("/volunteer/**").hasRole("VOLUNTEER"); //samo user moze na user
+                    registry.requestMatchers("/home",
+                            "/register/**", "/authenticate",
+                            "/oauth2/**", "/login/**").permitAll(); // dostupne svakome
+                    registry.requestMatchers("/volunteer/**").hasRole("VOLUNTEER");
                     registry.requestMatchers("/admin/**").hasRole("ADMIN");
                     registry.requestMatchers("/organization/**").hasRole("ORGANIZATION");
                     registry.anyRequest().hasRole("ADMIN");
