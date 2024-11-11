@@ -17,7 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 public class OrganizationController {
 
     @Autowired

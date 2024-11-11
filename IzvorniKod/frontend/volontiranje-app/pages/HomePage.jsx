@@ -13,7 +13,7 @@ function HomePage() {
         console.log('Tu je token!!' + token)
         if (token) {
           
-          navigate('/not-authorized', { replace: true });
+          // navigate('/not-authorized', { replace: true });
     
           return;
         }

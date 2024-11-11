@@ -14,7 +14,7 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 // Omogućiti CORS za sve rute, uključujući one koje zahtijevaju uloge
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000") // Dozvoljena domena frontend-a
+                        .allowedOrigins("http://localhost:5173") // Dozvoljena domena frontend-a
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Dozvoljene metode
                         .allowedHeaders("Authorization", "Content-Type", "Accept") // Dozvoljeni headeri
                         .allowCredentials(true); // Ako koristiš kolačiće, dozvoli slanje kolačića

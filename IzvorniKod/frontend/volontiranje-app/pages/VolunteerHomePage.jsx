@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function VolunteerHomePage() {
+  console.log("u volonteskom home pageu1")
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     
@@ -16,17 +17,19 @@ function VolunteerHomePage() {
 
     }
     useEffect(() => {
+        console.log("u volonteskom home pageu")
         const token = localStorage.getItem('token');
         console.log('Tu je token!' + token)
         if (!token) {
           // Ako nema tokena, preusmjeri korisnika na login stranicu
-          console.log('Tu sam!')
+          console.log('nema tokena!')
           navigate('/not-authorized', { replace: true });
 
           return;
         }
     
         // Ako postoji token, pošaljite zahtjev
+        console.log("saljem token na backend")
         axios.get('http://localhost:8080/volunteer/home', {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 public class VolunteerController {
     @Autowired
     private ProjectRepository projectrepository;

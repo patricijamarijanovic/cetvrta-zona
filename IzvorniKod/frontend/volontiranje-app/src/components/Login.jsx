@@ -27,18 +27,18 @@ function Login() {
             
             
         } 
-        useEffect(() => {
-            const token = localStorage.getItem('token');
-            console.log('Tu je token!!' + token)
-            if (token) {
-              console.log("idemo")
-              navigate('/not-authorized', { replace: true });
+        // useEffect(() => {
+        //     const token = localStorage.getItem('token');
+        //     console.log('Tu je token!!' + token)
+        //     if (token) {
+        //       console.log("idemo")
+        //       navigate('/not-authorized', { replace: true });
         
-              return;
-            }
+        //       return;
+        //     }
         
             
-          }, [navigate]); 
+        //   }, [navigate]); 
 
        
 
@@ -98,10 +98,15 @@ function Login() {
                 localStorage.setItem('token', tokenFromUrl);
                 localStorage.setItem('role', roleFromUrl);
     
+                console.log("imam token!", localStorage.getItem('token'))
+                console.log("imam role!", localStorage.getItem('role'))
+
                 // Preusmjeri korisnika na odgovarajuću početnu stranicu
                 if (roleFromUrl === "ROLE_VOLUNTEER") {
+                    console.log("navigiram dalje na volonterski")
                     navigate("/volunteer/home");
                 } else if (roleFromUrl === "ROLE_ORGANIZATION") {
+                    console.log("navigiram dalje na organizacijski")
                     navigate("/organization/home");
                 }
             }
