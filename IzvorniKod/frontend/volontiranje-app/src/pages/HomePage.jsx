@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import NavBar from "./assets/navBar";
 import Motivation from "./assets/motivation";
 import ActivitiesList from "./assets/activitiesList";
@@ -17,14 +16,6 @@ function HomePage() {
       return;
     }
   }, [navigate]);
-
-  function LogIn() {
-    navigate("/login");
-  }
-
-  function SignUp() {
-    navigate("/register");
-  }
 
   return (
     <div className="relative min-h-screen">

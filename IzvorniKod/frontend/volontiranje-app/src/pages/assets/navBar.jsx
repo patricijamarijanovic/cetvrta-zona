@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
+  const handleNavigateToLogin = () => {
+    navigate("/login");
+  };
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -35,7 +40,10 @@ function NavBar() {
         <a href="#" className="hover:text-white/80 py-2">
           o platformi
         </a>
-        <button class="bg-yellow-300 text-black py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400">
+        <button
+          onClick={handleNavigateToLogin}
+          class="bg-yellow-300 text-black py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
+        >
           prijavi se
         </button>
       </nav>
