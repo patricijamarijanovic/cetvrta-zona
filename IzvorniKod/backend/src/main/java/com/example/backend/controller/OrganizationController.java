@@ -27,6 +27,7 @@ public class OrganizationController {
     private MyUserRepository myUserRepository;
 
     @Autowired
+
     private RegistrationRepository registrationRepository;
 
     @GetMapping("/organization/home")
@@ -46,7 +47,6 @@ public class OrganizationController {
         projectrepository.save(project);
         return new RedirectView("/organization/home");
     }
-
     @GetMapping("/organization/project/{projectID}/registrations")
     public List<Registration> pregledaj_prijave_na_projekt(@PathVariable Integer projectID) {
         return registrationRepository.findAllByProjectID(projectID);

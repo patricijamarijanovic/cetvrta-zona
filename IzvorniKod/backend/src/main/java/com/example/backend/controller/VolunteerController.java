@@ -27,13 +27,13 @@ public class VolunteerController {
     private MyUserRepository myUserRepository;
 
     @Autowired
+
     private RegistrationRepository registrationRepository;
 
     @GetMapping("/volunteer/home")
     public List<Project> volunteer_home() {
         return projectrepository.findAll();
     }
-
 
     @GetMapping("/volunteer/myRegistrations")
     public List<Registration> volunteer_registrations() {
