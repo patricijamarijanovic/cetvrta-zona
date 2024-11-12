@@ -2,8 +2,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Login from "./components/Login";
 import Options from "./components/Options";
-import OrganizationLogin from "./components/OrganizationLogin";
-import VolunteerLogin from "./components/VolunteerLogin";
+import OrganizationLogin from "./components/OrganizationRegistration";
+import VolunteerLogin from "./components/VolunteerRegistration";
 
 import HomePage from "./pages/HomePage";
 import NotAuthorized from "./pages/NotAuthorized";
