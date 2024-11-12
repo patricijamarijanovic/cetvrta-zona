@@ -36,7 +36,7 @@ function Options() {
         <div className="container mx-auto px-4 py-12 max-w-6xl">
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="text-yellow-500">Volontiraj</span> i ti sa nama
+              <span className="text-yellow-500">Volontiraj</span> i ti s nama
             </h1>
             <h2 className="text-xl md:text-2xl text-gray-800">
               Registiraj se!
