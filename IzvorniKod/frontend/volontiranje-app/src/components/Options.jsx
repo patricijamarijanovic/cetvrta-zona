@@ -21,13 +21,6 @@ function Options() {
 
   return (
     <>
-      {/* <h1>Odaberite vrstu korisničkog računa:</h1>
-      <button type="button" onClick={handleClick1}>
-        Volonter
-      </button>
-      <button type="button" onClick={handleClick2}>
-        Organizacija
-      </button> */}
       <div className="bg-slate-600 rounded-b-3xl text-white">
         <NavBar />
       </div>
