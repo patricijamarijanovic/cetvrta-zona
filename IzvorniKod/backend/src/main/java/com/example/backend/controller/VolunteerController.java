@@ -1,11 +1,11 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.MyUser;
-import com.example.backend.model.Prijava;
 import com.example.backend.model.Project;
+import com.example.backend.model.Registration;
 import com.example.backend.repository.MyUserRepository;
-import com.example.backend.repository.PrijavaRepository;
 import com.example.backend.repository.ProjectRepository;
+import com.example.backend.repository.RegistrationRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,39 +27,39 @@ public class VolunteerController {
     private MyUserRepository myUserRepository;
 
     @Autowired
-    private PrijavaRepository prijavaRepository;
+
+    private RegistrationRepository registrationRepository;
 
     @GetMapping("/volunteer/home")
     public List<Project> volunteer_home() {
         return projectrepository.findAll();
     }
 
-
-    @GetMapping("/volunteer/mojeprijave")
-    public List<Prijava> volunteer_prijave() {
+    @GetMapping("/volunteer/myRegistrations")
+    public List<Registration> volunteer_registrations() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        MyUser volonter = myUserRepository.findByUsername(authentication.getName()).get();
-        return prijavaRepository.findAllByVolunteerID(volonter.getId());
+        MyUser volunteer = myUserRepository.findByUsername(authentication.getName()).get();
+        return registrationRepository.findAllByVolunteerID(volunteer.getId());
     }
 
-    @PutMapping("/volunteer/apply/{projektID}")
-    public String apply_for_project (@PathVariable Integer projektID) {
+    @PutMapping("/volunteer/apply/{projectID}")
+    public String apply_for_project (@PathVariable Integer projectID) {
         try {
-            Project p = projectrepository.findByProjektID(projektID).get();
-            p.prijaviVolontera();
+            Project p = projectrepository.findByProjectID(projectID).get();
+            p.registerVolunteer();
             projectrepository.save(p);
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             MyUser prijavljeniVolonter = myUserRepository.findByUsername(authentication.getName()).get();
-            Prijava prijava = new Prijava();
-            prijava.setProjektID(projektID);
-            prijava.setDatumprijave(LocalDateTime.now());
-            prijava.setVolunteerID(prijavljeniVolonter.getId());
-            prijava.setStatusprijave("UNDEFINED");
-            prijavaRepository.save(prijava);
-            return "Volonter uspjesno prijavljen!";
+            Registration registration = new Registration();
+            registration.setProjectID(projectID);
+            registration.setRegistrationDate(LocalDateTime.now());
+            registration.setVolunteerID(prijavljeniVolonter.getId());
+            registration.setRegistrationStatus("UNDEFINED");
+            registrationRepository.save(registration);
+            return "Volunteer successfully registered to project!!";
         } catch (Exception e) {
             System.out.println(e);
-            return "Nije moguce prijaviti volontera jer su mjesta vec popunjena";
+            return "Can't register volunteer to project because the limit has been reached";
         }
     }
 }

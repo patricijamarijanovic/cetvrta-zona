@@ -12,7 +12,7 @@ CREATE SEQUENCE project_seq
 	NO MAXVALUE
 	CACHE 1;
 
-CREATE SEQUENCE prijava_seq
+CREATE SEQUENCE registration_seq
 	START WITH 1
 	INCREMENT BY 1
 	NO MINVALUE
@@ -54,43 +54,43 @@ CREATE TABLE organizations
 
 CREATE TABLE projects
 (
-  naziv VARCHAR(50) NOT NULL,
-  opis VARCHAR(1000) NOT NULL,
-  pocetak DATE NOT NULL,
-  kraj DATE NOT NULL,
-  lokacija VARCHAR(255) NOT NULL,
-  brojPrijavljenihVolontera INT NOT NULL,
-  maksBrojVolontera INT NOT NULL,
-  status VARCHAR(10) CHECK (status IN ('OTVOREN', 'ZATVOREN', 'U_TIJEKU')) NOT NULL,
-  projektID BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('users_seq'),
-  hitan BOOLEAN NOT NULL,
+  projectName VARCHAR(50) NOT NULL,
+  projectDesc VARCHAR(1000) NOT NULL,
+  beginningDate DATE NOT NULL,
+  endDate DATE NOT NULL,
+  projectLocation VARCHAR(255) NOT NULL,
+  numRegisteredVolunteers INT NOT NULL,
+  maxNumVolunteers INT NOT NULL,
+  status VARCHAR(10) CHECK (status IN ('OPEN', 'CLOSED', 'IN_PROGRESS')) NOT NULL,
+  projectID BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('project_seq'),
+  urgent BOOLEAN NOT NULL,
   organizationID BIGINT NOT NULL,
   FOREIGN KEY (organizationID) REFERENCES organizations(id),
-  CHECK(maksBrojVolontera >= brojPrijavljenihVolontera)
+  CHECK(maxNumVolunteers >= numRegisteredVolunteers)
 
 );
 
-CREATE TABLE recenzije
+CREATE TABLE review
 (
-  recenzijaID INT NOT NULL PRIMARY KEY,
-  ocjena INT NOT NULL,
-  komentar VARCHAR(500) NOT NULL,
-  datumRecenzije DATE NOT NULL,
-  projektID INT NOT NULL,
+  reviewID INT NOT NULL PRIMARY KEY,
+  rating INT NOT NULL,
+  comment VARCHAR(500) NOT NULL,
+  reviewDate DATE NOT NULL,
+  projectID INT NOT NULL,
   organizationID BIGINT NOT NULL,
   volunteerID BIGINT NOT NULL,
-  FOREIGN KEY (projektID) REFERENCES projects(projektID),
+  FOREIGN KEY (projectID) REFERENCES projects(projectID),
   FOREIGN KEY (organizationID) REFERENCES organizations(id),
   FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
 
-CREATE TABLE prijava
+CREATE TABLE registration
 (
-  prijavaID BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('prijava_seq'),
-  datumPrijave DATE NOT NULL,
-  statusPrijave VARCHAR(50) NOT NULL,
-  projektID INT NOT NULL,
+  registrationID BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('registration_seq'),
+  registrationDate DATE NOT NULL,
+  registrationStatus VARCHAR(50) NOT NULL,
+  projectID INT NOT NULL,
   volunteerID BIGINT NOT NULL,
-  FOREIGN KEY (projektID) REFERENCES projects(projektID),
+  FOREIGN KEY (projectID) REFERENCES projects(projectID),
   FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );

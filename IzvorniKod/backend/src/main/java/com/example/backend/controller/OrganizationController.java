@@ -1,10 +1,10 @@
 package com.example.backend.controller;
 
-import com.example.backend.model.Prijava;
 import com.example.backend.model.Project;
+import com.example.backend.model.Registration;
 import com.example.backend.repository.MyUserRepository;
-import com.example.backend.repository.PrijavaRepository;
 import com.example.backend.repository.ProjectRepository;
+import com.example.backend.repository.RegistrationRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,8 @@ public class OrganizationController {
     private MyUserRepository myUserRepository;
 
     @Autowired
-    private PrijavaRepository prijavaRepository;
+
+    private RegistrationRepository registrationRepository;
 
     @GetMapping("/organization/home")
     public List<Project> organization_home() {
@@ -42,33 +43,32 @@ public class OrganizationController {
 
     @PostMapping("/organization/createproject")
     public RedirectView save_project(@RequestBody Project project) {
-        project.resetBrojprijavljenihvolontera();
+        project.resetNumRegisteredVolunteers();
         projectrepository.save(project);
         return new RedirectView("/organization/home");
     }
-
-    @GetMapping("/organization/project/{projektID}/prijave")
-    public List<Prijava> pregledaj_prijave_na_projekt(@PathVariable Integer projektID) {
-        return prijavaRepository.findAllByProjektID(projektID);
+    @GetMapping("/organization/project/{projectID}/registrations")
+    public List<Registration> pregledaj_prijave_na_projekt(@PathVariable Integer projectID) {
+        return registrationRepository.findAllByProjectID(projectID);
     }
 
-    @PutMapping("/organization/project/{projektID}/prijave/{prijavaID}")
-    public RedirectView prihvati_prijavu(@PathVariable Integer projektID, @PathVariable Long prijavaID) {
-        Prijava prijava = prijavaRepository.findByPrijavaID(prijavaID).get();
-        prijava.setStatusprijave("PRIHVACENA");
-        prijavaRepository.save(prijava);
-        return new RedirectView("/organization/project/%d/prijave".formatted(projektID));
+    @PutMapping("/organization/project/{projectID}/registrations/{registrationID}")
+    public RedirectView prihvati_prijavu(@PathVariable Integer projectID, @PathVariable Long registrationID) {
+    	Registration registration = registrationRepository.findByRegistrationID(registrationID).get();
+    	registration.setRegistrationStatus("ACCEPTED");
+        registrationRepository.save(registration);
+        return new RedirectView("/organization/project/%d/registrations".formatted(projectID));
     }
 
-    @DeleteMapping("/organization/project/{projektID}/prijave/{prijavaID}")
-    public RedirectView odbij_prijavu(@PathVariable Integer projektID, @PathVariable Long prijavaID) {
-        Prijava prijava = prijavaRepository.findByPrijavaID(prijavaID).get();
-        prijava.setStatusprijave("ODBIJENA");
-        prijavaRepository.save(prijava);
-        Project project = projectrepository.findByProjektID(projektID).get();
-        project.odbijVolontera();
+    @DeleteMapping("/organization/project/{projectID}/registrations/{registrationID}")
+    public RedirectView odbij_prijavu(@PathVariable Integer projectID, @PathVariable Long registrationID) {
+    	Registration registration = registrationRepository.findByRegistrationID(registrationID).get();
+    	registration.setRegistrationStatus("REJECTED");
+        registrationRepository.save(registration);
+        Project project = projectrepository.findByProjectID(projectID).get();
+        project.rejectVolunteer();
         projectrepository.save(project);
-        return new RedirectView("/organization/project/%d/prijave".formatted(projektID));
+        return new RedirectView("/organization/project/%d/registrations".formatted(projectID));
     }
 
 }

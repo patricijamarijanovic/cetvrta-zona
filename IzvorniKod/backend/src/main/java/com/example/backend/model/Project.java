@@ -15,25 +15,25 @@ import jakarta.validation.constraints.NotNull;
 @Table(name ="projects")
 public class Project {
 	@NotBlank
-	private String naziv;
+	private String projectname;
 	
 	@NotBlank
-	private String opis;
+	private String projectdesc;
 	
 	@NotNull
-	private LocalDate pocetak;
+	private LocalDate beginningdate;
 	
 	@NotNull
-	private LocalDate kraj;
+	private LocalDate enddate;
 	
 	@NotBlank
-	private String lokacija;
+	private String projectlocation;
 	
 	@NotNull
-	private Integer brojprijavljenihvolontera;
+	private Integer numregisteredvolunteers;
 	
 	@NotNull
-	private Integer maksbrojvolontera;
+	private Integer maxnumvolunteers;
 	
 	@NotNull
 	private String status;
@@ -41,10 +41,10 @@ public class Project {
 	@SequenceGenerator(name = "project_seq", sequenceName = "project_seq", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_seq")
 	@Id
-	private Integer projektID;
+	private Integer projectID;
 	
 	@NotNull
-	private Boolean hitan;
+	private Boolean urgent;
 	
 	@NotNull
 	private Long organizationID;
@@ -62,41 +62,51 @@ public class Project {
 	 * = hitan; this.organizationID = organizationID; this.brojprijavljenihvolontera
 	 * = 0; }
 	 */
-	public String getNaziv() {
-		return naziv;
+	public void resetNumRegisteredVolunteers() {
+		this.numregisteredvolunteers = 0;
 	}
-	public void setNaziv(String naziv) {
-		this.naziv = naziv;
+	public void registerVolunteer() throws Exception {
+		if (numregisteredvolunteers < maxnumvolunteers) numregisteredvolunteers++;
+		else throw new Exception("Mjesta su popunjena, nije moguce prijaviti novog volontera");
 	}
-	public String getOpis() {
-		return opis;
+	public void rejectVolunteer() {
+		numregisteredvolunteers--;
 	}
-	public void setOpis(String opis) {
-		this.opis = opis;
+	public String getProjectname() {
+		return projectname;
 	}
-	public LocalDate getPocetak() {
-		return pocetak;
+	public void setProjectname(String projectname) {
+		this.projectname = projectname;
 	}
-	public void setPocetak(LocalDate pocetak) {
-		this.pocetak = pocetak;
+	public String getProjectdesc() {
+		return projectdesc;
 	}
-	public LocalDate getKraj() {
-		return kraj;
+	public void setProjectdesc(String projectdesc) {
+		this.projectdesc = projectdesc;
 	}
-	public void setKraj(LocalDate kraj) {
-		this.kraj = kraj;
+	public LocalDate getBeginningdate() {
+		return beginningdate;
 	}
-	public String getLokacija() {
-		return lokacija;
+	public void setBeginningdate(LocalDate beginningdate) {
+		this.beginningdate = beginningdate;
 	}
-	public void setLokacija(String lokacija) {
-		this.lokacija = lokacija;
+	public LocalDate getEnddate() {
+		return enddate;
 	}
-	public Integer getMaksBrojVolontera() {
-		return maksbrojvolontera;
+	public void setEnddate(LocalDate enddate) {
+		this.enddate = enddate;
 	}
-	public void setMaksBrojVolontera(Integer maksBrojVolontera) {
-		this.maksbrojvolontera = maksBrojVolontera;
+	public String getProjectlocation() {
+		return projectlocation;
+	}
+	public void setProjectlocation(String projectlocation) {
+		this.projectlocation = projectlocation;
+	}
+	public Integer getMaxnumvolunteers() {
+		return maxnumvolunteers;
+	}
+	public void setMaxnumvolunteers(Integer maxnumvolunteers) {
+		this.maxnumvolunteers = maxnumvolunteers;
 	}
 	public String getStatus() {
 		return status;
@@ -104,20 +114,17 @@ public class Project {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Integer getProjektID() {
-		return projektID;
+	public Integer getProjectID() {
+		return projectID;
 	}
-	public void setProjektID(Integer projectID) {
-		this.projektID = projectID;
+	public void setProjectID(Integer projectID) {
+		this.projectID = projectID;
 	}
-	public void resetBrojprijavljenihvolontera() {
-		this.brojprijavljenihvolontera = 0;
+	public Boolean getUrgent() {
+		return urgent;
 	}
-	public Boolean getHitan() {
-		return hitan;
-	}
-	public void setHitan(Boolean hitan) {
-		this.hitan = hitan;
+	public void setUrgent(Boolean urgent) {
+		this.urgent = urgent;
 	}
 	public Long getOrganizationID() {
 		return organizationID;
@@ -125,20 +132,15 @@ public class Project {
 	public void setOrganizationID(Long organizationID) {
 		this.organizationID = organizationID;
 	}
-	public void prijaviVolontera() throws Exception {
-		if (brojprijavljenihvolontera < maksbrojvolontera) brojprijavljenihvolontera++;
-		else throw new Exception("Mjesta su popunjena, nije moguce prijaviti novog volontera");
-	}
-	public void odbijVolontera() {
-		brojprijavljenihvolontera--;
-	}
 	@Override
 	public String toString() {
-		return "Project [naziv=" + naziv + ", opis=" + opis + ", pocetak=" + pocetak + ", kraj=" + kraj + ", lokacija="
-				+ lokacija + ", maksBrojVolontera=" + maksbrojvolontera + ", status=" + status + ", projectID=" + projektID
-				+ ", hitan=" + hitan + ", organizationID=" + organizationID + "]";
+		return "Project [projectname=" + projectname + ", projectdesc=" + projectdesc + ", beginningdate="
+				+ beginningdate + ", enddate=" + enddate + ", projectlocation=" + projectlocation
+				+ ", numregisteredvolunteers=" + numregisteredvolunteers + ", maxnumvolunteers=" + maxnumvolunteers
+				+ ", status=" + status + ", projectID=" + projectID + ", urgent=" + urgent + ", organizationID="
+				+ organizationID + "]";
 	}
-	public Integer getBrojPrijavljenihVolontera() {
-		return brojprijavljenihvolontera;
+	public Integer getNumregisteredvolunteers() {
+		return numregisteredvolunteers;
 	}
 }
