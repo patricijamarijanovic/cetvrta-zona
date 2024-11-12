@@ -13,7 +13,7 @@ function Options() {
     console.log("Tu je token!!" + token);
     if (token) {
       console.log("idemo");
-      navigate("/not-authorized", { replace: true });
+      // navigate("/not-authorized", { replace: true });
 
       return;
     }
