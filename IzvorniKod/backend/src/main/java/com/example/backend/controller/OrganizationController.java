@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.ProjectDto;
+import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.model.Project;
 import com.example.backend.model.Registration;
 import com.example.backend.repository.MyUserRepository;
@@ -9,6 +10,7 @@ import com.example.backend.repository.RegistrationRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
 import com.example.backend.service.OrganizationService;
+import com.example.backend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,10 +37,12 @@ public class OrganizationController {
     @Autowired
     private OrganizationService organizationService;
 
+    @Autowired
+    private ProjectService projectService;
+
     @GetMapping("/organization/home")
-    public List<Project> organization_home() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return projectrepository.findAllByOrganizationID(myUserRepository.findByUsername(authentication.getName()).get().getId());
+    public List<ProjectResponseDto> organization_home() {
+        return projectService.getProjectsForOrganization();
     }
 
     @GetMapping("/organization/createproject")

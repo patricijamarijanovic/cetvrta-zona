@@ -1,10 +1,12 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.LoginDto;
+import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.model.Project;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
+import com.example.backend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +35,12 @@ public class AuthenticationController {
     @Autowired
     private MyUserDetailsService myUserDetailsService;
 
+    @Autowired
+    private ProjectService projectService;
+
     @GetMapping("/home")
-    public List<Project> home() {
-    	return projectrepository.findAll();
+    public List<ProjectResponseDto> home() {
+        return projectService.getAllProjects();
     }
 
     @PostMapping("/authenticate")

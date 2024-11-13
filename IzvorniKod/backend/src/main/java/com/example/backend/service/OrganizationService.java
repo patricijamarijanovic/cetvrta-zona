@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.dto.OrganizationRegistrationDto;
 import com.example.backend.dto.ProjectDto;
+import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.model.Organization;
 import com.example.backend.model.Project;
 import com.example.backend.model.Role;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.backend.model.Status.OPEN;
@@ -85,4 +87,5 @@ public class OrganizationService {
 
         return ResponseEntity.ok(response);
     }
+
 }
