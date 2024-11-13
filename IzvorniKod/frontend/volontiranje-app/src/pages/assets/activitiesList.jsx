@@ -3,21 +3,25 @@ import Card from "./card";
 import axios from "axios";
 
 function ActivitiesList() {
-    const [activities, setActivities] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-  
-    useEffect(() => {
-      axios.get("http://localhost:8080/activities")
-        .then((response) => {
-          setActivities(response.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setError("Error fetching activities.");
-          setLoading(false);
-        });
-    }, []);
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/home")
+      .then((response) => {
+        setActivities(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching activities:", err);
+        setError("Error fetching activities.");
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <p className="p-8 text-gray-500">Loading activities...</p>;
+  if (error) return <p className="p-8 text-red-500">{error}</p>;
 
   return (
     <section className="p-8">
@@ -29,10 +33,10 @@ function ActivitiesList() {
           activities.map((activity, index) => (
             <Card
               key={index}
-              title={activity.title}
-              organization={activity.organization}
-              description={activity.description}
-              image={activity.image}
+              title={activity.projectname}
+              organization={activity.projectlocation}
+              description={`From: ${activity.beginningdate} To: ${activity.enddate}`}
+              image={"/images/default.jpg"}
             />
           ))
         )}
