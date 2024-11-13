@@ -2,6 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import NavBarLoggedIn from "./assets/navBarLoggedIn";
+import Motivation from "./assets/motivationVolunteer";
+import ActivitiesList from "./assets/activitiesList";
+
 function VolunteerHomePage() {
   console.log("u volonteskom home pageu1")
     const [message, setMessage] = useState('');
@@ -23,7 +27,7 @@ function VolunteerHomePage() {
         if (!token) {
           // Ako nema tokena, preusmjeri korisnika na login stranicu
           console.log('nema tokena!')
-          navigate('/not-authorized', { replace: true });
+          navigate('/volunteer/home', { replace: true });
 
           return;
         }
@@ -51,10 +55,13 @@ function VolunteerHomePage() {
   
 
     return(
-        <>
-        <h1>Volunteer Home Page</h1>
-        <button onClick={signOut}>Sign Out</button>
-        </>
+      <div className="relative min-h-screen">
+        <div className="bg-slate-600 rounded-b-3xl text-white">
+          <NavBarLoggedIn />
+          <Motivation />
+        </div>
+          <ActivitiesList />
+      </div>
     )
 }
 

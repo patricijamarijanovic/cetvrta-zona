@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavBar from "./assets/navBar";
-import Motivation from "./assets/motivation";
+import Motivation from "./assets/motivationGuest";
 import ActivitiesList from "./assets/activitiesList";
 
 function HomePage() {
