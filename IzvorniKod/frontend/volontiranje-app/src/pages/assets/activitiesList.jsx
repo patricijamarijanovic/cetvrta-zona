@@ -37,7 +37,7 @@ function ActivitiesList() {
               location={activity.projectlocation}
               dates={`From: ${activity.beginningdate} To: ${activity.enddate}`}
               organization={activity.organizationName}
-              image={"..../public/images/dog.jpg"}
+              image={"/images/dog.jpg"}
             />
           ))
         )}

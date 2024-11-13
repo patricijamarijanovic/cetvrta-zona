@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBarLoggedIn from "../pages/assets/navBarVol";
+import NavBarLoggedIn from "../pages/assets/navBarOrg";
 
 import axios from "axios";
 

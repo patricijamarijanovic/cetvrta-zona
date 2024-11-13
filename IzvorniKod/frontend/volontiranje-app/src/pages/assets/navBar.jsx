@@ -42,7 +42,7 @@ function NavBar() {
         </a>
         <button
           onClick={handleNavigateToLogin}
-          class="bg-yellow-300 text-black py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
+          className="bg-yellow-300 text-black py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
         >
           prijavi se
         </button>
@@ -50,7 +50,7 @@ function NavBar() {
 
       <img
         src="/images/menu.png"
-        class="md:hidden size-10 cursor-pointer"
+        className="md:hidden size-10 cursor-pointer"
         onClick={toggleMenu}
       ></img>
 

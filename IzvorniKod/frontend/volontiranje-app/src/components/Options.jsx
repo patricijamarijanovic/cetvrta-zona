@@ -52,7 +52,7 @@ function Options() {
               <div className="flex justify-center">
                 <button
                   onClick={handleClick1}
-                  class="bg-yellow-300 text-black text-xl py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
+                  className="bg-yellow-300 text-black text-xl py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
                 >
                   ODABERI
                 </button>
@@ -71,7 +71,7 @@ function Options() {
               <div className="flex justify-center">
                 <button
                   onClick={handleClick2}
-                  class="bg-yellow-300 text-black text-xl py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
+                  className="bg-yellow-300 text-black text-xl py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
                 >
                   ODABERI
                 </button>

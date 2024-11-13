@@ -44,7 +44,7 @@ function NavBarLoggedIn() {
 
         {/* User Profile Icon Button */}
         <button
-          onClick={navigate('#')}
+          onClick={() => navigate('#')}
           className="bg-yellow-400 w-10 h-10 flex items-center justify-center rounded-full hover:bg-yellow-500"
           aria-label="User Profile"
         >

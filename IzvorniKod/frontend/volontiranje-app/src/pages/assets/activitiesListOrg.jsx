@@ -8,6 +8,16 @@ function ActivitiesList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Dohvaćanje tokena iz localStorage
+    const token = localStorage.getItem("token");
+
+    // Ako token ne postoji, postavi grešku i prekini zahtjev
+    if (!token) {
+      setError("No authorization token found. Please log in.");
+      setLoading(false);
+      return;
+    }
+
     axios.get("http://localhost:8080/organization/home", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -41,7 +51,7 @@ function ActivitiesList() {
               location={activity.projectlocation}
               dates={`From: ${activity.beginningdate} To: ${activity.enddate}`}
               organization={activity.organizationName}
-              image={"..../public/images/dog.jpg"}
+              image={"/images/cat.jpg"}
             />
           ))
         )}
