@@ -25,14 +25,14 @@ function VolunteerHomePage() {
         const token = localStorage.getItem('token');
         console.log('Tu je token!' + token)
         if (!token) {
-          // Ako nema tokena, preusmjeri korisnika na login stranicu
+
           console.log('nema tokena!')
           navigate('/volunteer/home', { replace: true });
 
           return;
         }
     
-        // Ako postoji token, pošaljite zahtjev
+   
         console.log("saljem token na backend")
         axios.get('http://localhost:8080/volunteer/home', {
           headers: {

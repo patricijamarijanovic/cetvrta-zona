@@ -1,14 +1,25 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.OrganizationRegistrationDto;
+import com.example.backend.dto.ProjectDto;
 import com.example.backend.model.Organization;
+import com.example.backend.model.Project;
 import com.example.backend.model.Role;
+import com.example.backend.model.Status;
 import com.example.backend.repository.MyUserRepository;
 import com.example.backend.repository.OrganizationRepository;
+import com.example.backend.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.example.backend.model.Status.OPEN;
 
 @Service
 public class OrganizationService {
@@ -20,6 +31,9 @@ public class OrganizationService {
 
     @Autowired
     private MyUserRepository myUserRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
 
     public ResponseEntity<String> registerOrganization(OrganizationRegistrationDto dto) {
@@ -41,5 +55,34 @@ public class OrganizationService {
         organizationRepository.save(organization);
 
         return ResponseEntity.ok("Organization registered successfully.");
+    }
+
+    public ResponseEntity<Object> createproject(ProjectDto dto) {
+        Project project = new Project();
+        project.setProjectname(dto.getProjectname());
+        project.setProjectdesc(dto.getProjectdesc());
+        project.setBeginningdate(dto.getBeginningdate());
+        project.setEnddate(dto.getEnddate());
+        project.setProjectlocation(dto.getProjectlocation());
+        project.setNumregisteredvolunteers(dto.getNumregisteredvolunteers());
+        project.setMaxnumvolunteers(dto.getMaxnumvolunteers());
+        project.setUrgent(dto.getUrgent());
+        project.setStatus(String.valueOf(OPEN));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Organization organization = organizationRepository.findByUsername(username);
+        if (organization == null) {
+            throw new RuntimeException("Organizacija nije pronađena za korisnika: " + username);
+        }
+        project.setOrganizationID(organization.getId());
+        project.setStatus(String.valueOf(OPEN));
+
+        projectRepository.save(project);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Projekt uspješno dodan :)");
+
+        return ResponseEntity.ok(response);
     }
 }

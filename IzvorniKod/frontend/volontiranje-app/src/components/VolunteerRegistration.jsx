@@ -71,7 +71,6 @@ function VolunteerLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Pokrećemo validaciju i pohranjujemo greške u varijablu
     const validationErrors = Validation({
       username,
       email,
@@ -83,7 +82,6 @@ function VolunteerLogin() {
     });
     setError(validationErrors);
 
-    // Provjeravamo postoji li greška prije slanja
     if (Object.keys(validationErrors).length === 0) {
       try {
         await axios.post("http://localhost:8080/register/volunteer", {

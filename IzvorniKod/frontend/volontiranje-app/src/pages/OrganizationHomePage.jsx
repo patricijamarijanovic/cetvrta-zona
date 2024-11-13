@@ -28,7 +28,7 @@ function OrganizationHomePage() {
           return;
         }
     
-        // Ako postoji token, pošaljite zahtjev
+        //ako postoji token, pošaljite zahtjev
         axios.get('http://localhost:8080/organization/home', {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ function OrganizationHomePage() {
           setMessage(response.data);
         })
         .catch((error) => {
-          // Ako dođe do greške (npr. token nije važeći ili server ne radi), preusmjeri na login
+          //ako dođe do greške (npr. token nije važeći ili server ne radi), preusmjeri na login
           console.error('Greška prilikom provjere tokena:', error);
           navigate('/not-authorized', { replace: true });
         });
