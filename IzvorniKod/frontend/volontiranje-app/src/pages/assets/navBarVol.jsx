@@ -27,7 +27,7 @@ function NavBarLoggedIn() {
 
   return (
     <header className="flex items-center justify-between p-12">
-      <a href="/" className="text-4xl font-bold hover:text-yellow-300">
+      <a href="/volunteer/home" className="text-4xl font-bold hover:text-yellow-300">
         VSN<span className="text-yellow-400">!</span>
       </a>
 
@@ -42,9 +42,8 @@ function NavBarLoggedIn() {
           o platformi
         </a>
 
-        {/* User Profile Icon Button */}
         <button
-          onClick={handleNavigateToHome}
+          onClick={navigate('#')}
           className="bg-yellow-400 w-10 h-10 flex items-center justify-center rounded-full hover:bg-yellow-500"
           aria-label="User Profile"
         >

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import NavBarLoggedIn from "./assets/navBarLoggedIn";
+import NavBarLoggedIn from "./assets/navBarVol";
 import Motivation from "./assets/motivationVolunteer";
 import ActivitiesList from "./assets/activitiesList";
 
@@ -12,7 +12,6 @@ function VolunteerHomePage() {
     const [error, setError] = useState('');
     
     const navigate = useNavigate();
-
 
 
     function signOut() {

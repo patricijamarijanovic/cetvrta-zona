@@ -8,7 +8,11 @@ function ActivitiesList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/home")
+    axios.get("http://localhost:8080/organization/home", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         setActivities(response.data);
         setLoading(false);

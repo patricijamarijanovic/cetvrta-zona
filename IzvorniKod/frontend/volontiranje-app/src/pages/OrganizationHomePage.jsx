@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import NavBarLoggedIn from "./assets/navBarLoggedIn";
-import Card from "./assets/card";
+import NavBarLoggedIn from "./assets/navBarOrg";
+import ActivitiesListOrg from "./assets/activitiesListOrg";
 
 function OrganizationHomePage() {
     const [activities, setActivities] = useState([]);
@@ -15,7 +15,6 @@ function OrganizationHomePage() {
     function signOut() {
         localStorage.clear();
         navigate('/');
-
     }
 
     useEffect(() => {
@@ -34,7 +33,7 @@ function OrganizationHomePage() {
           },
         })
         .then((response) => {
-          setMessage(response.data);
+          setActivities(response.data);
         })
         .catch((error) => {
           //ako dođe do greške (npr. token nije važeći ili server ne radi), preusmjeri na login
@@ -78,15 +77,7 @@ function OrganizationHomePage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {activities.map((activity, index) => (
-                  <Card
-                    key={index}
-                    title={activity.title}
-                    organization={activity.organization}
-                    description={activity.description}
-                    image={activity.image}
-                  />
-                ))}
+                <ActivitiesListOrg />
               </div>
             )}
           </div>
