@@ -1,42 +1,23 @@
+import { useEffect, useState } from "react";
 import Card from "./card";
+import axios from "axios";
 
 function ActivitiesList() {
-  const activities = [
-    {
-      title: "Aktivnost 1",
-      organization: "Organizacija 1",
-      description:
-        "pomoc pri pomoc pri pomoc pri pomoc pri pomoc pri pomoc pri pomoc pri ",
-      image: "/images/cat.jpg",
-    },
-    {
-      title: "Aktivnost 2",
-      organization: "Organizacija 2",
-      description:
-        "description description description description description description description description description description ",
-      image: "/images/cat.jpg",
-    },
-    {
-      title: "Aktivnost 3",
-      organization: "Organizacija",
-      description: "info info info info info info info ",
-      image: "/images/dog.jpg",
-    },
-    {
-      title: "Aktivnost 4",
-      organization: "Organizacija 4",
-      description:
-        "treba ovo ono treba ovo ono treba ovo ono treba ovo ono treba ovo ono treba ovo ono treba ovo ono treba ovo ono ",
-      image: "/images/cat.jpg",
-    },
-    {
-      title: "Aktivnost 5",
-      organization: "Organizacija 5",
-      description:
-        "nesto nesto nesto nesto nesto nesto nesto nesto nesto nesto ",
-      image: "/images/dog.jpg",
-    },
-  ];
+    const [activities, setActivities] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+  
+    useEffect(() => {
+      axios.get("http://localhost:8080/activities")
+        .then((response) => {
+          setActivities(response.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError("Error fetching activities.");
+          setLoading(false);
+        });
+    }, []);
 
   return (
     <section className="p-8">

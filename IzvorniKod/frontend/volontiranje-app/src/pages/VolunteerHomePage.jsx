@@ -27,7 +27,7 @@ function VolunteerHomePage() {
         if (!token) {
 
           console.log('nema tokena!')
-          navigate('/volunteer/home', { replace: true });
+          navigate('/not-authorized', { replace: true });
 
           return;
         }
