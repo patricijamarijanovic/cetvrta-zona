@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage";
 import NotAuthorized from "./pages/NotAuthorized";
 import OrganizationHomePage from "./pages/OrganizationHomePage";
 import VolunteerHomePage from "./pages/VolunteerHomePage";
+import CreateProject from "./components/CreateProject";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path='/volunteer/home' element={<VolunteerHomePage />}/>
         <Route path='/organization/home' element={<OrganizationHomePage />}/>
         <Route path='/not-authorized' element={<NotAuthorized />}/>
+        <Route path='/organization/create-project' element={<CreateProject />}/>
       </Routes>
     </BrowserRouter>
   );

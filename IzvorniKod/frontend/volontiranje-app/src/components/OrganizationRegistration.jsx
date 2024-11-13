@@ -70,11 +70,11 @@ function OrganizationLogin() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // Pokrećemo validaciju i pohranjujemo greške u varijablu
+
         const validationErrors = Validation({ username, email, password, password2, orgName});
         setError(validationErrors);
 
-        // Provjeravamo postoji li greška prije slanja
+     
         if (Object.keys(validationErrors).length === 0) {
             try {
                 await axios.post("http://localhost:8080/register/organization", {
