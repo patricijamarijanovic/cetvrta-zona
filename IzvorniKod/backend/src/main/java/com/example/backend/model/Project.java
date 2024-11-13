@@ -62,9 +62,11 @@ public class Project {
 	 * = hitan; this.organizationID = organizationID; this.brojprijavljenihvolontera
 	 * = 0; }
 	 */
-	public void resetNumRegisteredVolunteers() {
-		this.numregisteredvolunteers = 0;
+
+	public void setNumregisteredvolunteers(@NotNull Integer numregisteredvolunteers) {
+		this.numregisteredvolunteers = numregisteredvolunteers;
 	}
+
 	public void registerVolunteer() throws Exception {
 		if (numregisteredvolunteers < maxnumvolunteers) numregisteredvolunteers++;
 		else throw new Exception("Mjesta su popunjena, nije moguce prijaviti novog volontera");

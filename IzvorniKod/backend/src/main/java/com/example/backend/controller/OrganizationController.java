@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.ProjectDto;
 import com.example.backend.model.Project;
 import com.example.backend.model.Registration;
 import com.example.backend.repository.MyUserRepository;
@@ -7,6 +8,7 @@ import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.RegistrationRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
+import com.example.backend.service.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -27,8 +29,10 @@ public class OrganizationController {
     private MyUserRepository myUserRepository;
 
     @Autowired
-
     private RegistrationRepository registrationRepository;
+
+    @Autowired
+    private OrganizationService organizationService;
 
     @GetMapping("/organization/home")
     public List<Project> organization_home() {
@@ -42,11 +46,15 @@ public class OrganizationController {
     }
 
     @PostMapping("/organization/createproject")
-    public RedirectView save_project(@RequestBody Project project) {
-        project.resetNumRegisteredVolunteers();
-        projectrepository.save(project);
-        return new RedirectView("/organization/home");
+    public String save_project(@RequestBody ProjectDto dto) {
+        return organizationService.createproject(dto);
     }
+
+//    @PostMapping("/organization/putanja")
+//    public String fja(){
+//        return "hello world";
+//    }
+
     @GetMapping("/organization/project/{projectID}/registrations")
     public List<Registration> pregledaj_prijave_na_projekt(@PathVariable Integer projectID) {
         return registrationRepository.findAllByProjectID(projectID);
