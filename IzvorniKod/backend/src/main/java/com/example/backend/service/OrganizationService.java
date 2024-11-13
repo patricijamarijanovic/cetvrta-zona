@@ -16,6 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.example.backend.model.Status.OPEN;
 
 @Service
@@ -54,7 +57,7 @@ public class OrganizationService {
         return ResponseEntity.ok("Organization registered successfully.");
     }
 
-    public String createproject(ProjectDto dto) {
+    public ResponseEntity<Object> createproject(ProjectDto dto) {
         Project project = new Project();
         project.setProjectname(dto.getProjectname());
         project.setProjectdesc(dto.getProjectdesc());
@@ -77,6 +80,9 @@ public class OrganizationService {
         project.setStatus(String.valueOf(OPEN));
 
         projectRepository.save(project);
-        return "projekt uspješno dodan :)";
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Projekt uspješno dodan :)");
+
+        return ResponseEntity.ok(response);
     }
 }

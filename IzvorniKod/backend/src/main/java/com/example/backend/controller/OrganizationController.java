@@ -10,6 +10,7 @@ import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
 import com.example.backend.service.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,7 +47,7 @@ public class OrganizationController {
     }
 
     @PostMapping("/organization/createproject")
-    public String save_project(@RequestBody ProjectDto dto) {
+    public ResponseEntity<Object> save_project(@RequestBody ProjectDto dto) {
         return organizationService.createproject(dto);
     }
 
