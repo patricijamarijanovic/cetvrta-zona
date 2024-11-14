@@ -82,6 +82,7 @@ function OrganizationLogin() {
           organizationName: orgName,
         });
         alert("Registracija uspješna!");
+        navigate('/');
       } catch (err) {
         //alert(err);
         // alert(err);jel

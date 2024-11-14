@@ -114,6 +114,7 @@ function CreateProject() {
         );
         console.log("Zahtjev uspješno poslan");
         alert("Registracija uspješna!");
+        navigate('/organization/home');
       } catch (err) {
         console.log("here!!");
         // alert(err);

@@ -93,6 +93,7 @@ function VolunteerLogin() {
           dateOfBirth: date,
         });
         alert("Registracija uspješna!");
+        navigate('/');
       } catch (err) {
         // alert(err);jel
         console.log(err.response);
