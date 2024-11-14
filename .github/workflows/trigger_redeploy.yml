@@ -1,0 +1,16 @@
+#kopirano s https://github.com/progi-devops/progi-monorepo:
+name: Trigger Render restart
+
+on:
+  workflow_dispatch:
+
+jobs:
+  redeploy:
+    name: Redeploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger restart
+        run:
+          curl ${{ secrets.FRONTEND_DEPLOY_HOOK }}
+          curl ${{ secrets.BACKEND_DEPLOY_HOOK }}
