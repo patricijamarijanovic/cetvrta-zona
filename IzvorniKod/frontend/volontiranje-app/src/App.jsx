@@ -11,6 +11,8 @@ import OrganizationHomePage from "./pages/OrganizationHomePage";
 import VolunteerHomePage from "./pages/VolunteerHomePage";
 import CreateProject from "./components/CreateProject";
 
+import ErrorPage from "./pages/ErrorPage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +26,8 @@ function App() {
         <Route path='/organization/home' element={<OrganizationHomePage />}/>
         <Route path='/not-authorized' element={<NotAuthorized />}/>
         <Route path='/organization/create-project' element={<CreateProject />}/>
+
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   );
