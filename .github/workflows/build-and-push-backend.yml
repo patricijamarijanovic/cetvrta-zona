@@ -6,7 +6,7 @@ on:
     branches:
       - master
     paths:
-      - 'backend/**'      # Trigger only on changes in the /backend directory
+      - 'IzvorniKod/backend/**'      # Trigger only on changes in the /backend directory
   workflow_dispatch:
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
           distribution: 'temurin'
           architecture: x64
           cache: 'maven'
-          cache-dependency-path: 'backend/pom.xml'
+          cache-dependency-path: 'IzvorniKod/backend/pom.xml'
 
       - name: Maven build
         run: mvn clean package
