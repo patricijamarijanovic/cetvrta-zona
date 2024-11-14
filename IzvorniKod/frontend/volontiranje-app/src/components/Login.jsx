@@ -181,9 +181,9 @@ function Login() {
                 </a>
               </div>
 
-              {errors.general && (
+              {errors.pogreska && (
                 <p className="text-sm text-red-500 text-center">
-                  {errors.general}
+                  {errors.pogreska}
                 </p>
               )}
 
