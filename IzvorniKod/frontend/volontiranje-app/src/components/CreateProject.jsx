@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBarLoggedIn from "../pages/assets/navBarOrg";
+import NavBarOrg from "../pages/assets/navBarOrg";
 
 import axios from "axios";
 
@@ -125,7 +125,7 @@ function CreateProject() {
   return (
     <>
       <div className="bg-slate-600 rounded-b-3xl text-white">
-        <NavBarLoggedIn />
+        <NavBarOrg />
       </div>
 
       <div className="min-h-screen bg-white py-12 px-4">
