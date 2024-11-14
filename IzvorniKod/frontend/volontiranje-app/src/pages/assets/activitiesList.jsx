@@ -20,7 +20,7 @@ function ActivitiesList() {
       });
   }, []);
 
-  if (loading) return <p className="p-8 text-gray-500">Loading activities...</p>;
+  if (loading) return <p className="p-8 text-gray-500">Učitavam aktivnosti...</p>;
   if (error) return <p className="p-8 text-red-500">{error}</p>;
 
   return (
@@ -28,7 +28,7 @@ function ActivitiesList() {
       <h1 className="text-3xl font-bold text-gray-800 mb-8">Aktualno</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {activities.length === 0 ? (
-          <h1>Na žalost trenutno nema dostupnih aktivnosti :'( </h1>
+          <h1>Nažalost trenutačno nema dostupnih aktivnosti :'( </h1>
         ) : (
           activities.map((activity, index) => (
             <Card
@@ -37,7 +37,7 @@ function ActivitiesList() {
               location={activity.projectlocation}
               dates={`From: ${activity.beginningdate} To: ${activity.enddate}`}
               organization={activity.organizationName}
-              image={"/images/dog.jpg"}
+              image={"/images/nekaovog.jpg"}
             />
           ))
         )}

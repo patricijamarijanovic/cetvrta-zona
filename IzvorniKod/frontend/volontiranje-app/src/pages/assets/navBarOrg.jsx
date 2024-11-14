@@ -42,7 +42,6 @@ function NavBarLoggedIn() {
           o platformi
         </a>
 
-        {/* User Profile Icon Button */}
         <button
           onClick={() => navigate('#')}
           className="bg-yellow-400 w-10 h-10 flex items-center justify-center rounded-full hover:bg-yellow-500"

@@ -34,7 +34,7 @@ function ActivitiesList() {
       });
   }, []);
 
-  if (loading) return <p className="p-8 text-gray-500">Loading activities...</p>;
+  if (loading) return <p className="p-8 text-gray-500">Učitavam aktivnosti...</p>;
   if (error) return <p className="p-8 text-red-500">{error}</p>;
   
   return (
@@ -47,7 +47,7 @@ function ActivitiesList() {
             location={activity.projectlocation}
             dates={`From: ${activity.beginningdate} To: ${activity.enddate}`}
             organization={activity.organizationName}
-            image={"/images/cat.jpg"}
+            image={"/images/nekaovog.jpg"}
           />
         ))}
       </div>
