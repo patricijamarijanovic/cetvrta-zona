@@ -114,12 +114,23 @@ function CreateProject() {
         );
         console.log("Zahtjev uspješno poslan");
         alert("Registracija uspješna!");
-        navigate('/organization/home');
+        navigate("/organization/home");
       } catch (err) {
         console.log("here!!");
         // alert(err);
         console.log(err);
       }
+    }
+  };
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const handleBeginDateChange = (e) => {
+    const selectedBeginDate = e.target.value;
+    setBeginDate(selectedBeginDate);
+
+    if (endDate && selectedBeginDate > endDate) {
+      setEndDate("");
     }
   };
 
@@ -204,8 +215,9 @@ function CreateProject() {
                     id="beginDate"
                     name="beginDate"
                     type="date"
+                    min={today}
                     value={beginDate}
-                    onChange={(e) => setBeginDate(e.target.value)}
+                    onChange={handleBeginDateChange}
                     className={`w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 ${
                       errors.beginDate ? "border-red-500" : "border-gray-300"
                     }`}
@@ -223,6 +235,7 @@ function CreateProject() {
                     id="endDate"
                     name="endDate"
                     type="date"
+                    min={beginDate || today}
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
                     className={`w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 ${
