@@ -10,6 +10,7 @@ import NotAuthorized from "./pages/NotAuthorized";
 import OrganizationHomePage from "./pages/OrganizationHomePage";
 import VolunteerHomePage from "./pages/VolunteerHomePage";
 import CreateProject from "./components/CreateProject";
+import AdminHomePage from "./pages/AdminHomePage";
 
 import ErrorPage from "./pages/ErrorPage";
 
@@ -26,6 +27,7 @@ function App() {
         <Route path='/organization/home' element={<OrganizationHomePage />}/>
         <Route path='/not-authorized' element={<NotAuthorized />}/>
         <Route path='/organization/create-project' element={<CreateProject />}/>
+        <Route path='admin/home' element={<AdminHomePage />}/>
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>

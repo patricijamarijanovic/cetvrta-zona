@@ -62,6 +62,8 @@ function Login() {
             navigate("/volunteer/home");
           } else if (token.data.role == "ROLE_ORGANIZATION") {
             navigate("/organization/home");
+          } else if (token.data.role == "ROLE_ADMIN") {
+            navigate("/admin/home");
           }
         } else {
           alert("Nema tokena u odgovoru.");
@@ -98,6 +100,8 @@ function Login() {
       } else if (roleFromUrl === "ROLE_ORGANIZATION") {
         console.log("navigiram dalje na organizacijski");
         navigate("/organization/home");
+      } else if (roleFromUrl === "ROLE_ADMIN") {
+        navigate("/admin/home");
       }
     } else {
       console.log("idkk");
