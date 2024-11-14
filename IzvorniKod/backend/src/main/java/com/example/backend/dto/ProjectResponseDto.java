@@ -31,6 +31,9 @@ public class ProjectResponseDto {
         this.projectdesc = projectdesc;
     }
 
+    public LocalDate getBeginningdate() {
+        return beginningdate;
+    }
 
     public void setBeginningdate(LocalDate beginningdate) {
         this.beginningdate = beginningdate;
