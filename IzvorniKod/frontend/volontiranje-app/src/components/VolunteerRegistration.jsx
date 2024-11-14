@@ -125,6 +125,8 @@ function VolunteerLogin() {
     }
   };
 
+  const today = new Date().toISOString().split("T")[0];
+
   return (
     <>
       <div className="bg-slate-600 rounded-b-3xl text-white">
@@ -312,6 +314,7 @@ function VolunteerLogin() {
                       id="date"
                       name="date"
                       type="date"
+                      max={today}
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
                       className={`w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 ${
