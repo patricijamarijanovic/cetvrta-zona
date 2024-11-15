@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:5173", "https://volontirajsnama.onrender.com:80"})
+@CrossOrigin(origins = {"http://localhost:5173", "https://volontirajsnama.onrender.com"})
 public class AuthenticationController {
 	
 	@Autowired

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:5173", "https://volontirajsnama.onrender.com:80"})
+@CrossOrigin(origins = {"http://localhost:5173", "https://volontirajsnama.onrender.com"})
 public class AdminController {
     @GetMapping("/admin/home")
     public String home() {

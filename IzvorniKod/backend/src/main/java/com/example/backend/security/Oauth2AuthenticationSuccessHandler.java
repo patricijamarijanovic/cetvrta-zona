@@ -67,7 +67,7 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
            // na ovoj putanji ce se token i role pohraniti na localstorage
             //String redirectUrl = "http://localhost:5173/login?token=" + token + "&role=" + role;
-            String redirectUrl = "http://https://volontirajsnama.onrender.com:80/login?token=" + token + "&role=" + role;
+            String redirectUrl = "http://https://volontirajsnama.onrender.com/login?token=" + token + "&role=" + role;
             response.sendRedirect(redirectUrl);
 
 
