@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "https://volontirajsnama.onrender.com:80"})
 public class OrganizationController {
 
     @Autowired
