@@ -60,7 +60,7 @@ function CreateProject() {
 
     // Ako postoji token, pošaljite zahtjev
     axios
-      .get("http://localhost:8080/organization/createproject", {
+      .get("http://${BACKEND_URL}:8080/organization/createproject", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -95,7 +95,7 @@ function CreateProject() {
       console.log("prije slanja1");
       try {
         await axios.post(
-          "http://localhost:8080/organization/createproject",
+          "http://${BACKEND_URL}:8080/organization/createproject",
           {
             projectname: projectName,
             projectdesc: description,

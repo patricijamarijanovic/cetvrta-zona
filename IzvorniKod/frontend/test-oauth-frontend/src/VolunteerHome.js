@@ -20,7 +20,7 @@ const VolunteerHome = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/volunteer/home', {  
+        const response = await axios.get('http://${BACKEND_URL}:8080/volunteer/home', {  
           headers: {
             'Authorization': `Bearer ${token}`
           }

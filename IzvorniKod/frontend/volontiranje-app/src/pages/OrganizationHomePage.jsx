@@ -27,7 +27,7 @@ function OrganizationHomePage() {
         }
     
         //ako postoji token, pošaljite zahtjev
-        axios.get('http://localhost:8080/organization/home', {
+        axios.get('http://${BACKEND_URL}:8080/organization/home', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

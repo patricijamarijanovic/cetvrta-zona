@@ -8,7 +8,7 @@ function ActivitiesList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/home")
+    axios.get("http://${BACKEND_URL}:8080/home")
       .then((response) => {
         setActivities(response.data);
         setLoading(false);

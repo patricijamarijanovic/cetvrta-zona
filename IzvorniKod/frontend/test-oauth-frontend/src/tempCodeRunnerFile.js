@@ -15,7 +15,7 @@ const VolunteerHome = () => {
     // Definiraj opcije za zahtjev
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/volunteer/home', {  // Provjeri ispravan endpoint
+        const response = await axios.get('http://${BACKEND_URL}:8080/volunteer/home', {  // Provjeri ispravan endpoint
           headers: {
             'Authorization': `Bearer ${token}`
           }
