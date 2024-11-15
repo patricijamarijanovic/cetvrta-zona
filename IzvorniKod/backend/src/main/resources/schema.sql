@@ -23,7 +23,7 @@ CREATE TABLE users
 (
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+  id BIGINT PRIMARY KEY AUTO_INCREMENT, 
   username VARCHAR(255) NOT NULL,
   role VARCHAR(50) NOT NULL,
   UNIQUE (email)
@@ -62,7 +62,7 @@ CREATE TABLE projects
   numRegisteredVolunteers INT NOT NULL,
   maxNumVolunteers INT NOT NULL,
   status VARCHAR(10) CHECK (status IN ('OPEN', 'CLOSED', 'IN_PROGRESS')) NOT NULL,
-  projectID BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  projectID BIGINT PRIMARY KEY AUTO_INCREMENT,
   urgent BOOLEAN NOT NULL,
   organizationID BIGINT NOT NULL,
   FOREIGN KEY (organizationID) REFERENCES organizations(id),
@@ -86,7 +86,7 @@ CREATE TABLE review
 
 CREATE TABLE registration
 (
-  registrationID BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  registrationID BIGINT PRIMARY KEY AUTO_INCREMENT,
   registrationDate DATE NOT NULL,
   registrationStatus VARCHAR(50) NOT NULL,
   projectID INT NOT NULL,
