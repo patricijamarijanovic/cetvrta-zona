@@ -76,7 +76,7 @@ function NavBar() {
           <a href="#" className="block hover:text-white/80">
             o platformi
           </a>
-          <a href="#" className="block hover:text-yellow-400">
+          <a onClick={handleNavigateToLogin} className="block hover:text-yellow-400 cursor-pointer">
             prijavi se
           </a>
         </nav>
