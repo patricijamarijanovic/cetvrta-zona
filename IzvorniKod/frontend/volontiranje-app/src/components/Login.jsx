@@ -43,7 +43,7 @@ function Login() {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const token = await axios.post("http://${BACKEND_URL}:8080/authenticate", {
+        const token = await axios.post("http://${BACK_URL}:8080/authenticate", {
           username: username,
           password: password,
         });
@@ -109,7 +109,7 @@ function Login() {
   }, [navigate]);
 
   const googleLogin = () => {
-    window.location.href = "http://${BACKEND_URL}:8080/oauth2/authorization/google";
+    window.location.href = "http://${BACK_URL}:8080/oauth2/authorization/google";
   };
 
   return (

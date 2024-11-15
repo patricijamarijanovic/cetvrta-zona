@@ -33,7 +33,7 @@ function VolunteerHomePage() {
     
    
         console.log("saljem token na backend")
-        axios.get('http://${BACKEND_URL}:8080/volunteer/home', {
+        axios.get('http://${BACK_URL}:8080/volunteer/home', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
