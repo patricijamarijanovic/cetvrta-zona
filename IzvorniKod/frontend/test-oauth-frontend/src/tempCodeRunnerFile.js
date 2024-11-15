@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const BACK_URL = "backend-qns7.onrender.com";
+
 const VolunteerHome = () => {
   // Dohvati token iz localStorage
   const token = localStorage.getItem('jwt');  // Koristi token iz localStorage
@@ -15,7 +17,7 @@ const VolunteerHome = () => {
     // Definiraj opcije za zahtjev
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://${BACK_URL}/volunteer/home', {  // Provjeri ispravan endpoint
+        const response = await axios.get(`https://${BACK_URL}/volunteer/home`, {  // Provjeri ispravan endpoint
           headers: {
             'Authorization': `Bearer ${token}`
           }

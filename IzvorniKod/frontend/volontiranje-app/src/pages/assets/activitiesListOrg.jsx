@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Card from "./card";
 import axios from "axios";
+const BACK_URL = "backend-qns7.onrender.com"
 
 function ActivitiesList() {
   const [activities, setActivities] = useState([]);
@@ -18,7 +19,7 @@ function ActivitiesList() {
       return;
     }
 
-    axios.get("http://${BACK_URL}/organization/home", {
+    axios.get(`https://${BACK_URL}/organization/home`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

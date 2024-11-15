@@ -4,6 +4,8 @@ import NavBarOrg from "../pages/assets/navBarOrg";
 
 import axios from "axios";
 
+const BACK_URL = "backend-qns7.onrender.com";
+
 function CreateProject() {
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
@@ -60,7 +62,7 @@ function CreateProject() {
 
     // Ako postoji token, pošaljite zahtjev
     axios
-      .get("http://${BACK_URL}/organization/createproject", {
+      .get(`https://${BACK_URL}/organization/createproject`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -95,7 +97,7 @@ function CreateProject() {
       console.log("prije slanja1");
       try {
         await axios.post(
-          "http://${BACK_URL}/organization/createproject",
+          `https://${BACK_URL}/organization/createproject`,
           {
             projectname: projectName,
             projectdesc: description,

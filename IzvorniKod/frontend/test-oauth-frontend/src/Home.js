@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const BACK_URL = "backend-qns7.onrender.com";
+
 const Home = () => {
     const [token, setToken] = useState(null);
     const [role, setRole] = useState(null);
@@ -30,7 +32,7 @@ const Home = () => {
     }, [navigate]);
 
     const googleLogin = () => {
-        window.location.href = "http://${BACK_URL}/oauth2/authorization/google";
+        window.location.href = `https://${BACK_URL}/oauth2/authorization/google`;
     };
 
     return (

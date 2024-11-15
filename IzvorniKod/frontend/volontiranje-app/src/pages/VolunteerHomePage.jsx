@@ -6,6 +6,8 @@ import NavBarLoggedIn from "./assets/navBarVol";
 import Motivation from "./assets/motivationVolunteer";
 import ActivitiesList from "./assets/activitiesList";
 
+const BACK_URL = "backend-qns7.onrender.com";
+
 function VolunteerHomePage() {
   console.log("u volonteskom home pageu1")
     const [message, setMessage] = useState('');
@@ -33,7 +35,7 @@ function VolunteerHomePage() {
     
    
         console.log("saljem token na backend")
-        axios.get('http://${BACK_URL}:8080/volunteer/home', {
+        axios.get(`https://${BACK_URL}/volunteer/home`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

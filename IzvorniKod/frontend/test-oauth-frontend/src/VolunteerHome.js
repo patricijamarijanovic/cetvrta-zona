@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const BACK_URL = "backend-qns7.onrender.com";
+
 const VolunteerHome = () => {
   const token = localStorage.getItem('jwt');  // Get the token from localStorage
   
@@ -20,7 +22,7 @@ const VolunteerHome = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://${BACK_URL}/volunteer/home', {  
+        const response = await axios.get(`https://${BACK_URL}/volunteer/home`, {  
           headers: {
             'Authorization': `Bearer ${token}`
           }

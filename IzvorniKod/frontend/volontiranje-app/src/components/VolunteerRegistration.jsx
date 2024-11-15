@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../pages/assets/navBar";
 import axios from "axios";
 
+const BACK_URL = "backend-qns7.onrender.com";
+
 function VolunteerLogin() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -84,7 +86,7 @@ function VolunteerLogin() {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        await axios.post("http://${BACK_URL}/register/volunteer", {
+        await axios.post(`https://${BACK_URL}/register/volunteer`, {
           username: username,
           password: password,
           firstName: firstName,
