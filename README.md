@@ -1,10 +1,12 @@
 # PLATFORMA ZA VOLONTIRANJE
 
-
 # Opis projekta
 Ovaj projekt je rezultat timskog rada u sklopu projeknog zadatka kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu. 
 
 Cilj projekta je razvoj platforme za volontiranje pod nazivom "Volontiraj s nama" koja olakšava povezivanje volontera s lokalnim organizacijama i projektima. Platforma objedinjuje pregled dostupnih volonterskih prilika, omogućava volonterima brzu prijavu te praćenje njihovog doprinosa, a organizacijama pruža jednostavniji način za upravljanje projektima i učinkovitu komunikaciju s volonterima.
+
+# Link na stranicu
+https://volontirajsnama.onrender.com/
 
 # Funkcijski zahtjevi
 
