@@ -18,7 +18,7 @@ const OrganizationHome = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://${BACK_URL}:8080/organization/home', {  
+        const response = await axios.get('http://${BACK_URL}/organization/home', {  
           headers: {
             'Authorization': `Bearer ${token}`
           }

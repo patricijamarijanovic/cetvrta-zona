@@ -30,7 +30,7 @@ const Home = () => {
     }, [navigate]);
 
     const googleLogin = () => {
-        window.location.href = "http://${BACK_URL}:8080/oauth2/authorization/google";
+        window.location.href = "http://${BACK_URL}/oauth2/authorization/google";
     };
 
     return (

@@ -22,7 +22,7 @@ function AdminHomePage() {
         }
     
         //ako postoji token, pošaljite zahtjev
-        axios.get('http://${BACK_URL}:8080/admin/home', {
+        axios.get('http://${BACK_URL}/admin/home', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

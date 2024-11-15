@@ -18,7 +18,7 @@ function ActivitiesList() {
       return;
     }
 
-    axios.get("http://${BACK_URL}:8080/organization/home", {
+    axios.get("http://${BACK_URL}/organization/home", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

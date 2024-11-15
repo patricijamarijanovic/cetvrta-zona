@@ -75,7 +75,7 @@ function OrganizationLogin() {
     // Provjeravamo postoji li greška prije slanja
     if (Object.keys(validationErrors).length === 0) {
       try {
-        await axios.post("http://${BACK_URL}:8080/register/organization", {
+        await axios.post("http://${BACK_URL}/register/organization", {
           username: username,
           password: password,
           email: email,
