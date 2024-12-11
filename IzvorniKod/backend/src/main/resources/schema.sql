@@ -95,5 +95,3 @@ CREATE TABLE registration
   FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
 
-INSERT INTO users (username, password, role, email)
-VALUES ('admin', '$2a$10$hd.K4YAUxErbA/F1IQvsAetXSaRHBG80cKTKFaJhUBuwGDhZDwu7a', 'ADMIN', 'admin@example.com');

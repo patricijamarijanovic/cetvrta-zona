@@ -42,9 +42,9 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/home",
+                    registry.requestMatchers("/", "/home",
                             "/register/**", "/authenticate",
-                            "/oauth2/**", "/login/**").permitAll(); // dostupne svakome
+                            "/oauth2/**", "/login/**", "/h2-console/**").permitAll(); // dostupne svakome
                     registry.requestMatchers("/volunteer/**").hasRole("VOLUNTEER");
                     registry.requestMatchers("/admin/**").hasRole("ADMIN");
                     registry.requestMatchers("/organization/**").hasRole("ORGANIZATION");
@@ -65,6 +65,7 @@ public class SecurityConfiguration {
                             response.setContentType("application/json");
                         })
                 )
+                .headers((headers) -> headers.disable())
                 .build();
     }
 

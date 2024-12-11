@@ -7,9 +7,10 @@ import jakarta.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class MyUser {
 
-    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
+//    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;

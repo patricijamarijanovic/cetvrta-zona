@@ -12,9 +12,10 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name ="registration")
 public class Registration {
-	@SequenceGenerator(name = "registration_seq", sequenceName = "registration_seq", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "registration_seq")
+//	@SequenceGenerator(name = "registration_seq", sequenceName = "registration_seq", allocationSize = 1)
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "registration_seq")
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long registrationID;
 	private LocalDateTime registrationDate;
 	private String registrationStatus;

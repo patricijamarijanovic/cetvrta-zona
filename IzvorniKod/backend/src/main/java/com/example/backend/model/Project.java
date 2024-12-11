@@ -38,9 +38,10 @@ public class Project {
 	@NotNull
 	private String status;
 	
-	@SequenceGenerator(name = "project_seq", sequenceName = "project_seq", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_seq")
+//	@SequenceGenerator(name = "project_seq", sequenceName = "project_seq", allocationSize = 1)
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_seq")
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer projectID;
 	
 	@NotNull
