@@ -1,20 +1,15 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.LoginDto;
 import com.example.backend.dto.OrganizationRegistrationDto;
 import com.example.backend.dto.VolunteerRegistrationDto;
-import com.example.backend.model.MyUser;
-import com.example.backend.model.Organization;
-import com.example.backend.model.Role;
-import com.example.backend.model.Volunteer;
-import com.example.backend.repository.MyUserRepository;
-import com.example.backend.repository.VolunteerRepository;
 import com.example.backend.service.OrganizationService;
 import com.example.backend.service.VolunteerService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:5173", "https://volontirajsnama.onrender.com"})
@@ -32,9 +27,19 @@ public class RegistrationController {
         return volunteerService.registerVolunteer(volunteerDto);
     }
 
+    @PostMapping("/volunteer/google")
+    public void registerGoogleVolunteer(@RequestParam String email, HttpServletResponse response) throws IOException {
+        volunteerService.registerGoogleVolunteer(email, response);
+    }
+
     @PostMapping("/organization")
     public ResponseEntity<String> registerOrganization(@RequestBody OrganizationRegistrationDto organizationDto) {
         return organizationService.registerOrganization(organizationDto);
+    }
+
+    @PostMapping("/organization/google")
+    public void registerGoogleOrganization(@RequestParam String email, HttpServletResponse response) throws IOException {
+        organizationService.registerGoogleOrganization(email, response);
     }
 
 }

@@ -1,16 +1,16 @@
-CREATE SEQUENCE users_seq
-	START WITH 1
-	INCREMENT BY 1
-	NO MINVALUE
-	NO MAXVALUE
-	CACHE 1;
-
-CREATE SEQUENCE project_seq
-	START WITH 1
-	INCREMENT BY 1
-	NO MINVALUE
-	NO MAXVALUE
-	CACHE 1;
+-- CREATE SEQUENCE users_seq
+-- 	START WITH 1
+-- 	INCREMENT BY 1
+-- 	NO MINVALUE
+-- 	NO MAXVALUE
+-- 	CACHE 1;
+--
+-- CREATE SEQUENCE project_seq
+-- 	START WITH 1
+-- 	INCREMENT BY 1
+-- 	NO MINVALUE
+-- 	NO MAXVALUE
+-- 	CACHE 1;
 
 CREATE SEQUENCE registration_seq
 	START WITH 1
@@ -39,7 +39,7 @@ CREATE TABLE volunteers
 (
   first_name VARCHAR(255) NOT NULL,
   last_name VARCHAR(255) NOT NULL,
-  date_of_birth DATE NOT NULL,
+  date_of_birth DATE,
   id BIGINT NOT NULL PRIMARY KEY,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -93,5 +93,12 @@ CREATE TABLE registration
   volunteerID BIGINT NOT NULL,
   FOREIGN KEY (projectID) REFERENCES projects(projectID),
   FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
+);
+
+CREATE TABLE google_users (
+                              id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                              first_name VARCHAR(255) NOT NULL,
+                              last_name VARCHAR(255) NOT NULL,
+                              email VARCHAR(255) UNIQUE NOT NULL
 );
 

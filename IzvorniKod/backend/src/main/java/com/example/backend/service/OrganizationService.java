@@ -3,23 +3,28 @@ package com.example.backend.service;
 import com.example.backend.dto.OrganizationRegistrationDto;
 import com.example.backend.dto.ProjectDto;
 import com.example.backend.dto.ProjectResponseDto;
-import com.example.backend.model.Organization;
-import com.example.backend.model.Project;
-import com.example.backend.model.Role;
-import com.example.backend.model.Status;
+import com.example.backend.model.*;
+import com.example.backend.repository.GoogleUserRepository;
 import com.example.backend.repository.MyUserRepository;
 import com.example.backend.repository.OrganizationRepository;
 import com.example.backend.repository.ProjectRepository;
+import com.example.backend.security.JwtService;
+import com.example.backend.security.MyUserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.example.backend.model.Status.OPEN;
 
@@ -37,6 +42,14 @@ public class OrganizationService {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private GoogleUserRepository googleUserRepository;
+
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    private JwtService jwtService;
 
     public ResponseEntity<String> registerOrganization(OrganizationRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
@@ -57,6 +70,44 @@ public class OrganizationService {
         organizationRepository.save(organization);
 
         return ResponseEntity.ok("Organization registered successfully.");
+    }
+
+    public void registerGoogleOrganization(String email, HttpServletResponse response) throws IOException {
+        Optional<GoogleUser> u = googleUserRepository.findByEmail(email);
+
+        if (u.isPresent()) {
+            GoogleUser googleUser = u.get();
+
+            Organization organization = new Organization();
+
+            organization.setRole(Role.ORGANIZATION);
+            organization.setEmail(googleUser.getEmail());
+            organization.setOrganizationName(googleUser.getFirst_name() + " " + googleUser.getLast_name());
+            organization.setUsername(googleUser.getEmail());
+            organization.setPassword("oauth2");
+
+            System.out.println("kreirana organizacija");
+            System.out.println(organization);
+            organizationRepository.save(organization);
+
+            UserDetails userdetails = myUserDetailsService.loadUserByUsername(organization.getUsername());
+
+            System.out.println(userdetails);
+
+            String token = jwtService.generateToken(userdetails);
+            System.out.println("token: " + token);
+
+            String role = userdetails.getAuthorities().stream()
+                    .map(grantedAuthority -> grantedAuthority.getAuthority())
+                    .findFirst()
+                    .orElse("ROLE_USER");
+
+            // na ovoj putanji ce se token i uloga pohraniti na localstorage
+            String redirectUrl = "http://localhost:5173/login?token=" + token + "&role=" + role;
+//            String redirectUrl = "https://volontirajsnama.onrender.com/login?token=" + token + "&role=" + role;
+
+            response.sendRedirect(redirectUrl);
+        }
     }
 
     public ResponseEntity<Object> createproject(ProjectDto dto) {

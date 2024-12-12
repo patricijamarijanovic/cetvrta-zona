@@ -35,7 +35,6 @@ public class SecurityConfiguration {
     @Autowired
     private Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
