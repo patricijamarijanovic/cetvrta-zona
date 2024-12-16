@@ -28,8 +28,8 @@ public class RegistrationController {
     }
 
     @PostMapping("/volunteer/google")
-    public void registerGoogleVolunteer(@RequestParam String email, HttpServletResponse response) throws IOException {
-        volunteerService.registerGoogleVolunteer(email, response);
+    public ResponseEntity<?> registerGoogleVolunteer(@RequestParam String email) throws IOException {
+        return volunteerService.registerGoogleVolunteer(email);
     }
 
     @PostMapping("/organization")
@@ -38,8 +38,8 @@ public class RegistrationController {
     }
 
     @PostMapping("/organization/google")
-    public void registerGoogleOrganization(@RequestParam String email, HttpServletResponse response) throws IOException {
-        organizationService.registerGoogleOrganization(email, response);
+    public ResponseEntity<?> registerGoogleOrganization(@RequestParam String email) throws IOException {
+        organizationService.registerGoogleOrganization(email);
     }
 
 }

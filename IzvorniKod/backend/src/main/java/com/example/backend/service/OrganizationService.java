@@ -72,7 +72,7 @@ public class OrganizationService {
         return ResponseEntity.ok("Organization registered successfully.");
     }
 
-    public void registerGoogleOrganization(String email, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> registerGoogleOrganization(String email) throws IOException {
         Optional<GoogleUser> u = googleUserRepository.findByEmail(email);
 
         if (u.isPresent()) {
@@ -103,11 +103,18 @@ public class OrganizationService {
                     .orElse("ROLE_USER");
 
             // na ovoj putanji ce se token i uloga pohraniti na localstorage
-            String redirectUrl = "http://localhost:5173/login?token=" + token + "&role=" + role;
-//            String redirectUrl = "https://volontirajsnama.onrender.com/login?token=" + token + "&role=" + role;
+//            String redirectUrl = "http://localhost:5173/login?token=" + token + "&role=" + role;
+////            String redirectUrl = "https://volontirajsnama.onrender.com/login?token=" + token + "&role=" + role;
+//
+//            response.sendRedirect(redirectUrl);
 
-            response.sendRedirect(redirectUrl);
+            Map<String, String> response = new HashMap<>();
+            response.put("jwt", token);
+            response.put("role", role);
+            return ResponseEntity.ok(response);
         }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
     }
 
     public ResponseEntity<Object> createproject(ProjectDto dto) {

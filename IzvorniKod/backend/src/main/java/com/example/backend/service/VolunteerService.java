@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -63,7 +65,7 @@ public class VolunteerService {
         return ResponseEntity.ok("Volunteer registered successfully.");
     }
 
-    public void registerGoogleVolunteer(String email, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> registerGoogleVolunteer(String email) throws IOException {
         Optional<GoogleUser> u = googleUserRepository.findByEmail(email);
 
         if (u.isPresent()) {
@@ -95,11 +97,17 @@ public class VolunteerService {
                     .orElse("ROLE_USER");
 
             // na ovoj putanji ce se token i uloga pohraniti na localstorage
-            String redirectUrl = "http://localhost:5173/login?token=" + token + "&role=" + role;
-//            String redirectUrl = "https://volontirajsnama.onrender.com/login?token=" + token + "&role=" + role;
 
-            System.out.println("redirectUrl: " + redirectUrl);
-            response.sendRedirect(redirectUrl);
+//            String redirectUrl = "http://localhost:5173/login?token=" + token + "&role=" + role;
+////            String redirectUrl = "https://volontirajsnama.onrender.com/login?token=" + token + "&role=" + role;
+//
+//            System.out.println("redirectUrl: " + redirectUrl);
+            // Vraća JWT token u odgovoru
+            Map<String, String> response = new HashMap<>();
+            response.put("jwt", token);
+            response.put("role", role);
+            return ResponseEntity.ok(response);
         }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
     }
 }
