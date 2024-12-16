@@ -39,7 +39,7 @@ public class RegistrationController {
 
     @PostMapping("/organization/google")
     public ResponseEntity<?> registerGoogleOrganization(@RequestParam String email) throws IOException {
-        organizationService.registerGoogleOrganization(email);
+       return organizationService.registerGoogleOrganization(email);
     }
 
 }
