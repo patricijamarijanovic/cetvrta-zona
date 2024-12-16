@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../pages/assets/navBar";
 import axios from "axios";
 
-const BACK_URL = "backend-qns7.onrender.com";
+// const BACK_URL = "backend-qns7.onrender.com";
+// const BACK_URL = "https://backend-qns7.onrender.com";
+const BACK_URL = "http://localhost:8080";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -45,7 +47,7 @@ function Login() {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const token = await axios.post(`https://${BACK_URL}/authenticate`, {
+        const token = await axios.post(`${BACK_URL}/authenticate`, {
           username: username,
           password: password,
         });
@@ -111,7 +113,7 @@ function Login() {
   }, [navigate]);
 
   const googleLogin = () => {
-    window.location.href = `https://${BACK_URL}/oauth2/authorization/google`;
+    window.location.href = `${BACK_URL}/oauth2/authorization/google`;
   };
 
   return (
