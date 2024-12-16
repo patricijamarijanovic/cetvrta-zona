@@ -16,7 +16,8 @@ public class WebConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:5173", "https://volontirajsnama.onrender.com") // Dozvoljena domena frontend-a
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Dozvoljene metode
-                        .allowedHeaders("Authorization", "Content-Type", "Accept") // Dozvoljeni headeri
+                        .allowedHeaders("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With", "Access-Control-Allow-Origin")
+                        // Dozvoljeni headeri
                         .allowCredentials(true); // Ako koristiš kolačiće, dozvoli slanje kolačića
             }
         };

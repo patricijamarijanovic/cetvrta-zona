@@ -5,7 +5,9 @@ import axios from "axios";
 import NavBarLoggedIn from "./assets/navBarOrg";
 import ActivitiesListOrg from "./assets/activitiesListOrg";
 
-const BACK_URL = "backend-qns7.onrender.com";
+// const BACK_URL = "backend-qns7.onrender.com";
+// const BACK_URL = "https://backend-qns7.onrender.com";
+const BACK_URL = "http://localhost:8080";
 
 function OrganizationHomePage() {
     const [activities, setActivities] = useState([]);
@@ -29,7 +31,7 @@ function OrganizationHomePage() {
         }
     
         //ako postoji token, pošaljite zahtjev
-        axios.get(`https://${BACK_URL}/organization/home`, {
+        axios.get(`${BACK_URL}/organization/home`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

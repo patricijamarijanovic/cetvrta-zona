@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../pages/assets/navBar";
 import axios from "axios";
 
-const BACK_URL = "backend-qns7.onrender.com";
+// const BACK_URL = "backend-qns7.onrender.com";
+// const BACK_URL = "https://backend-qns7.onrender.com";
+const BACK_URL = "http://localhost:8080";
 
 function OrganizationLogin() {
   const [username, setUsername] = useState("");
@@ -77,7 +79,7 @@ function OrganizationLogin() {
     // Provjeravamo postoji li greška prije slanja
     if (Object.keys(validationErrors).length === 0) {
       try {
-        await axios.post(`https://${BACK_URL}/register/organization`, {
+        await axios.post(`${BACK_URL}/register/organization`, {
           username: username,
           password: password,
           email: email,

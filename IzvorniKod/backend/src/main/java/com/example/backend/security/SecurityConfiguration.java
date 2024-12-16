@@ -35,16 +35,15 @@ public class SecurityConfiguration {
     @Autowired
     private Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/home",
+                    registry.requestMatchers("/", "/home",
                             "/register/**", "/authenticate",
-                            "/oauth2/**", "/login/**").permitAll(); // dostupne svakome
+                            "/oauth2/**", "/login/**", "/h2-console/**").permitAll(); // dostupne svakome
                     registry.requestMatchers("/volunteer/**").hasRole("VOLUNTEER");
                     registry.requestMatchers("/admin/**").hasRole("ADMIN");
                     registry.requestMatchers("/organization/**").hasRole("ORGANIZATION");
@@ -65,6 +64,7 @@ public class SecurityConfiguration {
                             response.setContentType("application/json");
                         })
                 )
+                .headers((headers) -> headers.disable())
                 .build();
     }
 

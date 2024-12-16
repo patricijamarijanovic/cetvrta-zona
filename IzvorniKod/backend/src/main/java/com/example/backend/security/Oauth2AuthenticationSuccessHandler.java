@@ -1,6 +1,8 @@
 package com.example.backend.security;
 
+import com.example.backend.model.GoogleUser;
 import com.example.backend.model.MyUser;
+import com.example.backend.repository.GoogleUserRepository;
 import com.example.backend.repository.MyUserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,11 +26,13 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
     private MyUserRepository myUserRepository;
 
     @Autowired
-    private JwtService jwtService;  // Inject JwtService
+    private JwtService jwtService;
 
     @Autowired
     private MyUserDetailsService myUserDetailsService;
 
+    @Autowired
+    private GoogleUserRepository googleUserRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, IOException {
@@ -38,8 +42,13 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
         // Dohvatiti email korisnika iz OAuth2User atributa
         String email = oauth2User.getAttribute("email");
+        String firstName = oauth2User.getAttribute("given_name");
+        String lastName = oauth2User.getAttribute("family_name");
 
         System.out.println("Email korisnika: " + email);
+        System.out.println("ime: " + firstName);
+        System.out.println("prezime: " + lastName);
+
 
         Optional<MyUser> u = myUserRepository.findByEmail(email);
         if (u.isPresent()) {
@@ -55,30 +64,23 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
                     .findFirst()
                     .orElse("ROLE_USER");
 
-//            Map<String, String> responseBody = new HashMap<>();
-//            responseBody.put("jwt", token);
-//            responseBody.put("role", role);
-//
-//            // Postavi status i vrati odgovor
-//            response.setStatus(HttpServletResponse.SC_OK);
-////            response.setContentType("application/json");
-//
-//            objectMapper.writeValue(response.getOutputStream(), responseBody);
-
-           // na ovoj putanji ce se token i role pohraniti na localstorage
-            //String redirectUrl = "http://localhost:5173/login?token=" + token + "&role=" + role;
-            String redirectUrl = "https://volontirajsnama.onrender.com/login?token=" + token + "&role=" + role;
+           // na ovoj putanji ce se token i uloga pohraniti na localstorage
+            String redirectUrl = "http://localhost:5173/login?token=" + token + "&role=" + role;
+//            String redirectUrl = "https://volontirajsnama.onrender.com/login?token=" + token + "&role=" + role;
             response.sendRedirect(redirectUrl);
 
-
-
         }else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "User not found");
-            response.setContentType("application/json");
-            objectMapper.writeValue(response.getOutputStream(), errorResponse);
-        }
+            GoogleUser googleUser = new GoogleUser();
+            googleUser.setEmail(email);
+            googleUser.setFirst_name(firstName);
+            googleUser.setLast_name(lastName);
 
+            System.out.println(googleUser);
+            googleUserRepository.save(googleUser);
+
+            String redirectUrl = "http://localhost:5173/choose-role?email=" + email;
+//            String redirectUrl = "http://volontirajsnama.onrender.com/choose-role?email=" + email;
+            response.sendRedirect(redirectUrl);
+        }
     }
 }

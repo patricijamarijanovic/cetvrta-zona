@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import Card from "./card";
 import axios from "axios";
 
-const BACK_URL = "backend-qns7.onrender.com";
+
+// const BACK_URL = "backend-qns7.onrender.com";
+// const BACK_URL = "https://backend-qns7.onrender.com";
+const BACK_URL = "http://localhost:8080";
 
 function ActivitiesList() {
   const [activities, setActivities] = useState([]);
@@ -10,7 +13,7 @@ function ActivitiesList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get(`https://${BACK_URL}/home`)
+    axios.get(`${BACK_URL}/home`)
       .then((response) => {
         setActivities(response.data);
         setLoading(false);

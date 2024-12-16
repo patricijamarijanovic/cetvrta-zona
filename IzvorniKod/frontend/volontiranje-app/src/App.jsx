@@ -14,6 +14,8 @@ import AdminHomePage from "./pages/AdminHomePage";
 
 import ErrorPage from "./pages/ErrorPage";
 
+import ChooseRole from "./components/ChooseRole";
+
 function App() {
   return (
     <BrowserRouter>
@@ -28,6 +30,7 @@ function App() {
         <Route path='/not-authorized' element={<NotAuthorized />}/>
         <Route path='/organization/create-project' element={<CreateProject />}/>
         <Route path='admin/home' element={<AdminHomePage />}/>
+        <Route path='choose-role' element={<ChooseRole />}/>
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>
