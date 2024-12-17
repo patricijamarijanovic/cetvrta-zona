@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class MyUser {
 
-//    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize = 1)
+	//    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize = 1)
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,9 @@ public class MyUser {
     private Role role; // VOLUNTEER, ORGANIZATION, ADMIN
 
     private String email;
+    
+    private boolean verified;
+    private String verificationToken;
 
     public Long getId() {
         return id;
@@ -61,6 +64,22 @@ public class MyUser {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public boolean isVerified() {
+		return verified;
+	}
+
+	public void setVerified(boolean verified) {
+		this.verified = verified;
+	}
+
+	public String getVerificationToken() {
+		return verificationToken;
+	}
+
+	public void setVerificationToken(String verificationToken) {
+		this.verificationToken = verificationToken;
+	}
 
     @Override
     public String toString() {

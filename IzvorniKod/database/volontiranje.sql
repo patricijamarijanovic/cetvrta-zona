@@ -26,6 +26,8 @@ CREATE TABLE users
   id BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('users_seq'), 
   username VARCHAR(255) NOT NULL,
   role VARCHAR(50) NOT NULL,
+  verified BOOLEAN NOT NULL,
+  verification_token VARCHAR(16) NOT NULL,
   UNIQUE (email)
 );
 

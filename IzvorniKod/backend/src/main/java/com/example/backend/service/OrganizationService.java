@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.example.backend.model.Status.OPEN;
 
@@ -50,6 +52,9 @@ public class OrganizationService {
 
     @Autowired
     private JwtService jwtService;
+    
+    @Autowired
+    private EmailService emailService = new EmailService(new JavaMailSenderImpl());
 
     public ResponseEntity<String> registerOrganization(OrganizationRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
@@ -66,6 +71,10 @@ public class OrganizationService {
         organization.setPassword(passwordEncoder.encode(dto.getPassword()));
         organization.setUsername(dto.getUsername());
         organization.setRole(Role.ORGANIZATION);
+        organization.setVerified(false);
+        String verificationToken = UUID.randomUUID().toString();
+        organization.setVerificationToken(verificationToken);
+        emailService.sendVerificationEmail(dto.getEmail(), verificationToken);
 
         organizationRepository.save(organization);
 
@@ -85,6 +94,10 @@ public class OrganizationService {
             organization.setOrganizationName(googleUser.getFirst_name() + " " + googleUser.getLast_name());
             organization.setUsername(googleUser.getEmail());
             organization.setPassword("oauth2");
+            organization.setVerified(false);
+            String verificationToken = UUID.randomUUID().toString();
+            organization.setVerificationToken(verificationToken);
+            emailService.sendVerificationEmail(googleUser.getEmail(), verificationToken);
 
             System.out.println("kreirana organizacija");
             System.out.println(organization);

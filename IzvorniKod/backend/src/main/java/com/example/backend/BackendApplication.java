@@ -3,10 +3,10 @@ package com.example.backend;
 import com.example.backend.model.MyUser;
 import com.example.backend.model.Role;
 import com.example.backend.repository.MyUserRepository;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication

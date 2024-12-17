@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class VolunteerService {
@@ -41,6 +43,9 @@ public class VolunteerService {
 
     @Autowired
     private JwtService jwtService;
+    
+    @Autowired
+    private EmailService emailService = new EmailService(new JavaMailSenderImpl());
 
     public ResponseEntity<String> registerVolunteer(VolunteerRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
@@ -59,6 +64,10 @@ public class VolunteerService {
         volunteer.setEmail(dto.getEmail());
         volunteer.setDateOfBirth(dto.getDateOfBirth());
         volunteer.setRole(Role.VOLUNTEER);
+        volunteer.setVerified(false);
+        String verificationToken = UUID.randomUUID().toString();
+        volunteer.setVerificationToken(verificationToken);
+        emailService.sendVerificationEmail(dto.getEmail(), verificationToken);
 
         volunteerRepository.save(volunteer);
 
@@ -78,6 +87,10 @@ public class VolunteerService {
             volunteer.setLastName(googleUser.getLast_name());
             volunteer.setEmail(googleUser.getEmail());
             volunteer.setRole(Role.VOLUNTEER);
+            volunteer.setVerified(false);
+            String verificationToken = UUID.randomUUID().toString();
+            volunteer.setVerificationToken(verificationToken);
+            emailService.sendVerificationEmail(googleUser.getEmail(), verificationToken);
 
             System.out.println("kreiran volonter");
             System.out.println(volunteer);
