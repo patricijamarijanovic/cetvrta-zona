@@ -3,10 +3,12 @@ package com.example.backend.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.backend.model.MyUser;
 import com.example.backend.repository.MyUserRepository;
 
+@Service
 public class VerifyService {
 
 	@Autowired
