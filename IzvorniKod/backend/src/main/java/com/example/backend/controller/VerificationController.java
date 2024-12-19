@@ -28,16 +28,5 @@ public class VerificationController {
             return "Nešto je pošlo po krivu.";
         }
     }
-	
-	@GetMapping("/testmail")
-    public String testMail() {
-		try {
-			emailService.sendEmail("vbogojevic7@gmail.com", "test", "test");
-			return "Provjeri svoj mail!";
-		} catch (Exception e) {
-			System.out.println(e);
-			return "Nešto je pošlo po krivu";
-		}
-    }
 
 }

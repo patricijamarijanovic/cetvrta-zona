@@ -27,9 +27,6 @@ import java.util.Map;
 public class AuthenticationController {
 	
 	@Autowired
-    private EmailService emailService = new EmailService(new JavaMailSenderImpl());
-	
-	@Autowired
 	private ProjectRepository projectrepository;
 	
 	@Autowired
@@ -49,7 +46,6 @@ public class AuthenticationController {
 
     @GetMapping("/home")
     public List<ProjectResponseDto> home() {
-    	emailService.sendEmail("vbogojevic7@gmail.com", "test", "test");
         return projectService.getAllProjects();
     }
 
