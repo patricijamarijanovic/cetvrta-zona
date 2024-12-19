@@ -83,17 +83,59 @@ function ChooseRole() {
             alert("E-mail nije pronađen u URL-u.");
           }
     }
-    
 
-    return(
-        <>
-        <h2>Izabrei ulogu: </h2>
-        <button onClick={handleVolunteer}>Volonter</button>
-        <button onClick={handleOrganization}>Organizacija</button>
-        </>
-
+    return (
+      <>
+        <div className="bg-slate-600 rounded-b-3xl text-white">
+          <NavBar />
+        </div>
+  
+        <div className="min-h-screen bg-white">
+          <div className="container mx-auto px-4 py-12 max-w-6xl">
+            <div className="text-center mb-16">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                <span className="text-yellow-500">Izaberi</span> ulogu:
+              </h1>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+  
+              <div className="bg-slate-600 shadow-lg hover:shadow-xl transition-shadow p-6 rounded-xl">
+                <div className="text-center">
+                  <h1 className="text-2xl md:text-3xl font-bold text-white mb-8">
+                    VOLONTER
+                  </h1>
+                </div>
+                <div className="flex justify-center">
+                  <button
+                    onClick={handleVolunteer}
+                    className="bg-yellow-300 text-black text-xl py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
+                  >
+                    ODABERI
+                  </button>
+                </div>
+              </div>
+  
+              <div className="bg-slate-600 shadow-lg hover:shadow-xl transition-shadow p-6 rounded-xl">
+                <div className="text-center">
+                  <h1 className="text-2xl md:text-3xl font-bold text-white mb-8">
+                    ORGANIZACIJA
+                  </h1>
+                </div>
+                <div className="flex justify-center">
+                  <button
+                    onClick={handleOrganization}
+                    className="bg-yellow-300 text-black text-xl py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
+                  >
+                    ODABERI
+                  </button>
+                </div>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+      </>
     );
-
 }
 
 export default ChooseRole;
