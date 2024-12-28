@@ -134,6 +134,7 @@ public class OrganizationService {
         Project project = new Project();
         project.setProjectname(dto.getProjectname());
         project.setProjectdesc(dto.getProjectdesc());
+        project.setTypeOfWork(dto.getTypeOfWork());
         project.setBeginningdate(dto.getBeginningdate());
         project.setEnddate(dto.getEnddate());
         project.setProjectlocation(dto.getProjectlocation());

@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.ReviewDto;
 import com.example.backend.model.MyUser;
 import com.example.backend.model.Project;
 import com.example.backend.model.Registration;
@@ -8,7 +9,10 @@ import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.RegistrationRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
+import com.example.backend.service.VolunteerService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,8 +31,10 @@ public class VolunteerController {
     private MyUserRepository myUserRepository;
 
     @Autowired
-
     private RegistrationRepository registrationRepository;
+    
+    @Autowired
+    private VolunteerService volunteerService;
 
     @GetMapping("/volunteer/home")
     public List<Project> volunteer_home() {
@@ -61,5 +67,12 @@ public class VolunteerController {
             System.out.println(e);
             return "Can't register volunteer to project because the limit has been reached";
         }
+    }
+    
+    @PostMapping("/volunteer/{projectID}/leavereview")
+    public ResponseEntity<Object> leave_review (@PathVariable Integer projectID, @RequestBody ReviewDto dto) {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	MyUser prijavljeniVolonter = myUserRepository.findByUsername(authentication.getName()).get();
+    	return volunteerService.saveReview(projectID, dto, prijavljeniVolonter.getId());
     }
 }

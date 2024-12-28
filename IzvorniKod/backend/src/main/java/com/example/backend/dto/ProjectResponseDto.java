@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public class ProjectResponseDto {
     private String projectname;
     private String projectdesc;
+    private String typeofwork;
     private LocalDate beginningdate;
     private LocalDate enddate;
     private String projectlocation;
@@ -15,7 +16,17 @@ public class ProjectResponseDto {
     private boolean urgent;
     private String organizationName;
 
-    public String getProjectname() {
+    
+    
+    public String getTypeofwork() {
+		return typeofwork;
+	}
+
+	public void setTypeofwork(String typeofwork) {
+		this.typeofwork = typeofwork;
+	}
+
+	public String getProjectname() {
         return projectname;
     }
 

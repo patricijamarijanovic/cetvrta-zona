@@ -20,6 +20,9 @@ public class Project {
 	@NotBlank
 	private String projectdesc;
 	
+	@NotBlank
+	private String typeOfWork;
+	
 	@NotNull
 	private LocalDate beginningdate;
 	
@@ -135,6 +138,15 @@ public class Project {
 	public void setOrganizationID(Long organizationID) {
 		this.organizationID = organizationID;
 	}
+	
+	public String getTypeOfWork() {
+		return typeOfWork;
+	}
+
+	public void setTypeOfWork(String typeOfWork) {
+		this.typeOfWork = typeOfWork;
+	}
+	
 	@Override
 	public String toString() {
 		return "Project [projectname=" + projectname + ", projectdesc=" + projectdesc + ", beginningdate="

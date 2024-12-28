@@ -61,12 +61,12 @@ public class OrganizationController {
 //    }
 
     @GetMapping("/organization/project/{projectID}/registrations")
-    public List<Registration> pregledaj_prijave_na_projekt(@PathVariable Integer projectID) {
+    public List<Registration> view_project_registrations(@PathVariable Integer projectID) {
         return registrationRepository.findAllByProjectID(projectID);
     }
 
     @PutMapping("/organization/project/{projectID}/registrations/{registrationID}")
-    public RedirectView prihvati_prijavu(@PathVariable Integer projectID, @PathVariable Long registrationID) {
+    public RedirectView accept_registration(@PathVariable Integer projectID, @PathVariable Long registrationID) {
     	Registration registration = registrationRepository.findByRegistrationID(registrationID).get();
     	registration.setRegistrationStatus("ACCEPTED");
         registrationRepository.save(registration);
@@ -74,7 +74,7 @@ public class OrganizationController {
     }
 
     @DeleteMapping("/organization/project/{projectID}/registrations/{registrationID}")
-    public RedirectView odbij_prijavu(@PathVariable Integer projectID, @PathVariable Long registrationID) {
+    public RedirectView reject_registration(@PathVariable Integer projectID, @PathVariable Long registrationID) {
     	Registration registration = registrationRepository.findByRegistrationID(registrationID).get();
     	registration.setRegistrationStatus("REJECTED");
         registrationRepository.save(registration);

@@ -18,6 +18,13 @@ CREATE SEQUENCE registration_seq
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
+
+CREATE SEQUENCE review_seq
+	START WITH 1
+	INCREMENT BY 1
+	NO MINVALUE
+	NO MAXVALUE
+	CACHE 1;
 	
 CREATE TABLE users
 (
@@ -42,6 +49,8 @@ CREATE TABLE volunteers
   first_name VARCHAR(255) NOT NULL,
   last_name VARCHAR(255) NOT NULL,
   date_of_birth DATE NOT NULL,
+  contact_number VARCHAR(10),
+  expertise VARCHAR(50),
   id BIGINT NOT NULL PRIMARY KEY,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -58,6 +67,7 @@ CREATE TABLE projects
 (
   projectName VARCHAR(50) NOT NULL,
   projectDesc VARCHAR(1000) NOT NULL,
+  typeOfWork VARCHAR(50) NOT NULL,
   beginningDate DATE NOT NULL,
   endDate DATE NOT NULL,
   projectLocation VARCHAR(255) NOT NULL,
@@ -74,15 +84,15 @@ CREATE TABLE projects
 
 CREATE TABLE review
 (
-  reviewID INT NOT NULL PRIMARY KEY,
+  reviewID INT NOT NULL PRIMARY KEY DEFAULT nextval('review_seq'), ,
   rating INT NOT NULL,
   comment VARCHAR(500) NOT NULL,
   reviewDate DATE NOT NULL,
   projectID INT NOT NULL,
-  organizationID BIGINT NOT NULL,
+  --organizationID BIGINT NOT NULL,
   volunteerID BIGINT NOT NULL,
   FOREIGN KEY (projectID) REFERENCES projects(projectID),
-  FOREIGN KEY (organizationID) REFERENCES organizations(id),
+  --FOREIGN KEY (organizationID) REFERENCES organizations(id),
   FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
 

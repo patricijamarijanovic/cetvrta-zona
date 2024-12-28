@@ -13,10 +13,27 @@ import java.time.LocalDate;
 public class Volunteer extends MyUser {
     private String firstName;
     private String lastName;
-
     private LocalDate dateOfBirth;
+    private String contactNumber;
+    private String expertise;
 
-    public String getFirstName() {
+    public String getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
+	public String getExpertise() {
+		return expertise;
+	}
+
+	public void setExpertise(String expertise) {
+		this.expertise = expertise;
+	}
+
+	public String getFirstName() {
         return firstName;
     }
 
