@@ -12,13 +12,24 @@ import java.time.LocalDate;
 public class ProjectDto {
     private String projectname;
     private String projectdesc;
+    private String typeOfWork;
     private LocalDate beginningdate;
     private LocalDate enddate;
     private String projectlocation;
     private Integer numregisteredvolunteers;
     private Integer maxnumvolunteers;
+    
+    
 
-    private Boolean urgent;
+    public String getTypeOfWork() {
+		return typeOfWork;
+	}
+
+	public void setTypeOfWork(String typeOfWork) {
+		this.typeOfWork = typeOfWork;
+	}
+
+	private Boolean urgent;
 
     public String getProjectname() {
         return projectname;

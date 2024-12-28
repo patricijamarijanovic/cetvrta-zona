@@ -9,8 +9,26 @@ public class VolunteerRegistrationDto {
     private String lastName;
     private String email;
     private LocalDate dateOfBirth;
+    private String contactNumber;
+    private String expertise;
 
-    public String getUsername() {
+    public String getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
+	public String getExpertise() {
+		return expertise;
+	}
+
+	public void setExpertise(String expertise) {
+		this.expertise = expertise;
+	}
+
+	public String getUsername() {
         return username;
     }
 

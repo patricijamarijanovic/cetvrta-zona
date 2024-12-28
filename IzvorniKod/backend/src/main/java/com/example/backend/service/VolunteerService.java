@@ -64,6 +64,8 @@ public class VolunteerService {
         volunteer.setEmail(dto.getEmail());
         volunteer.setDateOfBirth(dto.getDateOfBirth());
         volunteer.setRole(Role.VOLUNTEER);
+        volunteer.setContactNumber(dto.getContactNumber());
+        volunteer.setExpertise(dto.getExpertise());
         volunteer.setVerified(false);
         String verificationToken = UUID.randomUUID().toString();
         volunteer.setVerificationToken(verificationToken);

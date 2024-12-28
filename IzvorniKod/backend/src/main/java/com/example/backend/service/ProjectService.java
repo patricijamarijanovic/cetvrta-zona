@@ -29,6 +29,7 @@ public class ProjectService {
             ProjectResponseDto dto = new ProjectResponseDto();
             dto.setProjectname(project.getProjectname());
             dto.setProjectdesc(project.getProjectdesc());
+            dto.setTypeofwork(project.getTypeOfWork());
             dto.setBeginningdate(project.getBeginningdate());
             dto.setEnddate(project.getEnddate());
             dto.setProjectlocation(project.getProjectlocation());
@@ -68,6 +69,7 @@ public class ProjectService {
             ProjectResponseDto responseDto = new ProjectResponseDto();
             responseDto.setProjectname(project.getProjectname());
             responseDto.setProjectdesc(project.getProjectdesc());
+            responseDto.setTypeofwork(project.getTypeOfWork());
             responseDto.setBeginningdate(project.getBeginningdate());
             responseDto.setEnddate(project.getEnddate());
             responseDto.setProjectlocation(project.getProjectlocation());
