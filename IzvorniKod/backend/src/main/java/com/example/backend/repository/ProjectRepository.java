@@ -13,4 +13,10 @@ public interface ProjectRepository extends JpaRepository <Project, Integer>{
 	List<Project> findAllByOrganizationID(Long organizationID);
 	
 	List<Project> findAll();
+	
+	List<Project> findAllByTypeOfWorkAndProjectLocation(String typeOfWork, String projectLocation);
+	
+	List<Project> findAllByTypeOfWork(String typeOfWork);
+	
+	List<Project> findAllByProjectLocation(String projectLocation);
 }

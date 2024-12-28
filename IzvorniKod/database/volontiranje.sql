@@ -18,6 +18,13 @@ CREATE SEQUENCE registration_seq
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
+
+CREATE SEQUENCE review_seq
+	START WITH 1
+	INCREMENT BY 1
+	NO MINVALUE
+	NO MAXVALUE
+	CACHE 1;
 	
 CREATE TABLE users
 (
@@ -77,15 +84,15 @@ CREATE TABLE projects
 
 CREATE TABLE review
 (
-  reviewID INT NOT NULL PRIMARY KEY,
+  reviewID INT NOT NULL PRIMARY KEY DEFAULT nextval('review_seq'), ,
   rating INT NOT NULL,
   comment VARCHAR(500) NOT NULL,
   reviewDate DATE NOT NULL,
   projectID INT NOT NULL,
-  organizationID BIGINT NOT NULL,
+  --organizationID BIGINT NOT NULL,
   volunteerID BIGINT NOT NULL,
   FOREIGN KEY (projectID) REFERENCES projects(projectID),
-  FOREIGN KEY (organizationID) REFERENCES organizations(id),
+  --FOREIGN KEY (organizationID) REFERENCES organizations(id),
   FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
 

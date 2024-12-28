@@ -1,11 +1,14 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.ReviewDto;
 import com.example.backend.dto.VolunteerRegistrationDto;
 import com.example.backend.model.GoogleUser;
+import com.example.backend.model.Review;
 import com.example.backend.model.Role;
 import com.example.backend.model.Volunteer;
 import com.example.backend.repository.GoogleUserRepository;
 import com.example.backend.repository.MyUserRepository;
+import com.example.backend.repository.ReviewRepository;
 import com.example.backend.repository.VolunteerRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
@@ -19,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -46,6 +50,9 @@ public class VolunteerService {
     
     @Autowired
     private EmailService emailService = new EmailService(new JavaMailSenderImpl());
+    
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     public ResponseEntity<String> registerVolunteer(VolunteerRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
@@ -124,5 +131,20 @@ public class VolunteerService {
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
+    }
+    
+    public ResponseEntity<Object> saveReview(Integer reviewID, ReviewDto dto, Long volunteerID) {
+    	try {
+    		Review review = new Review();
+        	review.setRating(dto.getRating());
+        	review.setComment(dto.getComment());
+        	review.setProjectID(reviewID);
+        	review.setReviewDate(LocalDate.now());
+        	review.setVolunteerID(volunteerID);
+        	reviewRepository.save(review);
+        	return ResponseEntity.ok("Review published successfully");
+    	} catch(Exception e) {
+    		return ResponseEntity.badRequest().body(e);
+    	}
     }
 }
