@@ -21,7 +21,7 @@ public class Project {
 	private String projectdesc;
 	
 	@NotBlank
-	private String typeOfWork;
+	private String typeofwork;
 	
 	@NotNull
 	private LocalDate beginningdate;
@@ -140,11 +140,11 @@ public class Project {
 	}
 	
 	public String getTypeOfWork() {
-		return typeOfWork;
+		return typeofwork;
 	}
 
 	public void setTypeOfWork(String typeOfWork) {
-		this.typeOfWork = typeOfWork;
+		this.typeofwork = typeOfWork;
 	}
 	
 	@Override
