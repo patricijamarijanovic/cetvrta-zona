@@ -14,9 +14,9 @@ public interface ProjectRepository extends JpaRepository <Project, Integer>{
 	
 	List<Project> findAll();
 	
-	List<Project> findAllByTypeOfWorkAndProjectLocation(String typeOfWork, String projectLocation);
+	List<Project> findAllByTypeofworkAndProjectlocation(String typeOfWork, String projectLocation);
 	
-	List<Project> findAllByTypeOfWork(String typeOfWork);
+	List<Project> findAllByTypeofwork(String typeOfWork);
 	
-	List<Project> findAllByProjectLocation(String projectLocation);
+	List<Project> findAllByProjectlocation(String projectLocation);
 }

@@ -1,4 +1,4 @@
-CREATE SEQUENCE users_seq
+/* CREATE SEQUENCE users_seq
 	START WITH 1
 	INCREMENT BY 1
 	NO MINVALUE
@@ -18,16 +18,23 @@ CREATE SEQUENCE registration_seq
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
+
+CREATE SEQUENCE review_seq
+	START WITH 1
+	INCREMENT BY 1
+	NO MINVALUE
+	NO MAXVALUE
+	CACHE 1; */
 	
 CREATE TABLE users
 (
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  id BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('users_seq'), 
+  id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
   username VARCHAR(255) NOT NULL,
   role VARCHAR(50) NOT NULL,
   verified BOOLEAN NOT NULL,
-  verification_token VARCHAR(16) NOT NULL,
+  verification_token VARCHAR(16),
   UNIQUE (email)
 );
 
@@ -67,7 +74,7 @@ CREATE TABLE projects
   numRegisteredVolunteers INT NOT NULL,
   maxNumVolunteers INT NOT NULL,
   status VARCHAR(10) CHECK (status IN ('OPEN', 'CLOSED', 'IN_PROGRESS')) NOT NULL,
-  projectID BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('project_seq'),
+  projectID BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   urgent BOOLEAN NOT NULL,
   organizationID BIGINT NOT NULL,
   FOREIGN KEY (organizationID) REFERENCES organizations(id),
@@ -77,21 +84,19 @@ CREATE TABLE projects
 
 CREATE TABLE review
 (
-  reviewID INT NOT NULL PRIMARY KEY,
+  reviewID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   rating INT NOT NULL,
   comment VARCHAR(500) NOT NULL,
   reviewDate DATE NOT NULL,
   projectID INT NOT NULL,
-  organizationID BIGINT NOT NULL,
   volunteerID BIGINT NOT NULL,
   FOREIGN KEY (projectID) REFERENCES projects(projectID),
-  FOREIGN KEY (organizationID) REFERENCES organizations(id),
   FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
 
 CREATE TABLE registration
 (
-  registrationID BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('registration_seq'),
+  registrationID BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   registrationDate DATE NOT NULL,
   registrationStatus VARCHAR(50) NOT NULL,
   projectID INT NOT NULL,
@@ -100,6 +105,6 @@ CREATE TABLE registration
   FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
 
-INSERT INTO users (username, password, role, email)
-VALUES ('admin', '$2a$10$hd.K4YAUxErbA/F1IQvsAetXSaRHBG80cKTKFaJhUBuwGDhZDwu7a', 'ADMIN', 'admin@example.com');
+INSERT INTO users (username, password, role, email, verified)
+VALUES ('admin', '$2a$10$hd.K4YAUxErbA/F1IQvsAetXSaRHBG80cKTKFaJhUBuwGDhZDwu7a', 'ADMIN', 'admin@example.com', true);
 

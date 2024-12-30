@@ -23,11 +23,11 @@ public class FilteringService {
     	if (typeOfWork == null && projectLocation == null) {
     		l = projectRepository.findAll();
     	} else if (typeOfWork == null) {
-    		l = projectRepository.findAllByProjectLocation(projectLocation);
+    		l = projectRepository.findAllByProjectlocation(projectLocation);
     	} else if (projectLocation == null) {
-    		l = projectRepository.findAllByTypeOfWork(typeOfWork);
+    		l = projectRepository.findAllByTypeofwork(typeOfWork);
     	} else {
-    		l = projectRepository.findAllByTypeOfWorkAndProjectLocation(typeOfWork, projectLocation);
+    		l = projectRepository.findAllByTypeofworkAndProjectlocation(typeOfWork, projectLocation);
     	}
     	List<Project> filteredList = new ArrayList<Project>();
     	
