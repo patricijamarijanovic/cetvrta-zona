@@ -75,6 +75,7 @@ public class VolunteerService {
         volunteer.setExpertise(dto.getExpertise());
         volunteer.setVerified(false);
         String verificationToken = UUID.randomUUID().toString();
+        System.out.println(verificationToken);
         volunteer.setVerificationToken(verificationToken);
         emailService.sendVerificationEmail(dto.getEmail(), verificationToken);
 
@@ -97,6 +98,8 @@ public class VolunteerService {
             volunteer.setEmail(googleUser.getEmail());
             volunteer.setRole(Role.VOLUNTEER);
             volunteer.setVerified(false);
+            volunteer.setContactNumber(null);
+            volunteer.setExpertise(null);
             String verificationToken = UUID.randomUUID().toString();
             volunteer.setVerificationToken(verificationToken);
             emailService.sendVerificationEmail(googleUser.getEmail(), verificationToken);
