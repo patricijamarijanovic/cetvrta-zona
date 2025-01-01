@@ -37,5 +37,6 @@ public class EmailService {
         this.sendEmail(to, subject, body);
 
         System.out.println("Verification email sent to " + to);
+        return;
     }
 }
