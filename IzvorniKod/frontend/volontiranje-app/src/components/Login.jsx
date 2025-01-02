@@ -73,11 +73,28 @@ function Login() {
           alert("Nema tokena u odgovoru.");
         }
       } catch (err) {
-        // alert(err);
-        setError((prevErrors) => ({
-          ...prevErrors,
-          pogreska: "Pogrešno korisničko ime ili lozinka.",
-        }));
+        
+        //alert(err);
+       
+          const serverError = err.response.data.error; 
+          
+          if (serverError === "verification needed") {
+            console.log(serverError)
+            setError((prevErrors) => ({
+              ...prevErrors,
+              pogreska: "Niste potvrdili mail adresu.", 
+            }));
+          } else if (serverError === "Invalid username or password") {
+            console.log(serverError)
+            setError((prevErrors) => ({
+              ...prevErrors,
+              pogreska: "Pogrešno korisničko ime ili lozinka.", 
+            }));
+          } 
+        
+      
+        
+
       }
     }
   };

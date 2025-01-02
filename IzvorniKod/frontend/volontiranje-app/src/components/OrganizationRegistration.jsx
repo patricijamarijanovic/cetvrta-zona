@@ -85,8 +85,8 @@ function OrganizationLogin() {
           email: email,
           organizationName: orgName,
         });
-        alert("Registracija uspješna!");
-        navigate('/');
+        alert("Registracija uspješna! Provjerite svoj inbox i kliknite na link za potvrdu email adrese kako biste završili proces registracije.");
+        navigate('/login');
       } catch (err) {
         //alert(err);
         // alert(err);jel
