@@ -2,57 +2,158 @@ package com.example.backend.model;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name ="projects")
 public class Project {
-	@NotBlank
-	private String projectname;
-	
-	@NotBlank
-	private String projectdesc;
-	
-	@NotBlank
-	private String typeofwork;
-	
-	@NotNull
-	private LocalDate beginningdate;
-	
-	@NotNull
-	private LocalDate enddate;
-	
-	@NotBlank
-	private String projectlocation;
-	
-	@NotNull
-	private Integer numregisteredvolunteers;
-	
-	@NotNull
-	private Integer maxnumvolunteers;
-	
-	@NotNull
-	private String status;
-	
-//	@SequenceGenerator(name = "project_seq", sequenceName = "project_seq", allocationSize = 1)
+
+	//	@SequenceGenerator(name = "project_seq", sequenceName = "project_seq", allocationSize = 1)
 //	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_seq")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer projectID;
-	
-	@NotNull
+	private Long projectId;
+
+	private String projectName;
+
+	private String projectDesc;
+
+	@Enumerated(EnumType.STRING)
+	private TypeOfWork typeOfWork;
+
+	private LocalDate startDate;
+
+	private LocalDate endDate;
+
+	private String location;
+
+	private Integer neededNumVolunteers;
+
+	private Integer maxNumVolunteers;
+
+	@Enumerated(EnumType.STRING)
+	private Status status;
+
 	private Boolean urgent;
-	
-	@NotNull
+
 	private Long organizationID;
-	
+
+	public Long getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(Long projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public String getProjectDesc() {
+		return projectDesc;
+	}
+
+	public void setProjectDesc(String projectDesc) {
+		this.projectDesc = projectDesc;
+	}
+
+	public TypeOfWork getTypeOfWork() {
+		return typeOfWork;
+	}
+
+	public void setTypeOfWork(TypeOfWork typeOfWork) {
+		this.typeOfWork = typeOfWork;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Integer getNeededNumVolunteers() {
+		return neededNumVolunteers;
+	}
+
+	public void setNeededNumVolunteers(Integer neededNumVolunteers) {
+		this.neededNumVolunteers = neededNumVolunteers;
+	}
+
+	public Integer getMaxNumVolunteers() {
+		return maxNumVolunteers;
+	}
+
+	public void setMaxNumVolunteers(Integer maxNumVolunteers) {
+		this.maxNumVolunteers = maxNumVolunteers;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Boolean getUrgent() {
+		return urgent;
+	}
+
+	public void setUrgent(Boolean urgent) {
+		this.urgent = urgent;
+	}
+
+	public Long getOrganizationID() {
+		return organizationID;
+	}
+
+	public void setOrganizationID(Long organizationID) {
+		this.organizationID = organizationID;
+	}
+
+	@Override
+	public String toString() {
+		return "Project{" +
+				"projectId=" + projectId +
+				", projectName='" + projectName + '\'' +
+				", projectDesc='" + projectDesc + '\'' +
+				", typeOfWork=" + typeOfWork +
+				", startDate=" + startDate +
+				", endDate=" + endDate +
+				", location='" + location + '\'' +
+				", neededNumVolunteers=" + neededNumVolunteers +
+				", maxNumVolunteers=" + maxNumVolunteers +
+				", status=" + status +
+				", urgent=" + urgent +
+				", organizationID=" + organizationID +
+				'}';
+	}
+
 	/*
 	 * public Project(@NotBlank String naziv, @NotBlank String opis, @NotNull
 	 * LocalDate pocetak, @NotNull LocalDate kraj,
@@ -67,95 +168,4 @@ public class Project {
 	 * = 0; }
 	 */
 
-	public void setNumregisteredvolunteers(@NotNull Integer numregisteredvolunteers) {
-		this.numregisteredvolunteers = numregisteredvolunteers;
-	}
-
-	public void registerVolunteer() throws Exception {
-		if (numregisteredvolunteers < maxnumvolunteers) numregisteredvolunteers++;
-		else throw new Exception("Mjesta su popunjena, nije moguce prijaviti novog volontera");
-	}
-	public void rejectVolunteer() {
-		numregisteredvolunteers--;
-	}
-	public String getProjectname() {
-		return projectname;
-	}
-	public void setProjectname(String projectname) {
-		this.projectname = projectname;
-	}
-	public String getProjectdesc() {
-		return projectdesc;
-	}
-	public void setProjectdesc(String projectdesc) {
-		this.projectdesc = projectdesc;
-	}
-	public LocalDate getBeginningdate() {
-		return beginningdate;
-	}
-	public void setBeginningdate(LocalDate beginningdate) {
-		this.beginningdate = beginningdate;
-	}
-	public LocalDate getEnddate() {
-		return enddate;
-	}
-	public void setEnddate(LocalDate enddate) {
-		this.enddate = enddate;
-	}
-	public String getProjectlocation() {
-		return projectlocation;
-	}
-	public void setProjectlocation(String projectlocation) {
-		this.projectlocation = projectlocation;
-	}
-	public Integer getMaxnumvolunteers() {
-		return maxnumvolunteers;
-	}
-	public void setMaxnumvolunteers(Integer maxnumvolunteers) {
-		this.maxnumvolunteers = maxnumvolunteers;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public Integer getProjectID() {
-		return projectID;
-	}
-	public void setProjectID(Integer projectID) {
-		this.projectID = projectID;
-	}
-	public Boolean getUrgent() {
-		return urgent;
-	}
-	public void setUrgent(Boolean urgent) {
-		this.urgent = urgent;
-	}
-	public Long getOrganizationID() {
-		return organizationID;
-	}
-	public void setOrganizationID(Long organizationID) {
-		this.organizationID = organizationID;
-	}
-	
-	public String getTypeOfWork() {
-		return typeofwork;
-	}
-
-	public void setTypeOfWork(String typeOfWork) {
-		this.typeofwork = typeOfWork;
-	}
-	
-	@Override
-	public String toString() {
-		return "Project [projectname=" + projectname + ", projectdesc=" + projectdesc + ", beginningdate="
-				+ beginningdate + ", enddate=" + enddate + ", projectlocation=" + projectlocation
-				+ ", numregisteredvolunteers=" + numregisteredvolunteers + ", maxnumvolunteers=" + maxnumvolunteers
-				+ ", status=" + status + ", projectID=" + projectID + ", urgent=" + urgent + ", organizationID="
-				+ organizationID + "]";
-	}
-	public Integer getNumregisteredvolunteers() {
-		return numregisteredvolunteers;
-	}
 }

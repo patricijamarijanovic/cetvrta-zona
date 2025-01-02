@@ -131,17 +131,20 @@ public class OrganizationService {
     }
 
     public ResponseEntity<Object> createproject(ProjectDto dto) {
+        System.out.println(dto);
         Project project = new Project();
-        project.setProjectname(dto.getProjectname());
-        project.setProjectdesc(dto.getProjectdesc());
-        project.setTypeOfWork(dto.getTypeOfWork());
-        project.setBeginningdate(dto.getBeginningdate());
-        project.setEnddate(dto.getEnddate());
-        project.setProjectlocation(dto.getProjectlocation());
-        project.setNumregisteredvolunteers(dto.getNumregisteredvolunteers());
-        project.setMaxnumvolunteers(dto.getMaxnumvolunteers());
-        project.setUrgent(dto.getUrgent());
-        project.setStatus(String.valueOf(OPEN));
+
+        project.setProjectName(dto.getName());
+        project.setProjectDesc(dto.getDesc());
+        project.setUrgent(dto.isUrgent());
+        project.setMaxNumVolunteers(dto.getMaxNumVolunteers());
+        project.setNeededNumVolunteers(dto.getNeededNumVolunteers());
+        project.setStartDate(dto.getStart());
+        project.setEndDate(dto.getEnd());
+        project.setLocation(dto.getLocation());
+        project.setTypeOfWork(TypeOfWork.valueOf(dto.getTypeOfWork()));
+
+        project.setStatus(Status.OPEN);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -151,12 +154,13 @@ public class OrganizationService {
             throw new RuntimeException("Organizacija nije pronađena za korisnika: " + username);
         }
         project.setOrganizationID(organization.getId());
-        project.setStatus(String.valueOf(OPEN));
+
+        System.out.println(project);
 
         projectRepository.save(project);
+
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Projekt uspješno dodan :)");
-
         return ResponseEntity.ok(response);
     }
 
