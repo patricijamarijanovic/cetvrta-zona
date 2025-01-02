@@ -59,7 +59,9 @@ public class AuthenticationController {
             
             // Ako je autentifikacija uspješna, provjerimo je li korisnik verificiran
             if (!myUserRepository.findByUsername(loginDto.getUsername()).get().isVerified()) {
-            	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed - e-mail adresa još nije potvrđena!\nMolimo vas da prije prijave potvrdite svoju e-mail adresu.");
+                Map<String, String> errorResponse = new HashMap<>();
+                errorResponse.put("error", "verification needed");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
             }
 
             // Ako je korisnik verificiran, generiramo JWT token

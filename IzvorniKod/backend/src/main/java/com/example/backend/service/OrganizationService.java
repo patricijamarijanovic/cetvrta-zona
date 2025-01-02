@@ -94,10 +94,10 @@ public class OrganizationService {
             organization.setOrganizationName(googleUser.getFirst_name() + " " + googleUser.getLast_name());
             organization.setUsername(googleUser.getEmail());
             organization.setPassword("oauth2");
-            organization.setVerified(false);
+            organization.setVerified(true);
             String verificationToken = UUID.randomUUID().toString();
             organization.setVerificationToken(verificationToken);
-            emailService.sendVerificationEmail(googleUser.getEmail(), verificationToken);
+
 
             System.out.println("kreirana organizacija");
             System.out.println(organization);

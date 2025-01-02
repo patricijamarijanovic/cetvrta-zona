@@ -97,12 +97,13 @@ public class VolunteerService {
             volunteer.setLastName(googleUser.getLast_name());
             volunteer.setEmail(googleUser.getEmail());
             volunteer.setRole(Role.VOLUNTEER);
-            volunteer.setVerified(false);
+            volunteer.setVerified(true);
             volunteer.setContactNumber(null);
             volunteer.setExpertise(null);
+
             String verificationToken = UUID.randomUUID().toString();
             volunteer.setVerificationToken(verificationToken);
-            emailService.sendVerificationEmail(googleUser.getEmail(), verificationToken);
+
 
             System.out.println("kreiran volonter");
             System.out.println(volunteer);
