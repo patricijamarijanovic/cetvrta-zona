@@ -63,7 +63,7 @@ CREATE TABLE organizations
   UNIQUE (organization_name)
 );
 
-CREATE TABLE projects
+/*CREATE TABLE projects
 (
   projectName VARCHAR(50) NOT NULL,
   projectDesc VARCHAR(1000) NOT NULL,
@@ -80,6 +80,21 @@ CREATE TABLE projects
   FOREIGN KEY (organizationID) REFERENCES organizations(id),
   CHECK(maxNumVolunteers >= numRegisteredVolunteers)
 
+);*/
+
+CREATE TABLE projects (
+                          projectId BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                          projectName VARCHAR(255) NOT NULL,
+                          projectDesc TEXT NOT NULL,
+                          typeOfWork VARCHAR(255) NOT NULL,
+                          startDate DATE NOT NULL,
+                          endDate DATE NOT NULL,
+                          location VARCHAR(255) NOT NULL,
+                          neededNumVolunteers INTEGER NOT NULL,
+                          maxNumVolunteers INTEGER NOT NULL,
+                          status VARCHAR(255),
+                          urgent BOOLEAN NOT NULL,
+                          organizationID BIGINT NOT NULL
 );
 
 CREATE TABLE review

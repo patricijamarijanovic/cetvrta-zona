@@ -1,5 +1,6 @@
 package com.example.backend.dto;
 
+import com.example.backend.model.TypeOfWork;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,102 +11,99 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class ProjectDto {
-    private String projectname;
-    private String projectdesc;
+    private String name;
+    private String desc;
     private String typeOfWork;
-    private LocalDate beginningdate;
-    private LocalDate enddate;
-    private String projectlocation;
-    private Integer numregisteredvolunteers;
-    private Integer maxnumvolunteers;
-    
-    
+    private LocalDate start;
+    private LocalDate end;
+    private String location;
+    private Integer neededNumVolunteers;
+    private Integer maxNumVolunteers;
+    private boolean urgent;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     public String getTypeOfWork() {
-		return typeOfWork;
-	}
-
-	public void setTypeOfWork(String typeOfWork) {
-		this.typeOfWork = typeOfWork;
-	}
-
-	private Boolean urgent;
-
-    public String getProjectname() {
-        return projectname;
+        return typeOfWork;
     }
 
-    public void setProjectname(String projectname) {
-        this.projectname = projectname;
+    public void setTypeOfWork(String typeOfWork) {
+        this.typeOfWork = typeOfWork;
     }
 
-    public String getProjectdesc() {
-        return projectdesc;
+    public LocalDate getStart() {
+        return start;
     }
 
-    public void setProjectdesc(String projectdesc) {
-        this.projectdesc = projectdesc;
+    public void setStart(LocalDate start) {
+        this.start = start;
     }
 
-    public LocalDate getBeginningdate() {
-        return beginningdate;
+    public LocalDate getEnd() {
+        return end;
     }
 
-    public void setBeginningdate(LocalDate beginningdate) {
-        this.beginningdate = beginningdate;
+    public void setEnd(LocalDate end) {
+        this.end = end;
     }
 
-    public LocalDate getEnddate() {
-        return enddate;
+    public String getLocation() {
+        return location;
     }
 
-    public void setEnddate(LocalDate enddate) {
-        this.enddate = enddate;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public String getProjectlocation() {
-        return projectlocation;
+    public Integer getNeededNumVolunteers() {
+        return neededNumVolunteers;
     }
 
-    public void setProjectlocation(String projectlocation) {
-        this.projectlocation = projectlocation;
+    public void setNeededNumVolunteers(Integer neededNumVolunteers) {
+        this.neededNumVolunteers = neededNumVolunteers;
     }
 
-    public Integer getNumregisteredvolunteers() {
-        return numregisteredvolunteers;
+    public Integer getMaxNumVolunteers() {
+        return maxNumVolunteers;
     }
 
-    public void setNumregisteredvolunteers(Integer numregisteredvolunteers) {
-        this.numregisteredvolunteers = numregisteredvolunteers;
+    public void setMaxNumVolunteers(Integer maxNumVolunteers) {
+        this.maxNumVolunteers = maxNumVolunteers;
     }
 
-    public Integer getMaxnumvolunteers() {
-        return maxnumvolunteers;
-    }
-
-    public void setMaxnumvolunteers(Integer maxnumvolunteers) {
-        this.maxnumvolunteers = maxnumvolunteers;
-    }
-
-
-    public Boolean getUrgent() {
+    public boolean isUrgent() {
         return urgent;
     }
 
-    public void setUrgent(Boolean urgent) {
+    public void setUrgent(boolean urgent) {
         this.urgent = urgent;
     }
 
     @Override
     public String toString() {
         return "ProjectDto{" +
-                "projectname='" + projectname + '\'' +
-                ", projectdesc='" + projectdesc + '\'' +
-                ", beginningdate=" + beginningdate +
-                ", enddate=" + enddate +
-                ", projectlocation='" + projectlocation + '\'' +
-                ", numregisteredvolunteers=" + numregisteredvolunteers +
-                ", maxnumvolunteers=" + maxnumvolunteers +
+                "name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", typeOfWork='" + typeOfWork + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                ", location='" + location + '\'' +
+                ", neededNumVolunteers=" + neededNumVolunteers +
+                ", maxNumVolunteers=" + maxNumVolunteers +
                 ", urgent=" + urgent +
                 '}';
     }

@@ -27,16 +27,16 @@ public class ProjectService {
 
         for (Project project : projects) {
             ProjectResponseDto dto = new ProjectResponseDto();
-            dto.setProjectname(project.getProjectname());
-            dto.setProjectdesc(project.getProjectdesc());
-            dto.setTypeofwork(project.getTypeOfWork());
-            dto.setBeginningdate(project.getBeginningdate());
-            dto.setEnddate(project.getEnddate());
-            dto.setProjectlocation(project.getProjectlocation());
-            dto.setNumregisteredvolunteers(project.getNumregisteredvolunteers());
-            dto.setMaxnumvolunteers(project.getMaxnumvolunteers());
-            dto.setStatus(project.getStatus());
-            dto.setProjectID(project.getProjectID());
+            dto.setProjectname(project.getProjectName());
+            dto.setProjectdesc(project.getProjectDesc());
+            dto.setTypeofwork(String.valueOf(project.getTypeOfWork()));
+            dto.setBeginningdate(project.getStartDate());
+            dto.setEnddate(project.getEndDate());
+            dto.setProjectlocation(project.getLocation());
+            dto.setNumregisteredvolunteers(project.getNeededNumVolunteers());
+            dto.setMaxnumvolunteers(project.getMaxNumVolunteers());
+            dto.setStatus(String.valueOf(project.getStatus()));
+            dto.setProjectID(project.getProjectId());
             dto.setUrgent(project.getUrgent());
 
             // Fetch the organization name using the organization ID
@@ -67,16 +67,16 @@ public class ProjectService {
         // Map each Project to ProjectResponseDto
         for (Project project : projects) {
             ProjectResponseDto responseDto = new ProjectResponseDto();
-            responseDto.setProjectname(project.getProjectname());
-            responseDto.setProjectdesc(project.getProjectdesc());
-            responseDto.setTypeofwork(project.getTypeOfWork());
-            responseDto.setBeginningdate(project.getBeginningdate());
-            responseDto.setEnddate(project.getEnddate());
-            responseDto.setProjectlocation(project.getProjectlocation());
-            responseDto.setNumregisteredvolunteers(project.getNumregisteredvolunteers());
-            responseDto.setMaxnumvolunteers(project.getMaxnumvolunteers());
-            responseDto.setStatus(project.getStatus());
-            responseDto.setProjectID(project.getProjectID());
+            responseDto.setProjectname(project.getProjectName());
+            responseDto.setProjectdesc(project.getProjectDesc());
+            responseDto.setTypeofwork(String.valueOf(project.getTypeOfWork()));
+            responseDto.setBeginningdate(project.getStartDate());
+            responseDto.setEnddate(project.getEndDate());
+            responseDto.setProjectlocation(project.getLocation());
+            responseDto.setNumregisteredvolunteers(project.getNeededNumVolunteers());
+            responseDto.setMaxnumvolunteers(project.getMaxNumVolunteers());
+            responseDto.setStatus(String.valueOf(project.getStatus()));
+            responseDto.setProjectID(project.getProjectId());
             responseDto.setUrgent(project.getUrgent());
             responseDto.setOrganizationName(organization.getOrganizationName()); // Set the organization name
 

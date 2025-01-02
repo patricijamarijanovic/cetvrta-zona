@@ -7,16 +7,15 @@ import org.springframework.stereotype.Repository;
 import com.example.backend.model.Project;
 
 @Repository
-public interface ProjectRepository extends JpaRepository <Project, Integer>{
-	Optional<Project> findByProjectID(Integer projectID);
-	
+public interface ProjectRepository extends JpaRepository <Project, Long>{
+
 	List<Project> findAllByOrganizationID(Long organizationID);
-	
-	List<Project> findAll();
-	
-	List<Project> findAllByTypeofworkAndProjectlocation(String typeOfWork, String projectLocation);
-	
-	List<Project> findAllByTypeofwork(String typeOfWork);
-	
-	List<Project> findAllByProjectlocation(String projectLocation);
+//
+//	List<Project> findAll();
+//
+//	List<Project> findAllByTypeofworkAndProjectlocation(String typeOfWork, String projectLocation);
+//
+//	List<Project> findAllByTypeofwork(String typeOfWork);
+//
+//	List<Project> findAllByProjectlocation(String projectLocation);
 }

@@ -55,33 +55,33 @@ public class OrganizationController {
         return organizationService.createproject(dto);
     }
 
-//    @PostMapping("/organization/putanja")
-//    public String fja(){
-//        return "hello world";
+    @PostMapping("/organization/putanja")
+    public String fja() {
+        return "hello friends";
+    }
+
+//    @GetMapping("/organization/project/{projectID}/registrations")
+//    public List<Registration> view_project_registrations(@PathVariable Integer projectID) {
+//        return registrationRepository.findAllByProjectID(projectID);
 //    }
 
-    @GetMapping("/organization/project/{projectID}/registrations")
-    public List<Registration> view_project_registrations(@PathVariable Integer projectID) {
-        return registrationRepository.findAllByProjectID(projectID);
-    }
-
-    @PutMapping("/organization/project/{projectID}/registrations/{registrationID}")
-    public RedirectView accept_registration(@PathVariable Integer projectID, @PathVariable Long registrationID) {
-    	Registration registration = registrationRepository.findByRegistrationID(registrationID).get();
-    	registration.setRegistrationStatus("ACCEPTED");
-        registrationRepository.save(registration);
-        return new RedirectView("/organization/project/%d/registrations".formatted(projectID));
-    }
-
-    @DeleteMapping("/organization/project/{projectID}/registrations/{registrationID}")
-    public RedirectView reject_registration(@PathVariable Integer projectID, @PathVariable Long registrationID) {
-    	Registration registration = registrationRepository.findByRegistrationID(registrationID).get();
-    	registration.setRegistrationStatus("REJECTED");
-        registrationRepository.save(registration);
-        Project project = projectrepository.findByProjectID(projectID).get();
-        project.rejectVolunteer();
-        projectrepository.save(project);
-        return new RedirectView("/organization/project/%d/registrations".formatted(projectID));
-    }
+//    @PutMapping("/organization/project/{projectID}/registrations/{registrationID}")
+//    public RedirectView accept_registration(@PathVariable Integer projectID, @PathVariable Long registrationID) {
+//    	Registration registration = registrationRepository.findByRegistrationID(registrationID).get();
+//    	registration.setRegistrationStatus("ACCEPTED");
+//        registrationRepository.save(registration);
+//        return new RedirectView("/organization/project/%d/registrations".formatted(projectID));
+//    }
+//
+//    @DeleteMapping("/organization/project/{projectID}/registrations/{registrationID}")
+//    public RedirectView reject_registration(@PathVariable Integer projectID, @PathVariable Long registrationID) {
+//    	Registration registration = registrationRepository.findByRegistrationID(registrationID).get();
+//    	registration.setRegistrationStatus("REJECTED");
+//        registrationRepository.save(registration);
+//        Project project = projectrepository.findByProjectID(projectID).get();
+//        project.rejectVolunteer();
+//        projectrepository.save(project);
+//        return new RedirectView("/organization/project/%d/registrations".formatted(projectID));
+//    }
 
 }
