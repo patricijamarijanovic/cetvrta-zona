@@ -17,7 +17,6 @@ public class VerificationController {
 	
 	@GetMapping("/verify")
     public String verifyUser(@RequestParam String token) {
-		System.out.println(token);
         if (verifyService.verifyUser(token)) {
             return "Email adresa uspješno potvrđena!";
         } else {

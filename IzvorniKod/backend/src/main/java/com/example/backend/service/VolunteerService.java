@@ -75,7 +75,7 @@ public class VolunteerService {
         volunteer.setExpertise(dto.getExpertise());
         volunteer.setVerified(false);
         String verificationToken = UUID.randomUUID().toString();
-        System.out.println(verificationToken);
+        //System.out.println(verificationToken);
         volunteer.setVerificationToken(verificationToken);
         emailService.sendVerificationEmail(dto.getEmail(), verificationToken);
 

@@ -43,7 +43,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/", "/home",
                             "/register/**", "/authenticate",
-                            "/oauth2/**", "/login/**", "/h2-console/**, /verify").permitAll() // dostupne svakome
+                            "/oauth2/**", "/login/**", "/h2-console/**", "/verify").permitAll() // dostupne svakome
                     .requestMatchers(request -> 
 	                    request.getRequestURI().startsWith("/verify") && 
 	                    request.getParameter("token") != null
