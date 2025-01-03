@@ -23,6 +23,10 @@ function CreateProject() {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
 
+  const categories = ["DJECA", "INVALIDI", "STARIJI", "SPORT", "ŽIVOTINJE", "EDUKACIJA", "ZDRAVLJE", "OKOLIŠ", "OSTALO"];
+
+  const [selectedCategory, setCategory] = useState("");
+
   const Validation = (values) => {
     let errors = {};
 
@@ -50,7 +54,22 @@ function CreateProject() {
       errors.maxNumber = "Potrebno je odabrati broj volontera.";
     }
 
+    if (!values.selectedCategory) {
+      errors.selectedCategory = "Potrebno je odabrati kategoriju projekta.";
+    }
+
     return errors;
+  };
+
+  const handleCategoryChange = (e) => {
+    const category = e.target.value;
+    if (category === "OKOLIŠ") {
+      setCategory("OKOLIS");
+    } else if (category === "ŽIVOTINJE") {
+      setCategory("ZIVOTINJE");
+    } else {
+      setCategory(category);
+    }
   };
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -90,26 +109,34 @@ function CreateProject() {
       endDate,
       location,
       maxNumber,
+      selectedCategory,
     });
     setError(validationErrors);
     console.log("nezz" + " " + Object.keys(validationErrors).length);
     const token = localStorage.getItem("token");
+    if(selectedCategory === "OKOLIŠ") {
+      setCategory("OKOLIS");
+    }
 
+    if(selectedCategory === "ŽIVOTINJE") {
+      setCategory("ZIVOTINJE");
+    }
+    console.log(selectedCategory);
     if (Object.keys(validationErrors).length === 0) {
       console.log("prije slanja1");
       try {
         await axios.post(
           `${BACK_URL}/organization/createproject`,
           {
-            "name": "Volonterski projekt za čišćenje plaže",
-            "desc": "Ovaj projekt ima za cilj očistiti plažu od otpada. Potrebni su volonteri za prikupljanje smeća.",
-            "typeOfWork": "DJECA",
-            "start": "2025-06-01",
-            "end": "2025-06-07",
-            "location": "Zadar, Hrvatska",
-            "neededNumVolunteers": 0,
-            "maxNumVolunteers": 30,
-            "urgent": true
+            name: projectName,
+            desc: description,
+            typeOfWork: selectedCategory,
+            start: beginDate,
+            end: endDate,
+            location: location,
+            neededNumVolunteers: 0,
+            maxNumVolunteers: maxNumber,
+            urgent: emergency,
           },
           {
             headers: {
@@ -349,6 +376,21 @@ function CreateProject() {
                     <p className="text-sm text-red-500">{errors.emergency}</p>
                   )}
                 </div>
+              </div>
+
+              <div>
+                <label>Kategorija aktivnosti:</label>
+                <select value={selectedCategory} onChange={handleCategoryChange}>
+                <option value="" disabled></option>
+                {categories.map((category, index) => (
+                   <option key={index} value={category}>
+                   {category}
+                 </option>
+                ))}
+                </select>
+                {errors.selectedCategory && (
+                    <p className="text-sm text-red-500">{errors.selectedCategory}</p>
+                  )}
               </div>
 
               {errors.general && (
