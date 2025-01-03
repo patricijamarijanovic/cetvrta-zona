@@ -101,14 +101,15 @@ function CreateProject() {
         await axios.post(
           `${BACK_URL}/organization/createproject`,
           {
-            projectname: projectName,
-            projectdesc: description,
-            beginningdate: beginDate,
-            enddate: endDate,
-            projectlocation: location,
-            numregisteredvolunteers: 0,
-            maxnumvolunteers: maxNumber,
-            urgent: emergency,
+            "name": "Volonterski projekt za čišćenje plaže",
+            "desc": "Ovaj projekt ima za cilj očistiti plažu od otpada. Potrebni su volonteri za prikupljanje smeća.",
+            "typeOfWork": "DJECA",
+            "start": "2025-06-01",
+            "end": "2025-06-07",
+            "location": "Zadar, Hrvatska",
+            "neededNumVolunteers": 0,
+            "maxNumVolunteers": 30,
+            "urgent": true
           },
           {
             headers: {
