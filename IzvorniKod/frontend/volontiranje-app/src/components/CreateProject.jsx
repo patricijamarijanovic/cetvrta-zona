@@ -419,7 +419,7 @@ function CreateProject() {
                     setLocation("");
                     setMaxNumber(0);
                     setEmergency(false);
-                    setSelectedCategory(""); // Reset kategorije
+                    setSelectedCategory("");
                     setError({});
                   }}
                   className="bg-red-500 text-white py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-red-400"
