@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBarOrg from "../pages/assets/navBarOrg";
-
 import axios from "axios";
 
-// const BACK_URL = "backend-qns7.onrender.com";
-// const BACK_URL = "https://backend-qns7.onrender.com";
 const BACK_URL = "http://localhost:8080";
 
 function CreateProject() {
@@ -16,16 +13,24 @@ function CreateProject() {
   const [location, setLocation] = useState("");
   const [maxNumber, setMaxNumber] = useState(0);
   const [emergency, setEmergency] = useState(false);
-
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [errors, setError] = useState({});
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [emergencyDropdownOpen, setEmergencyDropdownOpen] = useState(false);
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+
+  const categories = [
+    "DJECA",
+    "INVALIDI",
+    "STARIJI",
+    "SPORT",
+    "ŽIVOTINJE",
+    "EDUKACIJA",
+    "ZDRAVLJE",
+    "OKOLIŠ",
+    "OSTALO",
+  ];
 
   const navigate = useNavigate();
-  const [message, setMessage] = useState("");
-
-  const categories = ["DJECA", "INVALIDI", "STARIJI", "SPORT", "ŽIVOTINJE", "EDUKACIJA", "ZDRAVLJE", "OKOLIŠ", "OSTALO"];
-
-  const [selectedCategory, setCategory] = useState("");
 
   const Validation = (values) => {
     let errors = {};
@@ -33,27 +38,21 @@ function CreateProject() {
     if (!values.projectName) {
       errors.projectName = "Potrebno je unijeti ime projekta.";
     }
-
     if (!values.description) {
       errors.description = "Potrebno je unijeti opis projekta.";
     }
-
     if (!values.beginDate) {
       errors.beginDate = "Potrebno je unijeti datum početka projekta.";
     }
-
     if (!values.endDate) {
       errors.endDate = "Potrebno je unijeti datum završetka projekta.";
     }
-
     if (!values.location) {
       errors.location = "Potrebno je unijeti lokaciju.";
     }
-
     if (values.maxNumber === 0) {
       errors.maxNumber = "Potrebno je odabrati broj volontera.";
     }
-
     if (!values.selectedCategory) {
       errors.selectedCategory = "Potrebno je odabrati kategoriju projekta.";
     }
@@ -61,16 +60,6 @@ function CreateProject() {
     return errors;
   };
 
-  const handleCategoryChange = (e) => {
-    const category = e.target.value;
-    if (category === "OKOLIŠ") {
-      setCategory("OKOLIS");
-    } else if (category === "ŽIVOTINJE") {
-      setCategory("ZIVOTINJE");
-    } else {
-      setCategory(category);
-    }
-  };
   useEffect(() => {
     const token = localStorage.getItem("token");
     console.log("TOKEN " + token);
@@ -111,19 +100,11 @@ function CreateProject() {
       maxNumber,
       selectedCategory,
     });
-    setError(validationErrors);
-    console.log("nezz" + " " + Object.keys(validationErrors).length);
-    const token = localStorage.getItem("token");
-    if(selectedCategory === "OKOLIŠ") {
-      setCategory("OKOLIS");
-    }
 
-    if(selectedCategory === "ŽIVOTINJE") {
-      setCategory("ZIVOTINJE");
-    }
-    console.log(selectedCategory);
+    setError(validationErrors);
+
     if (Object.keys(validationErrors).length === 0) {
-      console.log("prije slanja1");
+      const token = localStorage.getItem("token");
       try {
         await axios.post(
           `${BACK_URL}/organization/createproject`,
@@ -144,15 +125,22 @@ function CreateProject() {
             },
           }
         );
-        console.log("Zahtjev uspješno poslan");
-        alert("Registracija uspješna!");
+        alert("Projekt uspješno registriran!");
         navigate("/organization/home");
       } catch (err) {
-        console.log("here!!");
-        // alert(err);
-        console.log(err);
+        console.error(err);
       }
     }
+  };
+
+  const toggleEmergencyDropdown = () => {
+    setEmergencyDropdownOpen(!emergencyDropdownOpen);
+    setCategoryDropdownOpen(false);
+  };
+
+  const toggleCategoryDropdown = () => {
+    setCategoryDropdownOpen(!categoryDropdownOpen);
+    setEmergencyDropdownOpen(false);
   };
 
   const today = new Date().toISOString().split("T")[0];
@@ -280,24 +268,66 @@ function CreateProject() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="location" className="text-white font-semibold">
-                  Lokacija
-                </label>
-                <input
-                  id="location"
-                  name="location"
-                  type="text"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className={`w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 ${
-                    errors.location ? "border-red-500" : "border-gray-300"
-                  }`}
-                  placeholder="Lokacija"
-                />
-                {errors.location && (
-                  <p className="text-sm text-red-500">{errors.location}</p>
-                )}
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="location"
+                    className="text-white font-semibold"
+                  >
+                    Lokacija
+                  </label>
+                  <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className={`w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 ${
+                      errors.location ? "border-red-500" : "border-gray-300"
+                    }`}
+                    placeholder="Lokacija"
+                  />
+                  {errors.location && (
+                    <p className="text-sm text-red-500">{errors.location}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-white font-semibold">
+                    Kategorija projekta
+                  </label>
+                  <div className="relative" onClick={toggleCategoryDropdown}>
+                    <div className="border rounded-lg p-3 cursor-pointer bg-white text-gray-700 flex justify-between items-center">
+                      <span>{selectedCategory || "Odaberite kategoriju"}</span>
+                      <img
+                        src="/images/one-down-arrow.png"
+                        alt="Arrow"
+                        className="w-4 h-4"
+                      />
+                    </div>
+                    {categoryDropdownOpen && (
+                      <div className="absolute z-10 bg-white shadow-lg rounded-lg mt-2 w-full border max-h-60 overflow-y-auto">
+                        {categories.map((category) => (
+                          <div
+                            key={category}
+                            className="p-3 cursor-pointer hover:bg-gray-200"
+                            onClick={() => {
+                              setSelectedCategory(category);
+                              setCategoryDropdownOpen(false);
+                            }}
+                          >
+                            {category}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {errors.selectedCategory && (
+                    <p className="text-sm text-red-500">
+                      {errors.selectedCategory}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
@@ -328,43 +358,31 @@ function CreateProject() {
                   <label className="text-white font-semibold">
                     Volonteri hitno potrebni
                   </label>
-                  <div
-                    className="relative"
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                  >
+                  <div className="relative" onClick={toggleEmergencyDropdown}>
                     <div className="border rounded-lg p-3 cursor-pointer bg-white text-gray-700 flex justify-between items-center">
                       <span>{emergency ? "Da" : "Ne"}</span>
                       <img
                         src="/images/one-down-arrow.png"
-                        alt="down arrow"
-                        className="absolute right-3 top-1/2 -translate-y-1/2 size-4"
+                        alt="Arrow"
+                        className="w-4 h-4"
                       />
                     </div>
-
-                    {dropdownOpen && (
+                    {emergencyDropdownOpen && (
                       <div className="absolute z-10 bg-white shadow-lg rounded-lg mt-2 w-full border">
                         <div
-                          className={`p-3 cursor-pointer rounded-lg hover:bg-gray-200 ${
-                            emergency === true
-                              ? "bg-gray-100 font-semibold"
-                              : ""
-                          }`}
+                          className="p-3 cursor-pointer hover:bg-gray-200 hover:rounded-t-lg"
                           onClick={() => {
                             setEmergency(true);
-                            setDropdownOpen(false);
+                            setEmergencyDropdownOpen(false);
                           }}
                         >
                           Da
                         </div>
                         <div
-                          className={`p-3 cursor-pointer rounded-lg hover:bg-gray-200 ${
-                            emergency === false
-                              ? "bg-gray-100 font-semibold"
-                              : ""
-                          }`}
+                          className="p-3 cursor-pointer hover:bg-gray-200 hover:rounded-b-lg"
                           onClick={() => {
                             setEmergency(false);
-                            setDropdownOpen(false);
+                            setEmergencyDropdownOpen(false);
                           }}
                         >
                           Ne
@@ -372,25 +390,7 @@ function CreateProject() {
                       </div>
                     )}
                   </div>
-                  {errors.emergency && (
-                    <p className="text-sm text-red-500">{errors.emergency}</p>
-                  )}
                 </div>
-              </div>
-
-              <div>
-                <label>Kategorija aktivnosti:</label>
-                <select value={selectedCategory} onChange={handleCategoryChange}>
-                <option value="" disabled></option>
-                {categories.map((category, index) => (
-                   <option key={index} value={category}>
-                   {category}
-                 </option>
-                ))}
-                </select>
-                {errors.selectedCategory && (
-                    <p className="text-sm text-red-500">{errors.selectedCategory}</p>
-                  )}
               </div>
 
               {errors.general && (
@@ -419,6 +419,7 @@ function CreateProject() {
                     setLocation("");
                     setMaxNumber(0);
                     setEmergency(false);
+                    setSelectedCategory(""); // Reset kategorije
                     setError({});
                   }}
                   className="bg-red-500 text-white py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-red-400"
