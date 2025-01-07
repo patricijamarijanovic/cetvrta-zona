@@ -8,14 +8,6 @@ import com.example.backend.model.Project;
 
 @Repository
 public interface ProjectRepository extends JpaRepository <Project, Long>{
-
 	List<Project> findAllByOrganizationID(Long organizationID);
-//
-//	List<Project> findAll();
-//
-//	List<Project> findAllByTypeofworkAndProjectlocation(String typeOfWork, String projectLocation);
-//
-//	List<Project> findAllByTypeofwork(String typeOfWork);
-//
-//	List<Project> findAllByProjectlocation(String projectLocation);
+
 }

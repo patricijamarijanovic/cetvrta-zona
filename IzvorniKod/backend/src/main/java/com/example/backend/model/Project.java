@@ -96,8 +96,6 @@ public class Project {
 		this.location = location;
 	}
 
-
-
 	public Integer getMaxNumVolunteers() {
 		return maxNumVolunteers;
 	}

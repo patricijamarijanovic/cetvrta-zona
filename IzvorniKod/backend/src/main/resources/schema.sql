@@ -63,38 +63,26 @@ CREATE TABLE organizations
   UNIQUE (organization_name)
 );
 
-/*CREATE TABLE projects
-(
-  projectName VARCHAR(50) NOT NULL,
-  projectDesc VARCHAR(1000) NOT NULL,
-  typeOfWork VARCHAR(50) NOT NULL,
-  beginningDate DATE NOT NULL,
-  endDate DATE NOT NULL,
-  projectLocation VARCHAR(255) NOT NULL,
-  numRegisteredVolunteers INT NOT NULL,
-  maxNumVolunteers INT NOT NULL,
-  status VARCHAR(10) CHECK (status IN ('OPEN', 'CLOSED', 'IN_PROGRESS')) NOT NULL,
-  projectID BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  urgent BOOLEAN NOT NULL,
-  organizationID BIGINT NOT NULL,
-  FOREIGN KEY (organizationID) REFERENCES organizations(id),
-  CHECK(maxNumVolunteers >= numRegisteredVolunteers)
-
-);*/
-
 CREATE TABLE projects (
-                          projectId BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                          projectName VARCHAR(255) NOT NULL,
-                          projectDesc TEXT NOT NULL,
-                          typeOfWork VARCHAR(255) NOT NULL,
-                          startDate DATE NOT NULL,
-                          endDate DATE NOT NULL,
-                          location VARCHAR(255) NOT NULL,
-                          numVolunteers INTEGER NOT NULL,
-                          maxNumVolunteers INTEGER NOT NULL,
-                          status VARCHAR(255),
-                          urgent BOOLEAN NOT NULL,
-                          organizationID BIGINT NOT NULL
+    projectId BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    projectName VARCHAR(255) NOT NULL,
+    projectDesc TEXT NOT NULL,
+    typeOfWork VARCHAR(255) NOT NULL,
+    startDate DATE NOT NULL,
+    endDate DATE NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    numVolunteers INTEGER NOT NULL,
+    maxNumVolunteers INTEGER NOT NULL,
+    status VARCHAR(255),
+    urgent BOOLEAN NOT NULL,
+    organizationID BIGINT NOT NULL
+);
+
+CREATE TABLE applications (
+                              applicationId BIGINT AUTO_INCREMENT PRIMARY KEY,
+                              volunteerId BIGINT NOT NULL,
+                              projectId BIGINT NOT NULL,
+                              status VARCHAR(255)
 );
 
 CREATE TABLE review

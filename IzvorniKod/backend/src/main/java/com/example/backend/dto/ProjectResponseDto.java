@@ -15,9 +15,8 @@ public class ProjectResponseDto {
     private long projectID;
     private boolean urgent;
     private String organizationName;
+    private long organizationID;
 
-    
-    
     public String getTypeofwork() {
 		return typeofwork;
 	}
@@ -113,5 +112,32 @@ public class ProjectResponseDto {
 
     public void setOrganizationName(String organizationName) {
         this.organizationName = organizationName;
+    }
+
+    public long getOrganizationID() {
+        return organizationID;
+    }
+
+    public void setOrganizationID(long organizationID) {
+        this.organizationID = organizationID;
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectResponseDto{" +
+                "projectname='" + projectname + '\'' +
+                ", projectdesc='" + projectdesc + '\'' +
+                ", typeofwork='" + typeofwork + '\'' +
+                ", beginningdate=" + beginningdate +
+                ", enddate=" + enddate +
+                ", projectlocation='" + projectlocation + '\'' +
+                ", numregisteredvolunteers=" + numregisteredvolunteers +
+                ", maxnumvolunteers=" + maxnumvolunteers +
+                ", status='" + status + '\'' +
+                ", projectID=" + projectID +
+                ", urgent=" + urgent +
+                ", organizationName='" + organizationName + '\'' +
+                ", organizationID=" + organizationID +
+                '}';
     }
 }

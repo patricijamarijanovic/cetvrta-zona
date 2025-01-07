@@ -43,6 +43,7 @@ public class ProjectService {
             Organization organization = organizationRepository.findById(project.getOrganizationID())
                     .orElseThrow(() -> new RuntimeException("Organization not found"));
             dto.setOrganizationName(organization.getOrganizationName());
+            dto.setOrganizationID(organization.getId());
 
             responseList.add(dto);
         }
@@ -79,10 +80,10 @@ public class ProjectService {
             responseDto.setProjectID(project.getProjectId());
             responseDto.setUrgent(project.getUrgent());
             responseDto.setOrganizationName(organization.getOrganizationName()); // Set the organization name
+            responseDto.setOrganizationID(organization.getId());
 
             responseList.add(responseDto);
         }
-
         return responseList;
     }
 }

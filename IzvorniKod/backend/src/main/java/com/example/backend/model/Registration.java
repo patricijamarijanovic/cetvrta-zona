@@ -21,7 +21,7 @@ public class Registration {
 	private String registrationStatus;
 	private Integer projectID;
 	private Long volunteerID;
-	
+
 	public Registration() {}
 
 	public Long getRegistrationID() {
@@ -70,7 +70,7 @@ public class Registration {
 				+ ", registrationStatus=" + registrationStatus + ", projectID=" + projectID + ", volunteerID="
 				+ volunteerID + "]";
 	}
-	
-	
-	
+
+
+
 }
