@@ -17,6 +17,7 @@ function CreateProject() {
   const [errors, setError] = useState({});
   const [emergencyDropdownOpen, setEmergencyDropdownOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+  const [message, setMessage] = useState('');
 
   const categories = [
     "DJECA",
@@ -102,6 +103,15 @@ function CreateProject() {
     });
 
     setError(validationErrors);
+
+    if(selectedCategory === "OKOLIŠ") {
+      setCategory("OKOLIS");
+    }
+
+    if(selectedCategory === "ŽIVOTINJE") {
+      setCategory("ZIVOTINJE");
+    }
+    console.log(selectedCategory);
 
     if (Object.keys(validationErrors).length === 0) {
       const token = localStorage.getItem("token");
@@ -312,7 +322,14 @@ function CreateProject() {
                             key={category}
                             className="p-3 cursor-pointer hover:bg-gray-200"
                             onClick={() => {
-                              setSelectedCategory(category);
+                              if (category === "OKOLIŠ"){
+                                setSelectedCategory("OKOLIS");
+                              }else if (category === "ŽIVOTINJE"){
+                                setSelectedCategory("ZIVOTINJE");
+                              }else{
+                                setSelectedCategory(category);
+                              }
+                              
                               setCategoryDropdownOpen(false);
                             }}
                           >
