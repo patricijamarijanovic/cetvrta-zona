@@ -138,7 +138,7 @@ public class OrganizationService {
         project.setProjectDesc(dto.getDesc());
         project.setUrgent(dto.isUrgent());
         project.setMaxNumVolunteers(dto.getMaxNumVolunteers());
-        project.setNeededNumVolunteers(dto.getNeededNumVolunteers());
+        project.setNumVolunteers(dto.getNumVolunteers());
         project.setStartDate(dto.getStart());
         project.setEndDate(dto.getEnd());
         project.setLocation(dto.getLocation());

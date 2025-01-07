@@ -125,7 +125,7 @@ function CreateProject() {
             start: beginDate,
             end: endDate,
             location: location,
-            neededNumVolunteers: 0,
+            numVolunteers: 0,
             maxNumVolunteers: maxNumber,
             urgent: emergency,
           },

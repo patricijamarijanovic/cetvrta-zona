@@ -17,7 +17,7 @@ public class ProjectDto {
     private LocalDate start;
     private LocalDate end;
     private String location;
-    private Integer neededNumVolunteers;
+    private Integer numVolunteers;
     private Integer maxNumVolunteers;
     private boolean urgent;
 
@@ -69,12 +69,12 @@ public class ProjectDto {
         this.location = location;
     }
 
-    public Integer getNeededNumVolunteers() {
-        return neededNumVolunteers;
+    public Integer getNumVolunteers() {
+        return numVolunteers;
     }
 
-    public void setNeededNumVolunteers(Integer neededNumVolunteers) {
-        this.neededNumVolunteers = neededNumVolunteers;
+    public void setNumVolunteers(Integer numVolunteers) {
+        this.numVolunteers = numVolunteers;
     }
 
     public Integer getMaxNumVolunteers() {
@@ -102,7 +102,7 @@ public class ProjectDto {
                 ", start=" + start +
                 ", end=" + end +
                 ", location='" + location + '\'' +
-                ", neededNumVolunteers=" + neededNumVolunteers +
+                ", numVolunteers=" + numVolunteers +
                 ", maxNumVolunteers=" + maxNumVolunteers +
                 ", urgent=" + urgent +
                 '}';

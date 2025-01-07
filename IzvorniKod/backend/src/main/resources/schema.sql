@@ -90,7 +90,7 @@ CREATE TABLE projects (
                           startDate DATE NOT NULL,
                           endDate DATE NOT NULL,
                           location VARCHAR(255) NOT NULL,
-                          neededNumVolunteers INTEGER NOT NULL,
+                          numVolunteers INTEGER NOT NULL,
                           maxNumVolunteers INTEGER NOT NULL,
                           status VARCHAR(255),
                           urgent BOOLEAN NOT NULL,

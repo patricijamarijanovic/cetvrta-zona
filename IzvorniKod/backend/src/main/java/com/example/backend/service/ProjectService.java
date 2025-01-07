@@ -33,7 +33,7 @@ public class ProjectService {
             dto.setBeginningdate(project.getStartDate());
             dto.setEnddate(project.getEndDate());
             dto.setProjectlocation(project.getLocation());
-            dto.setNumregisteredvolunteers(project.getNeededNumVolunteers());
+            dto.setNumregisteredvolunteers(project.getNumVolunteers());
             dto.setMaxnumvolunteers(project.getMaxNumVolunteers());
             dto.setStatus(String.valueOf(project.getStatus()));
             dto.setProjectID(project.getProjectId());
@@ -73,7 +73,7 @@ public class ProjectService {
             responseDto.setBeginningdate(project.getStartDate());
             responseDto.setEnddate(project.getEndDate());
             responseDto.setProjectlocation(project.getLocation());
-            responseDto.setNumregisteredvolunteers(project.getNeededNumVolunteers());
+            responseDto.setNumregisteredvolunteers(project.getNumVolunteers());
             responseDto.setMaxnumvolunteers(project.getMaxNumVolunteers());
             responseDto.setStatus(String.valueOf(project.getStatus()));
             responseDto.setProjectID(project.getProjectId());

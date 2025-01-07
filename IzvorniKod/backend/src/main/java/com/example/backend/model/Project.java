@@ -29,7 +29,7 @@ public class Project {
 
 	private String location;
 
-	private Integer neededNumVolunteers;
+	private Integer numVolunteers;
 
 	private Integer maxNumVolunteers;
 
@@ -96,13 +96,7 @@ public class Project {
 		this.location = location;
 	}
 
-	public Integer getNeededNumVolunteers() {
-		return neededNumVolunteers;
-	}
 
-	public void setNeededNumVolunteers(Integer neededNumVolunteers) {
-		this.neededNumVolunteers = neededNumVolunteers;
-	}
 
 	public Integer getMaxNumVolunteers() {
 		return maxNumVolunteers;
@@ -136,6 +130,14 @@ public class Project {
 		this.organizationID = organizationID;
 	}
 
+	public Integer getNumVolunteers() {
+		return numVolunteers;
+	}
+
+	public void setNumVolunteers(Integer numVolunteers) {
+		this.numVolunteers = numVolunteers;
+	}
+
 	@Override
 	public String toString() {
 		return "Project{" +
@@ -146,7 +148,7 @@ public class Project {
 				", startDate=" + startDate +
 				", endDate=" + endDate +
 				", location='" + location + '\'' +
-				", neededNumVolunteers=" + neededNumVolunteers +
+				", numVolunteers=" + numVolunteers +
 				", maxNumVolunteers=" + maxNumVolunteers +
 				", status=" + status +
 				", urgent=" + urgent +
