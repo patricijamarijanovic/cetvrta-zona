@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.AppliedVolunteersDto;
 import com.example.backend.dto.ProjectDto;
 import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.model.Project;
@@ -19,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -60,6 +62,17 @@ public class OrganizationController {
         return "hello friends";
     }
 
+    @GetMapping("/organization/applications/{projectId}")
+    public List<AppliedVolunteersDto> applications(@PathVariable Long projectId) {
+        return organizationService.applications(projectId);
+    }
+
+    @PutMapping("/organization/applications/{projectId}/accept/{volunteerId}")
+    public String accept(@PathVariable Long projectId, @PathVariable Long volunteerId) {
+        return organizationService.accept(projectId, volunteerId);
+    }
+
+    
 //    @GetMapping("/organization/project/{projectID}/registrations")
 //    public List<Registration> view_project_registrations(@PathVariable Integer projectID) {
 //        return registrationRepository.findAllByProjectID(projectID);
