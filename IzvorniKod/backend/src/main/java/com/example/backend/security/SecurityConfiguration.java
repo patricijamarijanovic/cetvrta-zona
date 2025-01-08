@@ -41,7 +41,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/", "/home",
+                    registry.requestMatchers("/", "/home/**",
                             "/register/**", "/authenticate",
                             "/oauth2/**", "/login/**", "/h2-console/**", "/verify").permitAll() // dostupne svakome
                     .requestMatchers(request -> 

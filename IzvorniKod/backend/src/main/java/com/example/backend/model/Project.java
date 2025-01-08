@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 @Table(name ="projects")
 public class Project {
 
-	//	@SequenceGenerator(name = "project_seq", sequenceName = "project_seq", allocationSize = 1)
+//	@SequenceGenerator(name = "project_seq", sequenceName = "project_seq", allocationSize = 1)
 //	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_seq")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

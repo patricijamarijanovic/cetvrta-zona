@@ -42,49 +42,32 @@ public class VolunteerController {
     @Autowired
     private ProjectService projectService;
 
+    // volonterski homepage
     @GetMapping("/volunteer/home")
     public List<ProjectResponseDto> volunteer_home() {
         return projectService.getAllProjects();
     }
 
-    @GetMapping("/volunteer/myRegistrations")
-    public List<Registration> volunteer_registrations() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        MyUser volunteer = myUserRepository.findByUsername(authentication.getName()).get();
-        return registrationRepository.findAllByVolunteerID(volunteer.getId());
-    }
+//    @GetMapping("/volunteer/myRegistrations")
+//    public List<Registration> volunteer_registrations() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        MyUser volunteer = myUserRepository.findByUsername(authentication.getName()).get();
+//        return registrationRepository.findAllByVolunteerID(volunteer.getId());
+//    }
 
+    // svi moguci projekti
     @GetMapping("/volunteer/activities")
     public List<ProjectResponseDto> all_activities() {
         return projectService.getAllProjects();
     }
 
+    // prijava na projekt
     @PostMapping("/volunteer/apply/{projectID}")
     public String apply_for_project (@PathVariable Long projectID){
         return volunteerService.application(projectID);
     }
 
-//    @PutMapping("/volunteer/apply/{projectID}")
-//    public String apply_for_project (@PathVariable Integer projectID) {
-//        try {
-//            Project p = projectrepository.findByProjectID(projectID).get();
-//            p.registerVolunteer();
-//            projectrepository.save(p);
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            MyUser prijavljeniVolonter = myUserRepository.findByUsername(authentication.getName()).get();
-//            Registration registration = new Registration();
-//            registration.setProjectID(projectID);
-//            registration.setRegistrationDate(LocalDateTime.now());
-//            registration.setVolunteerID(prijavljeniVolonter.getId());
-//            registration.setRegistrationStatus("UNDEFINED");
-//            registrationRepository.save(registration);
-//            return "Volunteer successfully registered to project!!";
-//        } catch (Exception e) {
-//            System.out.println(e);
-//            return "Can't register volunteer to project because the limit has been reached";
-//        }
-//    }
-//
+
 //    @PostMapping("/volunteer/{projectID}/leavereview")
 //    public ResponseEntity<Object> leave_review (@PathVariable Integer projectID, @RequestBody ReviewDto dto) {
 //    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

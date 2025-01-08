@@ -1,9 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.AppliedVolunteersDto;
-import com.example.backend.dto.OrganizationRegistrationDto;
-import com.example.backend.dto.ProjectDto;
-import com.example.backend.dto.ProjectResponseDto;
+import com.example.backend.dto.*;
 import com.example.backend.model.*;
 import com.example.backend.repository.*;
 import com.example.backend.security.JwtService;
@@ -130,6 +127,18 @@ public class OrganizationService {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
     }
 
+    public List<OrganizationResponseDto> getAllOrganizations() {
+        List<Organization> organizations = organizationRepository.findAll();
+        List<OrganizationResponseDto> lista = new ArrayList<>();
+
+        for (Organization organization : organizations) {
+            OrganizationResponseDto dto = new OrganizationResponseDto();
+            dto.setOrganizationName(organization.getOrganizationName());
+            lista.add(dto);
+        }
+        return lista;
+    }
+
     public ResponseEntity<Object> createproject(ProjectDto dto) {
         System.out.println(dto);
         Project project = new Project();
@@ -208,6 +217,16 @@ public class OrganizationService {
         Application application = applications.stream().filter(app -> app.getVolunteerId().equals(volunteerId)).findFirst().get();
         application.setStatus(ApplicationStatus.REJECTED);
         applicationRepository.save(application);
+
+        Volunteer vol = volunteerRepository.findById(application.getVolunteerId()).get();
+        Project pr = projectRepository.findById(projectId).get();
+        Organization org = organizationRepository.findById(pr.getOrganizationID()).get();
+
+        String poruka = "Nažalost nisi odabran/a za volotiranje na projektu " +
+                pr.getProjectName() + " :(";
+
+        emailService.sendEmail(vol.getEmail(), "odluka o volontiranju", poruka);
+
         return application.toString();
     }
 

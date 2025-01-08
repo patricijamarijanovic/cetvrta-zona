@@ -28,15 +28,6 @@ import java.util.List;
 public class OrganizationController {
 
     @Autowired
-    private ProjectRepository projectrepository;
-
-    @Autowired
-    private MyUserRepository myUserRepository;
-
-    @Autowired
-    private RegistrationRepository registrationRepository;
-
-    @Autowired
     private OrganizationService organizationService;
 
     @Autowired
@@ -52,27 +43,30 @@ public class OrganizationController {
         return "Form for an organization to create a new project";
     }
 
+    // stvaranje projekta
     @PostMapping("/organization/createproject")
     public ResponseEntity<Object> save_project(@RequestBody ProjectDto dto) {
         return organizationService.createproject(dto);
     }
 
-    @PostMapping("/organization/putanja")
-    public String fja() {
-        return "hello friends";
-    }
-
+    // sve prijave na pojedini projekt
     @GetMapping("/organization/applications/{projectId}")
     public List<AppliedVolunteersDto> applications(@PathVariable Long projectId) {
         return organizationService.applications(projectId);
     }
 
+    // potvrdivanje volontera
     @PutMapping("/organization/applications/{projectId}/accept/{volunteerId}")
     public String accept(@PathVariable Long projectId, @PathVariable Long volunteerId) {
         return organizationService.accept(projectId, volunteerId);
     }
 
-    
+    // odbijanje volontera
+    @PutMapping("/organization/applications/{projectId}/reject/{volunteerId}")
+    public String reject(@PathVariable Long projectId, @PathVariable Long volunteerId) {
+        return organizationService.reject(projectId, volunteerId);
+    }
+
 //    @GetMapping("/organization/project/{projectID}/registrations")
 //    public List<Registration> view_project_registrations(@PathVariable Integer projectID) {
 //        return registrationRepository.findAllByProjectID(projectID);

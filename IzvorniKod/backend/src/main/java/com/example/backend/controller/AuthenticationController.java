@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.LoginDto;
+import com.example.backend.dto.OrganizationResponseDto;
 import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.model.Project;
 import com.example.backend.repository.MyUserRepository;
@@ -8,6 +9,7 @@ import com.example.backend.repository.ProjectRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
 import com.example.backend.service.EmailService;
+import com.example.backend.service.OrganizationService;
 import com.example.backend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,11 +46,28 @@ public class AuthenticationController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private OrganizationService organizationService;
+
+    // anonimni homepage
     @GetMapping("/home")
     public List<ProjectResponseDto> home() {
         return projectService.getAllProjects();
     }
 
+    // sve aktivnosti
+    @GetMapping("/home/activities")
+    public List<ProjectResponseDto> activities() {
+        return projectService.getAllProjects();
+    }
+
+    // sve organizacija
+    @GetMapping("/home/organizations")
+    public List<OrganizationResponseDto> organizations() {
+        return organizationService.getAllOrganizations();
+    }
+
+    // login
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody LoginDto loginDto) {
         try {
