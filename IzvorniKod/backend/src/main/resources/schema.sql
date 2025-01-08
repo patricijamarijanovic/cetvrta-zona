@@ -125,6 +125,14 @@ CREATE TABLE volunteer_interests
     FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
 
+CREATE TABLE organization_areas
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    organizationID BIGINT NOT NULL,
+    area VARCHAR(100),
+    FOREIGN KEY (organizationID) REFERENCES organizations(id)
+);
+
 INSERT INTO users (username, password, role, email, verified)
 VALUES ('admin', '$2a$10$hd.K4YAUxErbA/F1IQvsAetXSaRHBG80cKTKFaJhUBuwGDhZDwu7a', 'ADMIN', 'admin@example.com', true);
 

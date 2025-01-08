@@ -17,7 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.example.backend.model.Status.OPEN;
 
@@ -52,6 +54,9 @@ public class OrganizationService {
 
     @Autowired
     private VolunteerRepository volunteerRepository;
+
+    @Autowired
+    private AreasOrganizationRepository areasOrganizationRepository;
 
     public ResponseEntity<String> registerOrganization(OrganizationRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
@@ -95,7 +100,6 @@ public class OrganizationService {
             String verificationToken = UUID.randomUUID().toString();
             organization.setVerificationToken(verificationToken);
 
-
             System.out.println("kreirana organizacija");
             System.out.println(organization);
             organizationRepository.save(organization);
@@ -127,15 +131,16 @@ public class OrganizationService {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
     }
 
-    public List<OrganizationResponseDto> getAllOrganizations() {
+    public List<OrganizationProfileDto> getAllOrganizations() {
         List<Organization> organizations = organizationRepository.findAll();
-        List<OrganizationResponseDto> lista = new ArrayList<>();
+        List<OrganizationProfileDto> lista = new ArrayList<>();
 
         for (Organization organization : organizations) {
-            OrganizationResponseDto dto = new OrganizationResponseDto();
-            dto.setOrganizationName(organization.getOrganizationName());
+            OrganizationProfileDto dto = new OrganizationProfileDto();
+            dto = get_profile_info(organization.getId());
             lista.add(dto);
         }
+
         return lista;
     }
 
@@ -228,6 +233,60 @@ public class OrganizationService {
         emailService.sendEmail(vol.getEmail(), "odluka o volontiranju", poruka);
 
         return application.toString();
+    }
+
+    public OrganizationProfileDto my_profile_info(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Organization organization = organizationRepository.findByUsername(username);
+
+        return get_profile_info(organization.getId());
+    }
+
+    public OrganizationProfileDto get_profile_info(Long id){
+        Organization organization = organizationRepository.findById(id).get();
+
+        OrganizationProfileDto dto = new OrganizationProfileDto();
+        dto.setName(organization.getOrganizationName());
+        dto.setDescription(organization.getDescription());
+        dto.setEmail(organization.getEmail());
+
+        List<TypeOfWork> areas = new ArrayList<>();
+        for (OrganizationAreas a : areasOrganizationRepository.findAllByOrganizationId(id)){
+            areas.add(a.getArea());
+        }
+        dto.setAreas_of_work(areas);
+
+        return dto;
+    }
+
+    public String edit_profile(OrganizationProfileDto dto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Organization org = organizationRepository.findByUsername(username);
+
+        org.setOrganizationName(dto.getName());
+        org.setEmail(dto.getEmail());
+        org.setDescription(dto.getDescription());
+        organizationRepository.save(org);
+
+        // areas prije edita
+        List<TypeOfWork> areas = areasOrganizationRepository.findAllByOrganizationId(org.getId())
+                .stream()
+                .map(OrganizationAreas::getArea) // Mapiraj na Area
+                .collect(Collectors.toList());
+        System.out.println("areas prije promjene: " + areas);
+
+        for (TypeOfWork area : dto.getAreas_of_work()){
+            if (!areas.contains(area)){
+                OrganizationAreas o = new OrganizationAreas();
+                o.setArea(area);
+                o.setOrganizationId(org.getId());
+                areasOrganizationRepository.save(o);
+            }
+        }
+
+        return org.toString();
     }
 
 }

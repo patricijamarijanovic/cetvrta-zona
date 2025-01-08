@@ -1,8 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.AppliedVolunteersDto;
-import com.example.backend.dto.ProjectDto;
-import com.example.backend.dto.ProjectResponseDto;
+import com.example.backend.dto.*;
 import com.example.backend.model.Project;
 import com.example.backend.model.Registration;
 import com.example.backend.repository.MyUserRepository;
@@ -33,6 +31,7 @@ public class OrganizationController {
     @Autowired
     private ProjectService projectService;
 
+    // projekti te organizacije
     @GetMapping("/organization/home")
     public List<ProjectResponseDto> organization_home() {
         return projectService.getProjectsForOrganization();
@@ -65,6 +64,18 @@ public class OrganizationController {
     @PutMapping("/organization/applications/{projectId}/reject/{volunteerId}")
     public String reject(@PathVariable Long projectId, @PathVariable Long volunteerId) {
         return organizationService.reject(projectId, volunteerId);
+    }
+
+    // my profile info
+    @GetMapping("/organization/my-profile")
+    public OrganizationProfileDto my_profile() {
+        return organizationService.my_profile_info();
+    }
+
+    // uredivanje profila
+    @PostMapping("/organization/edit-profile")
+    public String edit (@RequestBody OrganizationProfileDto dto){
+        return organizationService.edit_profile(dto);
     }
 
 //    @GetMapping("/organization/project/{projectID}/registrations")

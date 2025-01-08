@@ -1,20 +1,17 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.LoginDto;
-import com.example.backend.dto.OrganizationResponseDto;
+import com.example.backend.dto.OrganizationProfileDto;
 import com.example.backend.dto.ProjectResponseDto;
-import com.example.backend.model.Project;
 import com.example.backend.repository.MyUserRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
-import com.example.backend.service.EmailService;
 import com.example.backend.service.OrganizationService;
 import com.example.backend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -63,7 +60,7 @@ public class AuthenticationController {
 
     // sve organizacija
     @GetMapping("/home/organizations")
-    public List<OrganizationResponseDto> organizations() {
+    public List<OrganizationProfileDto> organizations() {
         return organizationService.getAllOrganizations();
     }
 

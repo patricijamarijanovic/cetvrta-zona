@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class VolunteerService {
@@ -199,22 +200,39 @@ public class VolunteerService {
         System.out.println("ažurirani volonter " + og.toString());
         volunteerRepository.save(og);
 
+        // skills prije edita
+        List<Skill> skills = skillsRepository.findAllByVolunteerId(og.getId())
+                .stream()
+                .map(VolunteerSkills::getSkill) // Mapiraj na Area
+                .collect(Collectors.toList());
+
         //skills
         System.out.println(dto.getSkills());
         for (Skill s : dto.getSkills()) {
-            VolunteerSkills vs = new VolunteerSkills();
-            vs.setSkill(s);
-            vs.setVolunteerId(og.getId());
-            skillsRepository.save(vs);
+            if (!skills.contains(s)) {
+                VolunteerSkills vs = new VolunteerSkills();
+                vs.setSkill(s);
+                vs.setVolunteerId(og.getId());
+                skillsRepository.save(vs);
+            }
         }
+
+
+        // areas prije edita
+        List<TypeOfWork> areas = interestsRepository.findAllByVolunteerId(og.getId())
+                .stream()
+                .map(VolunteerInterests::getInterest) // Mapiraj na Area
+                .collect(Collectors.toList());
 
         //interests
         System.out.println(dto.getInterests());
         for (TypeOfWork i : dto.getInterests()) {
-            VolunteerInterests vi = new VolunteerInterests();
-            vi.setInterest(i);
-            vi.setVolunteerId(og.getId());
-            interestsRepository.save(vi);
+            if (!areas.contains(i)) {
+                VolunteerInterests vi = new VolunteerInterests();
+                vi.setInterest(i);
+                vi.setVolunteerId(og.getId());
+                interestsRepository.save(vi);
+            }
         }
         return og.toString();
     }
