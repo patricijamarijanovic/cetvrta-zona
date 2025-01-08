@@ -127,7 +127,6 @@ public class OrganizationService {
             response.put("role", role);
             return ResponseEntity.ok(response);
         }
-
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
     }
 
@@ -250,6 +249,7 @@ public class OrganizationService {
         dto.setName(organization.getOrganizationName());
         dto.setDescription(organization.getDescription());
         dto.setEmail(organization.getEmail());
+        dto.setOrganizationId(organization.getId());
 
         List<TypeOfWork> areas = new ArrayList<>();
         for (OrganizationAreas a : areasOrganizationRepository.findAllByOrganizationId(id)){

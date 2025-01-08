@@ -72,6 +72,12 @@ public class OrganizationController {
         return organizationService.my_profile_info();
     }
 
+    // some profile info
+    @GetMapping("/organization/profile/{organizationId}")
+    public OrganizationProfileDto get_profile_info(@PathVariable Long organizationId) {
+        return organizationService.get_profile_info(organizationId);
+    }
+
     // uredivanje profila
     @PostMapping("/organization/edit-profile")
     public String edit (@RequestBody OrganizationProfileDto dto){

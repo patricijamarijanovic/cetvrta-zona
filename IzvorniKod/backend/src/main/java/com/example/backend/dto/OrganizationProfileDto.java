@@ -9,6 +9,7 @@ public class OrganizationProfileDto {
     private String description;
     private List<TypeOfWork> areas_of_work;
     private String email;
+    private Long organizationId;
     // + logo
 
 
@@ -44,6 +45,14 @@ public class OrganizationProfileDto {
         this.email = email;
     }
 
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
+    }
+
     @Override
     public String toString() {
         return "OrganizationProfileDto{" +
@@ -51,6 +60,7 @@ public class OrganizationProfileDto {
                 ", description='" + description + '\'' +
                 ", areas_of_work=" + areas_of_work +
                 ", email='" + email + '\'' +
+                ", organizationId=" + organizationId +
                 '}';
     }
 }
