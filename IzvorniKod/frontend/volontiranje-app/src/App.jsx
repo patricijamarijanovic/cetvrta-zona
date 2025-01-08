@@ -16,6 +16,8 @@ import ErrorPage from "./pages/ErrorPage";
 
 import ChooseRole from "./components/ChooseRole";
 
+import ActivitiesPage from "./pages/ActivitiesPage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -31,6 +33,9 @@ function App() {
         <Route path='/organization/create-project' element={<CreateProject />}/>
         <Route path='admin/home' element={<AdminHomePage />}/>
         <Route path='choose-role' element={<ChooseRole />}/>
+        <Route path='/ActivitiesPage' element={<ActivitiesPage />}/>
+        <Route path='/volunteer/ActivitiesPage' element={<ActivitiesPage />}/>
+        <Route path='/organization/ActivitiesPage' element={<ActivitiesPage />}/>
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>
