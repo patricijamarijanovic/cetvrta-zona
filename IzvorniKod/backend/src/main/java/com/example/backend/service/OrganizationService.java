@@ -1,13 +1,11 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.AppliedVolunteersDto;
 import com.example.backend.dto.OrganizationRegistrationDto;
 import com.example.backend.dto.ProjectDto;
 import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.model.*;
-import com.example.backend.repository.GoogleUserRepository;
-import com.example.backend.repository.MyUserRepository;
-import com.example.backend.repository.OrganizationRepository;
-import com.example.backend.repository.ProjectRepository;
+import com.example.backend.repository.*;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,11 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static com.example.backend.model.Status.OPEN;
 
@@ -55,6 +49,12 @@ public class OrganizationService {
     
     @Autowired
     private EmailService emailService = new EmailService(new JavaMailSenderImpl());
+
+    @Autowired
+    private ApplicationRepository applicationRepository;
+
+    @Autowired
+    private VolunteerRepository volunteerRepository;
 
     public ResponseEntity<String> registerOrganization(OrganizationRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
@@ -138,7 +138,7 @@ public class OrganizationService {
         project.setProjectDesc(dto.getDesc());
         project.setUrgent(dto.isUrgent());
         project.setMaxNumVolunteers(dto.getMaxNumVolunteers());
-        project.setNeededNumVolunteers(dto.getNeededNumVolunteers());
+        project.setNumVolunteers(dto.getNumVolunteers());
         project.setStartDate(dto.getStart());
         project.setEndDate(dto.getEnd());
         project.setLocation(dto.getLocation());
@@ -162,6 +162,53 @@ public class OrganizationService {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Projekt uspješno dodan :)");
         return ResponseEntity.ok(response);
+    }
+
+    public List<AppliedVolunteersDto> applications(Long projectId){
+        List<Application> applications = applicationRepository.findAllByProjectId(projectId);
+
+        List<AppliedVolunteersDto> lista = new ArrayList<>();
+        for (Application application : applications) {
+
+            Long volunteerId = application.getVolunteerId();
+            Volunteer volunteer = volunteerRepository.findById(volunteerId).get();
+
+            AppliedVolunteersDto appliedVolunteersDto = new AppliedVolunteersDto();
+            appliedVolunteersDto.setFirstName(volunteer.getFirstName());
+            appliedVolunteersDto.setLastName(volunteer.getLastName());
+            appliedVolunteersDto.setVolunteerId(volunteer.getId());
+
+            lista.add(appliedVolunteersDto);
+        }
+        return lista;
+    }
+
+    public String accept(Long projectId, Long volunteerId){
+        List<Application> applications = applicationRepository.findAllByProjectId(projectId);
+        Application application = applications.stream().filter(app -> app.getVolunteerId().equals(volunteerId)).findFirst().get();
+        application.setStatus(ApplicationStatus.ACCEPTED);
+        applicationRepository.save(application);
+
+
+        Volunteer vol = volunteerRepository.findById(application.getVolunteerId()).get();
+        Project pr = projectRepository.findById(projectId).get();
+        Organization org = organizationRepository.findById(pr.getOrganizationID()).get();
+
+        String poruka = "Organizacija " + org.getOrganizationName() +
+                " želi da budeš volonter na njihovom projektu " +
+                pr.getProjectName();
+
+        emailService.sendEmail(vol.getEmail(), "primljen/a si na volontiranje! 🥳", poruka);
+
+        return application.toString();
+    }
+
+    public String reject(Long projectId, Long volunteerId){
+        List<Application> applications = applicationRepository.findAllByProjectId(projectId);
+        Application application = applications.stream().filter(app -> app.getVolunteerId().equals(volunteerId)).findFirst().get();
+        application.setStatus(ApplicationStatus.REJECTED);
+        applicationRepository.save(application);
+        return application.toString();
     }
 
 }

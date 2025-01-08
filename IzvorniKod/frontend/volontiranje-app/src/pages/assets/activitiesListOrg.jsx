@@ -28,6 +28,7 @@ function ActivitiesList() {
       },
     })
       .then((response) => {
+        console.log(response.data)
         setActivities(response.data);
         setLoading(false);
       })

@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.dto.ReviewDto;
 import com.example.backend.model.MyUser;
 import com.example.backend.model.Project;
@@ -9,6 +10,7 @@ import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.RegistrationRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
+import com.example.backend.service.ProjectService;
 import com.example.backend.service.VolunteerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,9 +39,12 @@ public class VolunteerController {
     @Autowired
     private VolunteerService volunteerService;
 
+    @Autowired
+    private ProjectService projectService;
+
     @GetMapping("/volunteer/home")
-    public List<Project> volunteer_home() {
-        return projectrepository.findAll();
+    public List<ProjectResponseDto> volunteer_home() {
+        return projectService.getAllProjects();
     }
 
     @GetMapping("/volunteer/myRegistrations")
@@ -46,6 +52,16 @@ public class VolunteerController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         MyUser volunteer = myUserRepository.findByUsername(authentication.getName()).get();
         return registrationRepository.findAllByVolunteerID(volunteer.getId());
+    }
+
+    @GetMapping("/volunteer/activities")
+    public List<ProjectResponseDto> all_activities() {
+        return projectService.getAllProjects();
+    }
+
+    @PostMapping("/volunteer/apply/{projectID}")
+    public String apply_for_project (@PathVariable Long projectID){
+        return volunteerService.application(projectID);
     }
 
 //    @PutMapping("/volunteer/apply/{projectID}")

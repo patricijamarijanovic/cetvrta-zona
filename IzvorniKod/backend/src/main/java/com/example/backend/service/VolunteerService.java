@@ -2,14 +2,8 @@ package com.example.backend.service;
 
 import com.example.backend.dto.ReviewDto;
 import com.example.backend.dto.VolunteerRegistrationDto;
-import com.example.backend.model.GoogleUser;
-import com.example.backend.model.Review;
-import com.example.backend.model.Role;
-import com.example.backend.model.Volunteer;
-import com.example.backend.repository.GoogleUserRepository;
-import com.example.backend.repository.MyUserRepository;
-import com.example.backend.repository.ReviewRepository;
-import com.example.backend.repository.VolunteerRepository;
+import com.example.backend.model.*;
+import com.example.backend.repository.*;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,6 +49,16 @@ public class VolunteerService {
     
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private ApplicationRepository applicationRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
+    private OrganizationRepository organizationRepository;
+
 
     public ResponseEntity<String> registerVolunteer(VolunteerRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
@@ -150,5 +156,32 @@ public class VolunteerService {
     	} catch(Exception e) {
     		return ResponseEntity.badRequest().body(e);
     	}
+    }
+
+    public String application(Long projectId){
+        // Get the currently authenticated user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Volunteer volunteer = volunteerRepository.findByUsername(username);
+
+        Application application = new Application();
+        application.setVolunteerId(volunteer.getId());
+        application.setProjectId(projectId);
+        application.setStatus(ApplicationStatus.PENDING);
+        System.out.println(application);
+
+        applicationRepository.save(application);
+
+        Project project = projectRepository.findById(projectId).get();
+        Organization organization = organizationRepository.findById(project.getOrganizationID()).get();
+
+        String email = organization.getEmail();
+        String poruka = "Korisnik " + volunteer.getFirstName() + " " + volunteer.getLastName()
+                + " želi se prijaviti na tvoj projekt: " + project.getProjectName();
+        emailService.sendEmail(email, "nova prijava na projekt! 💌", poruka);
+
+
+        return application.toString();
     }
 }

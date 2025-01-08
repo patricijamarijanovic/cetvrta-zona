@@ -33,7 +33,7 @@ public class ProjectService {
             dto.setBeginningdate(project.getStartDate());
             dto.setEnddate(project.getEndDate());
             dto.setProjectlocation(project.getLocation());
-            dto.setNumregisteredvolunteers(project.getNeededNumVolunteers());
+            dto.setNumregisteredvolunteers(project.getNumVolunteers());
             dto.setMaxnumvolunteers(project.getMaxNumVolunteers());
             dto.setStatus(String.valueOf(project.getStatus()));
             dto.setProjectID(project.getProjectId());
@@ -43,6 +43,7 @@ public class ProjectService {
             Organization organization = organizationRepository.findById(project.getOrganizationID())
                     .orElseThrow(() -> new RuntimeException("Organization not found"));
             dto.setOrganizationName(organization.getOrganizationName());
+            dto.setOrganizationID(organization.getId());
 
             responseList.add(dto);
         }
@@ -73,16 +74,16 @@ public class ProjectService {
             responseDto.setBeginningdate(project.getStartDate());
             responseDto.setEnddate(project.getEndDate());
             responseDto.setProjectlocation(project.getLocation());
-            responseDto.setNumregisteredvolunteers(project.getNeededNumVolunteers());
+            responseDto.setNumregisteredvolunteers(project.getNumVolunteers());
             responseDto.setMaxnumvolunteers(project.getMaxNumVolunteers());
             responseDto.setStatus(String.valueOf(project.getStatus()));
             responseDto.setProjectID(project.getProjectId());
             responseDto.setUrgent(project.getUrgent());
             responseDto.setOrganizationName(organization.getOrganizationName()); // Set the organization name
+            responseDto.setOrganizationID(organization.getId());
 
             responseList.add(responseDto);
         }
-
         return responseList;
     }
 }

@@ -15,6 +15,7 @@ function ActivitiesList() {
   useEffect(() => {
     axios.get(`${BACK_URL}/home`)
       .then((response) => {
+        console.log(response.data)
         setActivities(response.data);
         setLoading(false);
       })

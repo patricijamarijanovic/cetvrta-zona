@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import NavBarOrg from "../pages/assets/navBarOrg";
 import axios from "axios";
 
+
+// const BACK_URL = "backend-qns7.onrender.com";
+// const BACK_URL = "https://backend-qns7.onrender.com";
 const BACK_URL = "http://localhost:8080";
 
 function CreateProject() {
@@ -17,6 +20,7 @@ function CreateProject() {
   const [errors, setError] = useState({});
   const [emergencyDropdownOpen, setEmergencyDropdownOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+  const [message, setMessage] = useState('');
 
   const categories = [
     "DJECA",
@@ -103,6 +107,15 @@ function CreateProject() {
 
     setError(validationErrors);
 
+    if(selectedCategory === "OKOLIŠ") {
+      setCategory("OKOLIS");
+    }
+
+    if(selectedCategory === "ŽIVOTINJE") {
+      setCategory("ZIVOTINJE");
+    }
+    console.log(selectedCategory);
+
     if (Object.keys(validationErrors).length === 0) {
       const token = localStorage.getItem("token");
       try {
@@ -115,7 +128,7 @@ function CreateProject() {
             start: beginDate,
             end: endDate,
             location: location,
-            neededNumVolunteers: 0,
+            numVolunteers: 0,
             maxNumVolunteers: maxNumber,
             urgent: emergency,
           },
@@ -312,7 +325,14 @@ function CreateProject() {
                             key={category}
                             className="p-3 cursor-pointer hover:bg-gray-200"
                             onClick={() => {
-                              setSelectedCategory(category);
+                              if (category === "OKOLIŠ"){
+                                setSelectedCategory("OKOLIS");
+                              }else if (category === "ŽIVOTINJE"){
+                                setSelectedCategory("ZIVOTINJE");
+                              }else{
+                                setSelectedCategory(category);
+                              }
+                              
                               setCategoryDropdownOpen(false);
                             }}
                           >
