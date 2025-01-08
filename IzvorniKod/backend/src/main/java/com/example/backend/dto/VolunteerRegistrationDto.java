@@ -10,7 +10,6 @@ public class VolunteerRegistrationDto {
     private String email;
     private LocalDate dateOfBirth;
     private String contactNumber;
-    private String expertise;
 
     public String getContactNumber() {
 		return contactNumber;
@@ -18,14 +17,6 @@ public class VolunteerRegistrationDto {
 
 	public void setContactNumber(String contactNumber) {
 		this.contactNumber = contactNumber;
-	}
-
-	public String getExpertise() {
-		return expertise;
-	}
-
-	public void setExpertise(String expertise) {
-		this.expertise = expertise;
 	}
 
 	public String getUsername() {

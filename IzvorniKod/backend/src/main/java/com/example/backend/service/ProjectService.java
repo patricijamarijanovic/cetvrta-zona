@@ -44,6 +44,7 @@ public class ProjectService {
                     .orElseThrow(() -> new RuntimeException("Organization not found"));
             dto.setOrganizationName(organization.getOrganizationName());
             dto.setOrganizationID(organization.getId());
+            dto.setOrganizationEmail(organization.getEmail());
 
             responseList.add(dto);
         }

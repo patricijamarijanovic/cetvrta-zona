@@ -16,6 +16,7 @@ public class ProjectResponseDto {
     private boolean urgent;
     private String organizationName;
     private long organizationID;
+    private String organizationEmail;
 
     public String getTypeofwork() {
 		return typeofwork;
@@ -122,6 +123,14 @@ public class ProjectResponseDto {
         this.organizationID = organizationID;
     }
 
+    public String getOrganizationEmail() {
+        return organizationEmail;
+    }
+
+    public void setOrganizationEmail(String organizationEmail) {
+        this.organizationEmail = organizationEmail;
+    }
+
     @Override
     public String toString() {
         return "ProjectResponseDto{" +
@@ -138,6 +147,7 @@ public class ProjectResponseDto {
                 ", urgent=" + urgent +
                 ", organizationName='" + organizationName + '\'' +
                 ", organizationID=" + organizationID +
+                ", organizationEmail='" + organizationEmail + '\'' +
                 '}';
     }
 }

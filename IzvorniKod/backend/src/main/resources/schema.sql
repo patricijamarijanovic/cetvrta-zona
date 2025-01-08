@@ -50,7 +50,7 @@ CREATE TABLE volunteers
   last_name VARCHAR(255) NOT NULL,
   date_of_birth DATE NOT NULL,
   contact_number VARCHAR(10),
-  expertise VARCHAR(50),
+  location VARCHAR(30),
   id BIGINT NOT NULL PRIMARY KEY,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -58,6 +58,7 @@ CREATE TABLE volunteers
 CREATE TABLE organizations
 (
   organization_name VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
   id BIGINT NOT NULL PRIMARY KEY,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   UNIQUE (organization_name)
@@ -79,10 +80,10 @@ CREATE TABLE projects (
 );
 
 CREATE TABLE applications (
-                              applicationId BIGINT AUTO_INCREMENT PRIMARY KEY,
-                              volunteerId BIGINT NOT NULL,
-                              projectId BIGINT NOT NULL,
-                              status VARCHAR(255)
+    applicationId BIGINT AUTO_INCREMENT PRIMARY KEY,
+    volunteerId BIGINT NOT NULL,
+    projectId BIGINT NOT NULL,
+    status VARCHAR(255)
 );
 
 CREATE TABLE review
@@ -106,6 +107,22 @@ CREATE TABLE registration
   volunteerID BIGINT NOT NULL,
   FOREIGN KEY (projectID) REFERENCES projects(projectID),
   FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
+);
+
+CREATE TABLE volunteer_skills
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    volunteerID BIGINT NOT NULL,
+    skill VARCHAR(100),
+    FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
+);
+
+CREATE TABLE volunteer_interests
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    volunteerID BIGINT NOT NULL,
+    interest VARCHAR(100),
+    FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
 
 INSERT INTO users (username, password, role, email, verified)

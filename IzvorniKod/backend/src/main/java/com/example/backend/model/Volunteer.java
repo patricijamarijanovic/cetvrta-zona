@@ -6,6 +6,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "volunteers")
@@ -15,25 +16,25 @@ public class Volunteer extends MyUser {
     private String lastName;
     private LocalDate dateOfBirth;
     private String contactNumber;
-    private String expertise;
+    private String location;
 
     public String getContactNumber() {
-		return contactNumber;
-	}
+        return contactNumber;
+    }
 
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
-	}
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
 
-	public String getExpertise() {
-		return expertise;
-	}
+    public String getLocation() {
+        return location;
+    }
 
-	public void setExpertise(String expertise) {
-		this.expertise = expertise;
-	}
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-	public String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -58,14 +59,14 @@ public class Volunteer extends MyUser {
         this.dateOfBirth = dateOfBirth;
     }
 
-
     @Override
     public String toString() {
         return "Volunteer{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-
                 ", dateOfBirth=" + dateOfBirth +
+                ", contactNumber='" + contactNumber + '\'' +
+                ", location='" + location + '\'' +
                 '}';
     }
 }

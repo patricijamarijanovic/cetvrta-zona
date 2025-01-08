@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.ReviewDto;
+import com.example.backend.dto.VolunteerProfileDto;
 import com.example.backend.dto.VolunteerRegistrationDto;
 import com.example.backend.model.*;
 import com.example.backend.repository.*;
@@ -19,10 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class VolunteerService {
@@ -59,6 +57,12 @@ public class VolunteerService {
     @Autowired
     private OrganizationRepository organizationRepository;
 
+    @Autowired
+    private SkillsRepository skillsRepository;
+
+    @Autowired
+    private InterestsRepository interestsRepository;
+
 
     public ResponseEntity<String> registerVolunteer(VolunteerRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
@@ -78,7 +82,6 @@ public class VolunteerService {
         volunteer.setDateOfBirth(dto.getDateOfBirth());
         volunteer.setRole(Role.VOLUNTEER);
         volunteer.setContactNumber(dto.getContactNumber());
-        volunteer.setExpertise(dto.getExpertise());
         volunteer.setVerified(false);
         String verificationToken = UUID.randomUUID().toString();
         //System.out.println(verificationToken);
@@ -105,11 +108,9 @@ public class VolunteerService {
             volunteer.setRole(Role.VOLUNTEER);
             volunteer.setVerified(true);
             volunteer.setContactNumber(null);
-            volunteer.setExpertise(null);
 
             String verificationToken = UUID.randomUUID().toString();
             volunteer.setVerificationToken(verificationToken);
-
 
             System.out.println("kreiran volonter");
             System.out.println(volunteer);
@@ -181,7 +182,76 @@ public class VolunteerService {
                 + " želi se prijaviti na tvoj projekt: " + project.getProjectName();
         emailService.sendEmail(email, "nova prijava na projekt! 💌", poruka);
 
-
         return application.toString();
+    }
+
+    public String edit_profile(VolunteerProfileDto dto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer og = volunteerRepository.findByUsername(username);
+
+        og.setContactNumber(dto.getPhone());
+        og.setLocation(dto.getLocation());
+        og.setFirstName(dto.getFirstName());
+        og.setLastName(dto.getLastName());
+        og.setDateOfBirth(dto.getDateOfBirth());
+
+        System.out.println("ažurirani volonter " + og.toString());
+        volunteerRepository.save(og);
+
+        //skills
+        System.out.println(dto.getSkills());
+        for (Skill s : dto.getSkills()) {
+            VolunteerSkills vs = new VolunteerSkills();
+            vs.setSkill(s);
+            vs.setVolunteerId(og.getId());
+            skillsRepository.save(vs);
+        }
+
+        //interests
+        System.out.println(dto.getInterests());
+        for (TypeOfWork i : dto.getInterests()) {
+            VolunteerInterests vi = new VolunteerInterests();
+            vi.setInterest(i);
+            vi.setVolunteerId(og.getId());
+            interestsRepository.save(vi);
+        }
+        return og.toString();
+    }
+
+    public VolunteerProfileDto my_profile_info(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer og = volunteerRepository.findByUsername(username);
+
+        return get_profile_info(og.getId());
+    }
+
+    public VolunteerProfileDto get_profile_info(Long volunteerId){
+        Volunteer v = volunteerRepository.findById(volunteerId).get();
+
+        VolunteerProfileDto dto = new VolunteerProfileDto();
+        dto.setFirstName(v.getFirstName());
+        dto.setLastName(v.getLastName());
+        dto.setDateOfBirth(v.getDateOfBirth());
+        dto.setLocation(v.getLocation());
+        dto.setPhone(v.getContactNumber());
+        dto.setEmail(v.getEmail());
+
+        List<TypeOfWork> interests = new ArrayList<>();
+        List<Skill> skills = new ArrayList<>();
+
+        for (VolunteerSkills vs : skillsRepository.findAllByVolunteerId(volunteerId)) {
+            skills.add(vs.getSkill());
+        }
+
+        for (VolunteerInterests vi : interestsRepository.findAllByVolunteerId(volunteerId)) {
+            interests.add(vi.getInterest());
+        }
+
+        dto.setInterests(interests);
+        dto.setSkills(skills);
+
+        return dto;
     }
 }

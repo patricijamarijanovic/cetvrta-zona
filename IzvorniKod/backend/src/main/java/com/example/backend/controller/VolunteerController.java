@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.dto.ReviewDto;
+import com.example.backend.dto.VolunteerProfileDto;
 import com.example.backend.model.MyUser;
 import com.example.backend.model.Project;
 import com.example.backend.model.Registration;
@@ -61,10 +62,22 @@ public class VolunteerController {
         return projectService.getAllProjects();
     }
 
+    // my profile info
+    @GetMapping("/volunteer/my-profile")
+    public VolunteerProfileDto my_profile() {
+        return volunteerService.my_profile_info();
+    }
+
     // prijava na projekt
     @PostMapping("/volunteer/apply/{projectID}")
     public String apply_for_project (@PathVariable Long projectID){
         return volunteerService.application(projectID);
+    }
+
+    // uredivanje profila
+    @PostMapping("/volunteer/edit-profile")
+    public String edit (@RequestBody VolunteerProfileDto dto){
+        return volunteerService.edit_profile(dto);
     }
 
 
