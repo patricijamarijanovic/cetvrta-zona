@@ -58,6 +58,12 @@ public class AuthenticationController {
         return projectService.getAllProjects();
     }
 
+    // specifican projekt
+    @GetMapping("/home/activity/{projectId}")
+    public ProjectResponseDto specific(@PathVariable Long projectId) {
+        return projectService.getSpecificProject(projectId);
+    }
+
     // sve organizacija
     @GetMapping("/home/organizations")
     public List<OrganizationProfileDto> organizations() {

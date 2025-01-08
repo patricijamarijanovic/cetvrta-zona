@@ -87,4 +87,29 @@ public class ProjectService {
         }
         return responseList;
     }
+
+    public ProjectResponseDto getSpecificProject(Long projectId){
+        ProjectResponseDto dto = new ProjectResponseDto();
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
+
+        dto.setProjectname(project.getProjectName());
+        dto.setBeginningdate(project.getStartDate());
+        dto.setEnddate(project.getEndDate());
+        dto.setProjectlocation(project.getLocation());
+        dto.setProjectdesc(project.getProjectDesc());
+        dto.setMaxnumvolunteers(project.getMaxNumVolunteers());
+        dto.setUrgent(project.getUrgent());
+        dto.setOrganizationID(project.getOrganizationID());
+
+        Organization organization = organizationRepository.findById(project.getOrganizationID()).get();
+        System.out.println(organization.toString());
+        System.out.println(organization.getOrganizationName());
+
+        dto.setOrganizationName(organization.getOrganizationName());
+        dto.setOrganizationEmail(organization.getEmail());
+        dto.setTypeofwork(String.valueOf(project.getTypeOfWork()));
+        dto.setStatus(String.valueOf(project.getStatus()));
+
+        return dto;
+    }
 }
