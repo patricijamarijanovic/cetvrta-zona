@@ -113,9 +113,6 @@ function NavBarLoggedIn() {
           <a onClick={handleNavigateToProfile} className="block hover:text-yellow-400 cursor-pointer">
             profil
           </a>
-          <a onClick={handleNavigateToSaved} className="block hover:text-yellow-400 cursor-pointer">
-            spremljeno
-          </a>
           <a onClick={handleLogout} className="block hover:text-red-400 cursor-pointer">
             odjava
           </a>
