@@ -26,8 +26,8 @@ import ActivitiesPageVol from "./pages/ActivitiesPageVol";
 import OrgnizationsPage from "./pages/OrganizationsPage";
 import OrgnizationsPageVol from "./pages/OrganizationsPageVol";
 
-
-
+import VolunteerProfileEdit from "./pages/VolunteerProfileEdit";
+import OrganizationProfileEdit from "./pages/OrganizationProfileEdit";
 
 function App() {
   return (
@@ -58,7 +58,12 @@ function App() {
         <Route path='/volunteer/organizations-page' element={<OrgnizationsPageVol />}/>
 
 
-
+        <Route path='/ActivitiesPage' element={<ActivitiesPage />}/>
+        <Route path='/volunteer/ActivitiesPage' element={<ActivitiesPage />}/>
+        <Route path='/organization/ActivitiesPage' element={<ActivitiesPage />}/>
+          
+        <Route path="/volunteer/profileEdit" element={<VolunteerProfileEdit />} />
+        <Route path="/organization/profileEdit" element={<OrganizationProfileEdit />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>

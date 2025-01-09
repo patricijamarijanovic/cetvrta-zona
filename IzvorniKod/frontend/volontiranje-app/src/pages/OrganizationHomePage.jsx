@@ -26,7 +26,7 @@ function OrganizationHomePage() {
     
         if (!token) {
           // Ako nema tokena, preusmjeri korisnika na login stranicu
-          navigate('/not-authorized', { replace: true });
+          navigate('/login', { replace: true });
           return;
         }
     
