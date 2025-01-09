@@ -70,6 +70,12 @@ public class AuthenticationController {
         return organizationService.getAllOrganizations();
     }
 
+    // some profile info
+    @GetMapping("/home/profile/{organizationId}")
+    public OrganizationProfileDto get_profile_info(@PathVariable Long organizationId) {
+        return organizationService.get_profile_info(organizationId);
+    }
+
     // login
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody LoginDto loginDto) {
