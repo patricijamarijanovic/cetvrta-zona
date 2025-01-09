@@ -8,7 +8,9 @@ function NavBarLoggedIn() {
 
   const handleNavigateToProfile = () => navigate("/organization/profileEdit");
   const handleNavigateToSaved = () => navigate("/saved");
-  const handleNavigateToActivities = () => navigate("/activities");
+  const handleNavigateToActivities = () => navigate("/organization/activities");
+  const handleNavigateToApplications = () => navigate("/organization/ApplicationsPage");
+  const handleNavigateToAbout = () => navigate("/about");
   const handleLogout = () => {
     localStorage.clear(); // Clear any stored user data
     navigate("/"); // Redirect to the home page
@@ -36,10 +38,13 @@ function NavBarLoggedIn() {
       </a>
 
       <nav className="hidden md:flex space-x-4">
-        <a href="/organization/ApplicationsPage" className="hover:text-white/80 py-2">
+        <a onClick={handleNavigateToApplications} className="hover:text-white/80 py-2 cursor-pointer">
           prijave
         </a>
-        <a href="#" className="hover:text-white/80 py-2">
+        <a onClick={handleNavigateToActivities} className="hover:text-white/80 py-2 cursor-pointer">
+          moje aktivnosti
+        </a>
+        <a onClick={handleNavigateToAbout} className="hover:text-white/80 py-2 cursor-pointer">
           o platformi
         </a>
 
@@ -95,18 +100,18 @@ function NavBarLoggedIn() {
         </button>
 
         <nav className="mt-16 space-y-4 p-4">
-          <a href="/organization/ApplicationsPage" className="block hover:text-white/80">
+          <a onClick={handleNavigateToApplications} className="block hover:text-white/80 cursor-pointer">
             prijave
           </a>
-          <a href="#" className="block hover:text-white/80">
+          <a onClick={handleNavigateToActivities} className="block hover:text-white/80 cursor-pointer">
+            moje aktivnosti
+          </a>
+          <a onClick={handleNavigateToAbout} className="block hover:text-white/80 cursor-pointer">
             o platformi
           </a>
           <hr className="border-gray-600" />
           <a onClick={handleNavigateToProfile} className="block hover:text-yellow-400 cursor-pointer">
             profil
-          </a>
-          <a onClick={handleNavigateToActivities} className="block hover:text-yellow-400 cursor-pointer">
-            moje aktivnosti
           </a>
           <a onClick={handleNavigateToSaved} className="block hover:text-yellow-400 cursor-pointer">
             spremljeno
