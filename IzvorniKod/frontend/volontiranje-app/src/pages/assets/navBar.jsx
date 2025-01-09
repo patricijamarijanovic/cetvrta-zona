@@ -31,10 +31,10 @@ function NavBar() {
       </a>
 
       <nav className="hidden md:flex space-x-4">
-        <a href="/ActivitiesPage" className="hover:text-white/80 py-2">
+        <a href="/activities-page" className="hover:text-white/80 py-2">
           aktivnosti
         </a>
-        <a href="#" className="hover:text-white/80 py-2">
+        <a href="/organizations-page" className="hover:text-white/80 py-2">
           organizacije
         </a>
         <a href="#" className="hover:text-white/80 py-2">

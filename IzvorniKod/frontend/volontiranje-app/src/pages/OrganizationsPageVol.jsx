@@ -1,18 +1,14 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-//import Card from "./card";
-//import axios from "axios";
 
-import NavBar from "./assets/navBar"
-import NavBarLoggedInVol from "./assets/navBarVol";
-import NavBarLoggedInOrg from "./assets/navBarOrg";
-import ActivitiesList from "./assets/activitiesList";
+import NavBarLoggedInVol from "./assets/navBarVol"
+import OrganizationsList from "./assets/organizationsList";
 
 const BACK_URL = "http://localhost:8080";
 
-function ActivitiesPage() {
+function OrgnizationsPageVol() {
 
-    console.log("na stranici sam s aktivnostima");
+    console.log("na stranici sam s organizacijama");
 
     const [error, setError] = useState("");
 
@@ -22,11 +18,11 @@ function ActivitiesPage() {
     return (
         <div className="relative min-h-screen">
             <div className="bg-slate-600 rounded-b-3xl text-white">
-            <NavBar />
+            <NavBarLoggedInVol />
             </div>
-            <ActivitiesList />
+            <OrganizationsList />
         </div>
         );
     }
 
-export default ActivitiesPage;
+export default OrgnizationsPageVol;

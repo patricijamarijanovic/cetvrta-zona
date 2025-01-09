@@ -17,6 +17,11 @@ import ErrorPage from "./pages/ErrorPage";
 import ChooseRole from "./components/ChooseRole";
 
 import ActivitiesPage from "./pages/ActivitiesPage";
+import ActivitiesPageVol from "./pages/ActivitiesPageVol";
+import OrgnizationsPage from "./pages/OrganizationsPage";
+import OrgnizationsPageVol from "./pages/OrganizationsPageVol";
+
+
 
 function App() {
   return (
@@ -33,9 +38,12 @@ function App() {
         <Route path='/organization/create-project' element={<CreateProject />}/>
         <Route path='admin/home' element={<AdminHomePage />}/>
         <Route path='choose-role' element={<ChooseRole />}/>
-        <Route path='/ActivitiesPage' element={<ActivitiesPage />}/>
-        <Route path='/volunteer/ActivitiesPage' element={<ActivitiesPage />}/>
-        <Route path='/organization/ActivitiesPage' element={<ActivitiesPage />}/>
+        <Route path='/activities-page' element={<ActivitiesPage />}/>
+        <Route path='/volunteer/activities-page' element={<ActivitiesPageVol />}/>
+
+        <Route path='/organizations-page' element={<OrgnizationsPage />}/>
+        <Route path='/volunteer/organizations-page' element={<OrgnizationsPageVol />}/>
+
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>
