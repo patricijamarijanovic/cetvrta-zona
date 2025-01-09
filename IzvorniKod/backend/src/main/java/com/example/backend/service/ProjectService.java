@@ -1,8 +1,11 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.ProjectResponseDto;
+import com.example.backend.dto.VolunteerProjectDto;
+import com.example.backend.model.Application;
 import com.example.backend.model.Organization;
 import com.example.backend.model.Project;
+import com.example.backend.repository.ApplicationRepository;
 import com.example.backend.repository.OrganizationRepository;
 import com.example.backend.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +24,8 @@ public class ProjectService {
 
     @Autowired
     private OrganizationRepository organizationRepository;
+    @Autowired
+    private ApplicationRepository applicationRepository;
 
     public List<ProjectResponseDto> getAllProjects() {
         List<Project> projects = projectRepository.findAll();
@@ -109,6 +115,38 @@ public class ProjectService {
         dto.setOrganizationEmail(organization.getEmail());
         dto.setTypeofwork(String.valueOf(project.getTypeOfWork()));
         dto.setStatus(String.valueOf(project.getStatus()));
+
+        return dto;
+    }
+
+    public VolunteerProjectDto get_project_info_as_volunteer(Long volunteerId, Long projectId){
+        VolunteerProjectDto dto = new VolunteerProjectDto();
+
+        ProjectResponseDto dto0 = getSpecificProject(projectId);
+
+        dto.setBeginningdate(dto0.getBeginningdate());
+        dto.setEnddate(dto0.getEnddate());
+        dto.setMaxnumvolunteers(dto0.getMaxnumvolunteers());
+        dto.setNumregisteredvolunteers(dto0.getNumregisteredvolunteers());
+        dto.setOrganizationEmail(dto0.getOrganizationEmail());
+        dto.setOrganizationID(dto0.getOrganizationID());
+        dto.setOrganizationName(dto0.getOrganizationName());
+        dto.setTypeofwork(dto0.getTypeofwork());
+        dto.setStatus(dto0.getStatus());
+        dto.setProjectlocation(dto0.getProjectlocation());
+        dto.setUrgent(dto0.isUrgent());
+        dto.setProjectname(dto0.getProjectname());
+        dto.setProjectdesc(dto0.getProjectdesc());
+        dto.setProjectID(dto0.getProjectID());
+
+        List<Application> applications = applicationRepository.findAllByProjectId(projectId);
+        List<Long> ids = applications.stream().map(Application::getVolunteerId).toList();
+
+        if (ids.contains(volunteerId)){
+            dto.setHasApplied(true);
+        }else{
+            dto.setHasApplied(false);
+        }
 
         return dto;
     }

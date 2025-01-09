@@ -197,23 +197,32 @@ public class OrganizationService {
     }
 
     public String accept(Long projectId, Long volunteerId){
-        List<Application> applications = applicationRepository.findAllByProjectId(projectId);
-        Application application = applications.stream().filter(app -> app.getVolunteerId().equals(volunteerId)).findFirst().get();
-        application.setStatus(ApplicationStatus.ACCEPTED);
-        applicationRepository.save(application);
-
-
-        Volunteer vol = volunteerRepository.findById(application.getVolunteerId()).get();
         Project pr = projectRepository.findById(projectId).get();
-        Organization org = organizationRepository.findById(pr.getOrganizationID()).get();
 
-        String poruka = "Organizacija " + org.getOrganizationName() +
-                " želi da budeš volonter na njihovom projektu " +
-                pr.getProjectName();
+        if (pr.getMaxNumVolunteers() >= pr.getNumVolunteers()){
+            List<Application> applications = applicationRepository.findAllByProjectId(projectId);
+            Application application = applications.stream().filter(app -> app.getVolunteerId().equals(volunteerId)).findFirst().get();
+            application.setStatus(ApplicationStatus.ACCEPTED); // azuriraj status na ACCEPTED
+            applicationRepository.save(application);
 
-        emailService.sendEmail(vol.getEmail(), "primljen/a si na volontiranje! 🥳", poruka);
+            Volunteer vol = volunteerRepository.findById(application.getVolunteerId()).get();
+            Organization org = organizationRepository.findById(pr.getOrganizationID()).get();
 
-        return application.toString();
+            // povecaj broj prijavljenih
+            pr.setNumVolunteers(pr.getNumVolunteers() + 1);
+
+            String poruka = "Organizacija " + org.getOrganizationName() +
+                    " želi da budeš volonter na njihovom projektu " +
+                    pr.getProjectName();
+
+            emailService.sendEmail(vol.getEmail(), "primljen/a si na volontiranje! 🥳", poruka);
+
+            return application.toString();
+        }else{
+            return "previse prijavljenih sorry";
+        }
+
+
     }
 
     public String reject(Long projectId, Long volunteerId){
