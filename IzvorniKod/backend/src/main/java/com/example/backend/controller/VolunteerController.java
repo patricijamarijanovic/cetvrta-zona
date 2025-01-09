@@ -3,12 +3,15 @@ package com.example.backend.controller;
 import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.dto.ReviewDto;
 import com.example.backend.dto.VolunteerProfileDto;
+import com.example.backend.dto.VolunteerProjectDto;
 import com.example.backend.model.MyUser;
 import com.example.backend.model.Project;
 import com.example.backend.model.Registration;
+import com.example.backend.model.Volunteer;
 import com.example.backend.repository.MyUserRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.RegistrationRepository;
+import com.example.backend.repository.VolunteerRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
 import com.example.backend.service.ProjectService;
@@ -42,6 +45,9 @@ public class VolunteerController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private VolunteerRepository volunteerRepository;
 
     // volonterski homepage
     @GetMapping("/volunteer/home")
@@ -78,6 +84,16 @@ public class VolunteerController {
     @PostMapping("/volunteer/edit-profile")
     public String edit (@RequestBody VolunteerProfileDto dto){
         return volunteerService.edit_profile(dto);
+    }
+
+    // dohvati specificni projekt
+    @GetMapping("/volunteer/activity/{projectId}")
+    public VolunteerProjectDto get_project_info (@PathVariable Long projectId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer vol = volunteerRepository.findByUsername(username);
+
+        return projectService.get_project_info_as_volunteer(vol.getId(), projectId);
     }
 
 
