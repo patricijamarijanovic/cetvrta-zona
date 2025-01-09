@@ -11,7 +11,7 @@ function NavBarLoggedIn() {
   const handleNavigateToSaved = () => navigate("/saved");
   const handleNavigateToActivities = () => navigate("/activities");
   const handleLogout = () => {
-    // Jos treba dodati logiku za odjavu
+    localStorage.clear();
     navigate("/");
   };
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Card from "./card";
 import axios from "axios";
+import { Link } from "react-router-dom"; 
 
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
@@ -28,7 +29,7 @@ function ActivitiesList() {
       },
     })
       .then((response) => {
-        console.log(response.data)
+console.log(response.data)
         setActivities(response.data);
         setLoading(false);
       })
@@ -46,6 +47,7 @@ function ActivitiesList() {
     <section className="p-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {activities.map((activity, index) => (
+           <Link to={`/organization/activity/${activity.projectID}`}>
           <Card
             key={index}
             title={activity.projectname}
@@ -54,6 +56,7 @@ function ActivitiesList() {
             organization={activity.organizationName}
             image={"/images/nekaovog.jpg"}
           />
+          </Link>
         ))}
       </div>
     </section>

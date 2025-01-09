@@ -17,6 +17,9 @@ import ErrorPage from "./pages/ErrorPage";
 import ChooseRole from "./components/ChooseRole";
 
 import ActivitiesPage from "./pages/ActivitiesPage";
+import ActivityInfo from "./pages/ActivityInfo";
+import ActivityInfoVolunteer from "./pages/ActivityInfoVolunteer";
+import ActivityInfoOrganization from "./pages/ActivityInfoOrganization";
 
 function App() {
   return (
@@ -36,6 +39,9 @@ function App() {
         <Route path='/ActivitiesPage' element={<ActivitiesPage />}/>
         <Route path='/volunteer/ActivitiesPage' element={<ActivitiesPage />}/>
         <Route path='/organization/ActivitiesPage' element={<ActivitiesPage />}/>
+        <Route path='/activity/:id' element={<ActivityInfo/>}/>
+        <Route path='/volunteer/activity/:id' element={<ActivityInfoVolunteer/>}/>
+        <Route path='/organization/activity/:id' element={<ActivityInfoOrganization/>}/>
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>

@@ -3,15 +3,20 @@ import { useNavigate } from "react-router-dom";
 
 function NavBarLoggedIn() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   // Tu treba stavit da ide na uredivanje vlastitog profila
-  const handleNavigateToHome = () => {
-    navigate("#");
+  const handleNavigateToProfile = () => navigate("/profile");
+  const handleNavigateToSaved = () => navigate("/saved");
+  const handleNavigateToActivities = () => navigate("/activities");
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
   };
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleProfileMenu = () => setIsProfileMenuOpen(!isProfileMenuOpen);
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,12 +32,12 @@ function NavBarLoggedIn() {
 
   return (
     <header className="flex items-center justify-between p-12">
-      <a href="/organization/home" className="text-4xl font-bold hover:text-yellow-300">
+      <a href="/volunteer/home" className="text-4xl font-bold hover:text-yellow-300">
         VSN<span className="text-yellow-400">!</span>
       </a>
 
       <nav className="hidden md:flex space-x-4">
-        <a href="/organization/ActivitiesPage" className="hover:text-white/80 py-2">
+        <a href="/volunteer/ActivitiesPage" className="hover:text-white/80 py-2">
           aktivnosti
         </a>
         <a href="#" className="hover:text-white/80 py-2">
@@ -42,17 +47,49 @@ function NavBarLoggedIn() {
           o platformi
         </a>
 
-        <button
-          onClick={() => navigate('#')}
-          className="bg-yellow-400 w-10 h-10 flex items-center justify-center rounded-full hover:bg-yellow-500"
-          aria-label="User Profile"
-        >
-          <img
-            src="/images/user.png" 
-            alt="User Profile"
-            className="w-6 h-6"
-          />
-        </button>
+        <div className="relative">
+          <button
+            onClick={toggleProfileMenu}
+            className="bg-yellow-400 w-10 h-10 flex items-center justify-center rounded-full hover:bg-yellow-500 focus:outline-none"
+            aria-label="User Profile"
+          >
+            <img
+              src="/images/user.png"
+              alt="User Profile"
+              className="w-6 h-6"
+            />
+          </button>
+
+          {isProfileMenuOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg z-50">
+              <a
+                onClick={handleNavigateToProfile}
+                className="block px-4 py-2 hover:bg-gray-100 hover:rounded-t-lg cursor-pointer"
+              >
+                profil
+              </a>
+              <a
+                onClick={handleNavigateToActivities}
+                className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              >
+                moje aktivnosti
+              </a>
+              <a
+                onClick={handleNavigateToSaved}
+                className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              >
+                spremljeno
+              </a>
+              <hr className="my-1 border-gray-300" />
+              <a
+                onClick={handleLogout}
+                className="block px-4 py-2 text-red-600 hover:bg-gray-100 hover:rounded-b-lg cursor-pointer"
+              >
+                odjava
+              </a>
+            </div>
+          )}
+        </div>
       </nav>
 
       <img
@@ -83,8 +120,18 @@ function NavBarLoggedIn() {
           <a href="#" className="block hover:text-white/80">
             o platformi
           </a>
-          <a href="/profile" className="block hover:text-yellow-400">
-            Profil
+          <hr className="border-gray-600" />
+          <a onClick={handleNavigateToProfile} className="block hover:text-yellow-400 cursor-pointer">
+            profil
+          </a>
+          <a onClick={handleNavigateToActivities} className="block hover:text-yellow-400 cursor-pointer">
+            moje aktivnosti
+          </a>
+          <a onClick={handleNavigateToSaved} className="block hover:text-yellow-400 cursor-pointer">
+            spremljeno
+          </a>
+          <a onClick={handleLogout} className="block hover:text-red-400 cursor-pointer">
+            odjava
           </a>
         </nav>
       </div>
