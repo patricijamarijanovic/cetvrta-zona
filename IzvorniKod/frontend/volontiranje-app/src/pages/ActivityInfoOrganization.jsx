@@ -1,7 +1,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import NavBar from "./assets/navBar";
+import NavBarLoggedIn from "./assets/navBarOrg";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Card from "./assets/card";
@@ -78,17 +78,7 @@ function ActivityInfoOrganization() {
         })
           .then((response) => {
             console.log(response.data)
-            
-            const status = response.data.status; // Npr. "ACCEPTED"
-
-            // Ažurirajte status volontera u `volunteers` nizu
-            setVolunteers((prevVolunteers) => 
-                prevVolunteers.map((volunteer) =>
-                    volunteer.volunteerId === volunteerId
-                        ? { ...volunteer, status: status } // Ažurirajte status volontera
-                        : volunteer // Držite ostale volontere nepromijenjenima
-                )
-            );
+            window.location.reload();
 
             
            
@@ -97,19 +87,36 @@ function ActivityInfoOrganization() {
             console.error("Error fetching activities:", err);
             //setError("Error fetching activities.");
            
-            setLoadingVolunteers(false);
+            
           });
       
     }
 
-    const handleReject = async (e) => {
-      
+    const handleReject = async (volunteerId) => {
+      axios.put(`${BACK_URL}/organization/applications/${id}/reject/${volunteerId}`, {},{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          console.log(response.data)
+          window.location.reload();
+
+          
+         
+        })
+        .catch((err) => {
+          console.error("Error fetching activities:", err);
+          //setError("Error fetching activities.");
+         
+          
+        });
     }
 
     return (
         <>
         <div className="bg-slate-600 rounded-b-3xl text-white">
-        <NavBar></NavBar>
+        <NavBarLoggedIn></NavBarLoggedIn>
         </div>
         
         
@@ -140,9 +147,15 @@ function ActivityInfoOrganization() {
           <p>{volunteer.firstName}</p>
           <p>{volunteer.lastName}</p>
         </div>
-        <div style={{ marginLeft: "20px", display: "flex", gap: "10px" }}> {/* Gumbi malo dalje */}
-          <button onClick={() => handleAccept(volunteer.volunteerId)}>Accept</button>
-          <button onClick={() => handleReject}>Reject</button>
+        <div style={{ marginLeft: "20px", display: "flex", gap: "10px" }}>
+          {volunteer.status === "ACCEPTED" ? (
+            <p>Prihvaćen</p>
+          ) : (
+            <>
+              <button onClick={() => handleAccept(volunteer.volunteerId)}>Accept</button>
+              <button onClick={() => handleReject(volunteer.volunteerId)}>Reject</button>
+            </>
+          )}
         </div>
       </div>
     ))

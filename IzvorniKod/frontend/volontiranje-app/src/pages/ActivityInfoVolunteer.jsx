@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import NavBar from "./assets/navBar";
+import NavBarLoggedIn from "./assets/navBarOrg";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -69,7 +69,7 @@ function ActivityInfoVolunteer() {
     return (
         <>
         <div className="bg-slate-600 rounded-b-3xl text-white">
-        <NavBar></NavBar>
+        <NavBarLoggedIn></NavBarLoggedIn>
         </div>
         
         
@@ -87,7 +87,7 @@ function ActivityInfoVolunteer() {
          <button onClick={handleSubmit}>Prijavi se!</button>
          )}
          {activity.hasApplied &&(
-          <p>Prijava na projekt uspješna! Kada vas organizacija privati, bit ćete obaviješteni mailom.</p>
+          <p>Prijava na projekt uspješna! Kada vas organizacija prihvati, bit ćete obaviješteni mailom.</p>
          )}
          
         </>
