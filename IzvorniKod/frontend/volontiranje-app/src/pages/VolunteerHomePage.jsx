@@ -27,7 +27,7 @@ function VolunteerHomePage() {
     console.log("Tu je token!" + token);
     if (!token) {
       console.log("nema tokena!");
-      navigate("/not-authorized", { replace: true });
+      navigate("/login", { replace: true });
 
       return;
     }
@@ -45,9 +45,9 @@ function VolunteerHomePage() {
       })
       .catch((error) => {
         console.log("error: ", error);
-        console.error("Greška prilikom provjere tokena:", error.message); // Dodano ispisivanje glavne poruke
+        console.error("Greška prilikom provjere tokena:", error.message);
         if (error.response) {
-          console.error("Odgovor poslužitelja:", error.response.data); // Dodano ispisivanje server response data
+          console.error("Odgovor poslužitelja:", error.response.data); 
         }
         navigate("/not-authorized", { replace: true });
       });

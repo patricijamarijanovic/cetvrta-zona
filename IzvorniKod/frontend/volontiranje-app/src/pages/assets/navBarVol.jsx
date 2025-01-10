@@ -6,8 +6,7 @@ function NavBarLoggedIn() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  // Tu treba stavit da ide na uredivanje vlastitog profila
-  const handleNavigateToProfile = () => navigate("/profile");
+  const handleNavigateToProfile = () => navigate("/volunteer/profileEdit");
   const handleNavigateToSaved = () => navigate("/saved");
   const handleNavigateToActivities = () => navigate("/activities");
   const handleLogout = () => {
@@ -31,7 +30,7 @@ function NavBarLoggedIn() {
   }, []);
 
   return (
-    <header className="flex items-center justify-between p-12">
+    <header className="flex items-center justify-between p-12 text-white">
       <a href="/volunteer/home" className="text-4xl font-bold hover:text-yellow-300">
         VSN<span className="text-yellow-400">!</span>
       </a>
@@ -61,29 +60,29 @@ function NavBarLoggedIn() {
           </button>
 
           {isProfileMenuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg z-50">
+            <div className="absolute right-0 mt-2 w-48 bg-gray-800 text-white rounded-lg shadow-lg z-50">
               <a
                 onClick={handleNavigateToProfile}
-                className="block px-4 py-2 hover:bg-gray-100 hover:rounded-t-lg cursor-pointer"
+                className="block px-4 py-2 hover:bg-gray-700 hover:rounded-t-lg cursor-pointer"
               >
                 profil
               </a>
               <a
                 onClick={handleNavigateToActivities}
-                className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                className="block px-4 py-2 hover:bg-gray-700 cursor-pointer"
               >
                 moje aktivnosti
               </a>
               <a
                 onClick={handleNavigateToSaved}
-                className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                className="block px-4 py-2 hover:bg-gray-700 cursor-pointer"
               >
                 spremljeno
               </a>
-              <hr className="my-1 border-gray-300" />
+              <hr className="my-1 border-gray-500" />
               <a
                 onClick={handleLogout}
-                className="block px-4 py-2 text-red-600 hover:bg-gray-100 hover:rounded-b-lg cursor-pointer"
+                className="block px-4 py-2 text-red-400 hover:bg-gray-700 hover:rounded-b-lg cursor-pointer"
               >
                 odjava
               </a>
@@ -99,7 +98,7 @@ function NavBarLoggedIn() {
       />
 
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-gray-800 transform z-50
+        className={`fixed top-0 right-0 h-full w-64 bg-gray-800 text-white transform z-50
           ${isMenuOpen ? "translate-x-0" : "translate-x-full"} 
           transition-transform duration-300`}
       >
@@ -136,6 +135,7 @@ function NavBarLoggedIn() {
         </nav>
       </div>
     </header>
+
   );
 }
 

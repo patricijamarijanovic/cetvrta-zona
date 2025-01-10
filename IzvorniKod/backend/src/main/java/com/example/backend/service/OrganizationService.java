@@ -190,6 +190,7 @@ public class OrganizationService {
             appliedVolunteersDto.setFirstName(volunteer.getFirstName());
             appliedVolunteersDto.setLastName(volunteer.getLastName());
             appliedVolunteersDto.setVolunteerId(volunteer.getId());
+            appliedVolunteersDto.setStatus(application.getStatus());
 
             lista.add(appliedVolunteersDto);
         }
@@ -229,7 +230,7 @@ public class OrganizationService {
         List<Application> applications = applicationRepository.findAllByProjectId(projectId);
         Application application = applications.stream().filter(app -> app.getVolunteerId().equals(volunteerId)).findFirst().get();
         application.setStatus(ApplicationStatus.REJECTED);
-        applicationRepository.save(application);
+        applicationRepository.delete(application);
 
         Volunteer vol = volunteerRepository.findById(application.getVolunteerId()).get();
         Project pr = projectRepository.findById(projectId).get();

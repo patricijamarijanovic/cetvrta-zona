@@ -1,9 +1,12 @@
 package com.example.backend.dto;
 
+import com.example.backend.model.ApplicationStatus;
+
 public class AppliedVolunteersDto {
     String firstName;
     String lastName;
     Long volunteerId;
+    ApplicationStatus status;
 
     public String getFirstName() {
         return firstName;
@@ -29,12 +32,21 @@ public class AppliedVolunteersDto {
         this.volunteerId = volunteerId;
     }
 
+    public ApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApplicationStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "AppliedVolunteersDto{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", volunteerId=" + volunteerId +
+                ", status=" + status +
                 '}';
     }
 }
