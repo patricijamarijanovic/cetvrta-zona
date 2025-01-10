@@ -16,6 +16,7 @@ function ActivityInfoVolunteer() {
     const [loading, setLoading] = useState(true);
     const token = localStorage.getItem("token");
     console.log(token);
+    const [hasApplied, setApplication] = useState(false);
 
     useEffect(() => {
         axios.get(`${BACK_URL}/volunteer/activity/${id}`, {
@@ -26,6 +27,7 @@ function ActivityInfoVolunteer() {
         .then((response) => {
             console.log(response.data)
             setActivity(response.data);
+           
             setLoading(false);
           })
           .catch((err) => {
@@ -43,6 +45,24 @@ function ActivityInfoVolunteer() {
         activity.hitno = "DA";
       }
 
+      const handleSubmit = async (e) =>  {
+        try {
+          await axios.post(
+            `${BACK_URL}/volunteer/apply/${id}`, 
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          alert("Uspješna prijava projekta!");
+          window.location.reload();
+          //navigate("/organization/home");
+        } catch (err) {
+          console.error(err);
+        }
+      }
 
 
 
@@ -63,6 +83,12 @@ function ActivityInfoVolunteer() {
          <p>Potreban broj volontera: {activity.maxnumvolunteers}</p>
          <p>Hitno: {activity.hitno}</p>
          <p>Kategorija: {activity.typeofwork}</p>
+        {!activity.hasApplied &&(
+         <button onClick={handleSubmit}>Prijavi se!</button>
+         )}
+         {activity.hasApplied &&(
+          <p>Prijava na projekt uspješna! Kada vas organizacija privati, bit ćete obaviješteni mailom.</p>
+         )}
          
         </>
     );
