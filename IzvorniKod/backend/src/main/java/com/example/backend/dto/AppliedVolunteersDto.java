@@ -2,6 +2,7 @@ package com.example.backend.dto;
 
 import com.example.backend.model.ApplicationStatus;
 
+//aaaa
 public class AppliedVolunteersDto {
     String firstName;
     String lastName;
