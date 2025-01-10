@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import NavBar from "./assets/navBar";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import Card from "./assets/card";
 
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
@@ -12,24 +13,53 @@ const BACK_URL = "http://localhost:8080";
 function ActivityInfoOrganization() {
     const {id} = useParams();
     const [activity, setActivity] = useState(null);
-    const [loading, setLoading] = useState(true);
+
+    const token = localStorage.getItem("token");
+    const [volunteers, setVolunteers] = useState([]);
+    const [loadingActivity, setLoadingActivity] = useState(true);
+    const [loadingVolunteers, setLoadingVolunteers] = useState(true);
 
     useEffect(() => {
         axios.get(`${BACK_URL}/home/activity/${id}`)
           .then((response) => {
             console.log(response.data)
             setActivity(response.data);
-            setLoading(false);
+            setLoadingActivity(false);
+       
           })
           .catch((err) => {
             console.error("Error fetching activities:", err);
             //setError("Error fetching activities.");
-            setLoading(false);
+            setLoadingActivity(false);
+          });
+      }, []);
+
+
+      useEffect(() => {
+        axios.get(`${BACK_URL}/organization/applications/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            console.log(response.data)
+           
+            setVolunteers(response.data);
+            setLoadingVolunteers(false);
+           
+          })
+          .catch((err) => {
+            console.error("Error fetching activities:", err);
+            //setError("Error fetching activities.");
+           
+            setLoadingVolunteers(false);
           });
       }, []);
     
-      if(loading) return <p className="p-8 text-gray-500">Učitavam aktivnosti...</p>;
-      if (!activity) {
+      if (loadingActivity || loadingVolunteers) {
+        return <p className="p-8 text-gray-500">Učitavam podatke...</p>;
+    }
+      if (!activity) { 
         return <p className="p-8 text-gray-500">Nema podataka o aktivnosti.</p>;
     }
 
@@ -39,6 +69,42 @@ function ActivityInfoOrganization() {
       activity.hitno = "DA";
     }
 
+    const handleAccept = async (volunteerId) => {
+        console.log(volunteerId)
+        axios.put(`${BACK_URL}/organization/applications/${id}/accept/${volunteerId}`, {},{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            console.log(response.data)
+            
+            const status = response.data.status; // Npr. "ACCEPTED"
+
+            // Ažurirajte status volontera u `volunteers` nizu
+            setVolunteers((prevVolunteers) => 
+                prevVolunteers.map((volunteer) =>
+                    volunteer.volunteerId === volunteerId
+                        ? { ...volunteer, status: status } // Ažurirajte status volontera
+                        : volunteer // Držite ostale volontere nepromijenjenima
+                )
+            );
+
+            
+           
+          })
+          .catch((err) => {
+            console.error("Error fetching activities:", err);
+            //setError("Error fetching activities.");
+           
+            setLoadingVolunteers(false);
+          });
+      
+    }
+
+    const handleReject = async (e) => {
+      
+    }
 
     return (
         <>
@@ -57,6 +123,33 @@ function ActivityInfoOrganization() {
          <p>Potreban broj volontera: {activity.maxnumvolunteers}</p>
          <p>Hitno: {activity.hitno}</p>
          <p>Kategorija: {activity.typeofwork}</p>
+
+         <div>
+  {volunteers.length === 0 ? (
+    <h1>Nažalost trenutačno nema prijavljenih volontera. </h1>
+  ) : (
+    volunteers.map((volunteer, index) => (
+      <div 
+        key={index} 
+        style={{ 
+          display: "flex", 
+          alignItems: "center" 
+        }}
+      >
+        <div style={{ display: "flex", gap: "5px" }}> {/* Ime i prezime bliže */}
+          <p>{volunteer.firstName}</p>
+          <p>{volunteer.lastName}</p>
+        </div>
+        <div style={{ marginLeft: "20px", display: "flex", gap: "10px" }}> {/* Gumbi malo dalje */}
+          <button onClick={() => handleAccept(volunteer.volunteerId)}>Accept</button>
+          <button onClick={() => handleReject}>Reject</button>
+        </div>
+      </div>
+    ))
+  )}
+</div>
+
+
          
         </>
     );
