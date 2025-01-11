@@ -33,9 +33,6 @@ public class Project {
 
 	private Integer maxNumVolunteers;
 
-	@Enumerated(EnumType.STRING)
-	private Status status;
-
 	private Boolean urgent;
 
 	private Long organizationID;
@@ -104,13 +101,6 @@ public class Project {
 		this.maxNumVolunteers = maxNumVolunteers;
 	}
 
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
 
 	public Boolean getUrgent() {
 		return urgent;
@@ -148,24 +138,9 @@ public class Project {
 				", location='" + location + '\'' +
 				", numVolunteers=" + numVolunteers +
 				", maxNumVolunteers=" + maxNumVolunteers +
-				", status=" + status +
 				", urgent=" + urgent +
 				", organizationID=" + organizationID +
 				'}';
 	}
-
-	/*
-	 * public Project(@NotBlank String naziv, @NotBlank String opis, @NotNull
-	 * LocalDate pocetak, @NotNull LocalDate kraj,
-	 * 
-	 * @NotBlank String lokacija, @NotNull Integer maksBrojVolontera, @NotNull
-	 * Status status, @NotNull Boolean hitan,
-	 * 
-	 * @NotNull Long organizationID) { super(); this.naziv = naziv; this.opis =
-	 * opis; this.pocetak = pocetak; this.kraj = kraj; this.lokacija = lokacija;
-	 * this.maksbrojvolontera = maksBrojVolontera; this.status = status; this.hitan
-	 * = hitan; this.organizationID = organizationID; this.brojprijavljenihvolontera
-	 * = 0; }
-	 */
 
 }

@@ -41,7 +41,19 @@ public class ProjectService {
             dto.setProjectlocation(project.getLocation());
             dto.setNumregisteredvolunteers(project.getNumVolunteers());
             dto.setMaxnumvolunteers(project.getMaxNumVolunteers());
-            dto.setStatus(String.valueOf(project.getStatus()));
+
+            LocalDate currentDate = LocalDate.now();
+            if (dto.getBeginningdate().isAfter(currentDate)){
+                dto.setStatus(String.valueOf(Status.OPEN));
+            } else if(currentDate.isAfter(dto.getEnddate())){
+                dto.setStatus(String.valueOf(Status.CLOSED));
+            } else if ((currentDate.isEqual(dto.getBeginningdate()) || currentDate.isAfter(dto.getBeginningdate())) &&
+                    (currentDate.isEqual(dto.getEnddate()) || currentDate.isBefore(dto.getEnddate()))) {
+                dto.setStatus(String.valueOf(Status.IN_PROGRESS));
+            }else{
+                dto.setStatus(String.valueOf(Status.CLOSED));
+            }
+
             dto.setProjectID(project.getProjectId());
             dto.setUrgent(project.getUrgent());
 
@@ -83,7 +95,19 @@ public class ProjectService {
             responseDto.setProjectlocation(project.getLocation());
             responseDto.setNumregisteredvolunteers(project.getNumVolunteers());
             responseDto.setMaxnumvolunteers(project.getMaxNumVolunteers());
-            responseDto.setStatus(String.valueOf(project.getStatus()));
+
+            LocalDate currentDate = LocalDate.now();
+            if (responseDto.getBeginningdate().isAfter(currentDate)){
+                responseDto.setStatus(String.valueOf(Status.OPEN));
+            } else if(currentDate.isAfter(responseDto.getEnddate())){
+                responseDto.setStatus(String.valueOf(Status.CLOSED));
+            } else if ((currentDate.isEqual(responseDto.getBeginningdate()) || currentDate.isAfter(responseDto.getBeginningdate())) &&
+                    (currentDate.isEqual(responseDto.getEnddate()) || currentDate.isBefore(responseDto.getEnddate()))) {
+                responseDto.setStatus(String.valueOf(Status.IN_PROGRESS));
+            }else{
+                responseDto.setStatus(String.valueOf(Status.CLOSED));
+            }
+
             responseDto.setProjectID(project.getProjectId());
             responseDto.setUrgent(project.getUrgent());
             responseDto.setOrganizationName(organization.getOrganizationName()); // Set the organization name
@@ -114,7 +138,18 @@ public class ProjectService {
         dto.setOrganizationName(organization.getOrganizationName());
         dto.setOrganizationEmail(organization.getEmail());
         dto.setTypeofwork(project.getTypeOfWork());
-        dto.setStatus(String.valueOf(project.getStatus()));
+
+        LocalDate currentDate = LocalDate.now();
+        if (dto.getBeginningdate().isAfter(currentDate)){
+            dto.setStatus(String.valueOf(Status.OPEN));
+        } else if(currentDate.isAfter(dto.getEnddate())){
+            dto.setStatus(String.valueOf(Status.CLOSED));
+        } else if ((currentDate.isEqual(dto.getBeginningdate()) || currentDate.isAfter(dto.getBeginningdate())) &&
+                (currentDate.isEqual(dto.getEnddate()) || currentDate.isBefore(dto.getEnddate()))) {
+            dto.setStatus(String.valueOf(Status.IN_PROGRESS));
+        }else{
+            dto.setStatus(String.valueOf(Status.CLOSED));
+        }
 
         return dto;
     }

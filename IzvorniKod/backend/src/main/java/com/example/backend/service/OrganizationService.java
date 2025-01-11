@@ -157,7 +157,7 @@ public class OrganizationService {
         project.setLocation(dto.getLocation());
         project.setTypeOfWork(TypeOfWork.valueOf(dto.getTypeOfWork()));
 
-        project.setStatus(Status.OPEN);
+//        project.setStatus(Status.OPEN);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();

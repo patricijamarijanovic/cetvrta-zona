@@ -74,7 +74,6 @@ CREATE TABLE projects (
     location VARCHAR(255) NOT NULL,
     numVolunteers INTEGER NOT NULL,
     maxNumVolunteers INTEGER NOT NULL,
-    status VARCHAR(255),
     urgent BOOLEAN NOT NULL,
     organizationID BIGINT NOT NULL
 );
