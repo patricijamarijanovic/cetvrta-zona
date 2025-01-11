@@ -8,6 +8,7 @@ import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.RegistrationRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
+import com.example.backend.service.ImageService;
 import com.example.backend.service.OrganizationService;
 import com.example.backend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,9 @@ public class OrganizationController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private ImageService imageService;
 
     // projekti te organizacije
     @GetMapping("/organization/home")
@@ -72,6 +78,12 @@ public class OrganizationController {
         return organizationService.my_profile_info();
     }
 
+    // my profile picture
+    @GetMapping("/organization/profile-picture")
+    public ResponseEntity<byte[]> get_picture() {
+        return organizationService.get_profile_picture();
+    }
+
     // some profile info
     @GetMapping("/organization/profile/{organizationId}")
     public OrganizationProfileDto get_profile_info(@PathVariable Long organizationId) {
@@ -82,6 +94,12 @@ public class OrganizationController {
     @PostMapping("/organization/edit-profile")
     public String edit (@RequestBody OrganizationProfileDto dto){
         return organizationService.edit_profile(dto);
+    }
+
+    // uredivanje slike profila
+    @PostMapping("/organization/edit-picture")
+    public Long uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
+        return imageService.saveProfileImageOrg(file);
     }
 
     // uredivanje projekta

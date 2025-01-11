@@ -1,11 +1,7 @@
 package com.example.backend.service;
 
-import com.example.backend.model.Image;
-import com.example.backend.model.Volunteer;
-import com.example.backend.model.VolunteerPicture;
-import com.example.backend.repository.ImageRepository;
-import com.example.backend.repository.VolunteerPictureRepository;
-import com.example.backend.repository.VolunteerRepository;
+import com.example.backend.model.*;
+import com.example.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +20,13 @@ public class ImageService {
     private VolunteerRepository volunteerRepository;
 
     @Autowired
+    private OrganizationRepository organizationRepository;
+
+    @Autowired
     private VolunteerPictureRepository volunteerPictureRepository;
+
+    @Autowired
+    private OrganizationPictureRepository organizationPictureRepository;
 
     public Long saveImage(MultipartFile file) throws IOException {
         Image image = new Image();
@@ -36,7 +38,7 @@ public class ImageService {
         return image.getId();
     }
 
-    public Long saveProfileImage(MultipartFile file) throws IOException {
+    public Long saveProfileImageVol(MultipartFile file) throws IOException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -61,6 +63,34 @@ public class ImageService {
 
         return image.getId();
     }
+
+
+    public Long saveProfileImageOrg(MultipartFile file) throws IOException {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Organization org = organizationRepository.findByUsername(username);
+
+        Optional<OrganizationPicture> o = organizationPictureRepository.findByOrganizationId(org.getId());
+        if (o.isPresent()) {
+            OrganizationPicture organizationPicture = o.get();
+            organizationPictureRepository.delete(organizationPicture);
+        }
+
+        Image image = new Image();
+        image.setName(file.getOriginalFilename());
+        image.setType(file.getContentType());
+        image.setData(file.getBytes());
+        imageRepository.save(image);
+
+        OrganizationPicture op = new OrganizationPicture();
+        op.setOrganizationId(org.getId());
+        op.setImageId(image.getId());
+        organizationPictureRepository.save(op);
+
+        return image.getId();
+    }
+
 
     // Dohvat slike prema ID-u
     public Image getImage(Long id) throws Exception {

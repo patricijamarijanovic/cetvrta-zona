@@ -58,6 +58,12 @@ public class OrganizationService {
     @Autowired
     private AreasOrganizationRepository areasOrganizationRepository;
 
+    @Autowired
+    private OrganizationPictureRepository organizationPictureRepository;
+
+    @Autowired
+    private ImageService imageService;
+
     public ResponseEntity<String> registerOrganization(OrganizationRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
             return ResponseEntity.badRequest().body("Username already taken. Please choose another one.");
@@ -299,4 +305,27 @@ public class OrganizationService {
         return org.toString();
     }
 
+
+    public ResponseEntity<byte[]> get_profile_picture(){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Organization org = organizationRepository.findByUsername(username);
+
+        Optional<OrganizationPicture> o = organizationPictureRepository.findByOrganizationId(org.getId());
+        if (o.isPresent()) {
+            OrganizationPicture op = o.get();
+
+            try {
+                Image image = imageService.getImage(op.getImageId());
+                return ResponseEntity.ok()
+                        .header("Content-Type", image.getType())
+                        .body(image.getData());
+            } catch (Exception e) {
+                return ResponseEntity.noContent().build();
+            }
+
+        }
+        return ResponseEntity.noContent().build();
+    }
 }

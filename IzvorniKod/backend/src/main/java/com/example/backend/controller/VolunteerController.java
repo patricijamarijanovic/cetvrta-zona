@@ -80,7 +80,7 @@ public class VolunteerController {
     // uredivanje slike profila
     @PostMapping("/volunteer/edit-picture")
     public Long uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
-        return imageService.saveProfileImage(file);
+        return imageService.saveProfileImageVol(file);
     }
 
     // dohvati specificni projekt
