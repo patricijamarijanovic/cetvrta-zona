@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.dto.ReviewDto;
 import com.example.backend.dto.VolunteerProfileDto;
+import com.example.backend.dto.VolunteerProjectProfileDto;
 import com.example.backend.dto.VolunteerRegistrationDto;
 import com.example.backend.model.*;
 import com.example.backend.repository.*;
@@ -271,5 +272,162 @@ public class VolunteerService {
         dto.setSkills(skills);
 
         return dto;
+    }
+
+    // prosli prihvaceni projekti
+    public List<VolunteerProjectProfileDto> previous_projects(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer vol = volunteerRepository.findByUsername(username);
+
+        List<VolunteerProjectProfileDto> lista = new ArrayList<>();
+
+
+        // pronadi sve njegove prihvacene projekte
+        List<Application> applications = applicationRepository.findAllByVolunteerId(vol.getId())
+                .stream().filter(a -> a.getStatus().equals(ApplicationStatus.ACCEPTED)).toList();
+
+        for (Application a : applications){
+            Long projectId = a.getProjectId();
+            Project project = projectRepository.findById(projectId).get();
+
+            LocalDate currentDate = LocalDate.now();
+            if (currentDate.isAfter(project.getEndDate())){
+
+                VolunteerProjectProfileDto dto = new VolunteerProjectProfileDto();
+                dto.setProjectID(project.getProjectId());
+                dto.setProjectname(project.getProjectName());
+                dto.setProjectdesc(project.getProjectDesc());
+                dto.setTypeofwork(project.getTypeOfWork());
+                dto.setBeginningdate(project.getStartDate());
+                dto.setEnddate(project.getEndDate());
+                dto.setOrganizationID(project.getOrganizationID());
+
+                Organization organization = organizationRepository.findById(project.getOrganizationID()).get();
+                dto.setOrganizationName(organization.getOrganizationName());
+
+                lista.add(dto);
+            }
+        }
+
+        return lista;
+    }
+
+    // projekti koji su trenutno u tijeku
+    public List<VolunteerProjectProfileDto> in_progress_projects(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer vol = volunteerRepository.findByUsername(username);
+
+        List<VolunteerProjectProfileDto> lista = new ArrayList<>();
+
+        // pronadi sve njegove prihvacene projekte
+        List<Application> applications = applicationRepository.findAllByVolunteerId(vol.getId())
+                .stream().filter(a -> a.getStatus().equals(ApplicationStatus.ACCEPTED)).toList();
+
+        for (Application a : applications){
+            Long projectId = a.getProjectId();
+            Project project = projectRepository.findById(projectId).get();
+
+            LocalDate currentDate = LocalDate.now();
+            if ((currentDate.isEqual(project.getStartDate()) || currentDate.isAfter(project.getStartDate())) &&
+                    (currentDate.isEqual(project.getEndDate()) || currentDate.isBefore(project.getEndDate()))){
+
+                VolunteerProjectProfileDto dto = new VolunteerProjectProfileDto();
+                dto.setProjectID(project.getProjectId());
+                dto.setProjectname(project.getProjectName());
+                dto.setProjectdesc(project.getProjectDesc());
+                dto.setTypeofwork(project.getTypeOfWork());
+                dto.setBeginningdate(project.getStartDate());
+                dto.setEnddate(project.getEndDate());
+                dto.setOrganizationID(project.getOrganizationID());
+
+                Organization organization = organizationRepository.findById(project.getOrganizationID()).get();
+                dto.setOrganizationName(organization.getOrganizationName());
+
+                lista.add(dto);
+            }
+        }
+
+        return lista;
+    }
+
+    // buduci projekti na koje je prihvacen
+    public List<VolunteerProjectProfileDto> future_accepted_projects(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer vol = volunteerRepository.findByUsername(username);
+
+        List<VolunteerProjectProfileDto> lista = new ArrayList<>();
+
+
+        // pronadi sve njegove prihvacene projekte
+        List<Application> applications = applicationRepository.findAllByVolunteerId(vol.getId())
+                .stream().filter(a -> a.getStatus().equals(ApplicationStatus.ACCEPTED)).toList();
+
+        for (Application a : applications){
+            Long projectId = a.getProjectId();
+            Project project = projectRepository.findById(projectId).get();
+
+            LocalDate currentDate = LocalDate.now();
+            if (project.getStartDate().isAfter(currentDate)){
+
+                VolunteerProjectProfileDto dto = new VolunteerProjectProfileDto();
+                dto.setProjectID(project.getProjectId());
+                dto.setProjectname(project.getProjectName());
+                dto.setProjectdesc(project.getProjectDesc());
+                dto.setTypeofwork(project.getTypeOfWork());
+                dto.setBeginningdate(project.getStartDate());
+                dto.setEnddate(project.getEndDate());
+                dto.setOrganizationID(project.getOrganizationID());
+
+                Organization organization = organizationRepository.findById(project.getOrganizationID()).get();
+                dto.setOrganizationName(organization.getOrganizationName());
+
+                lista.add(dto);
+            }
+        }
+
+        return lista;
+    }
+
+    // buduci projekti na koje ceka odgovor
+    public List<VolunteerProjectProfileDto> waits_for_response_projects(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer vol = volunteerRepository.findByUsername(username);
+
+        List<VolunteerProjectProfileDto> lista = new ArrayList<>();
+
+        // pronadi sve njegove PENDING projekte
+        List<Application> applications = applicationRepository.findAllByVolunteerId(vol.getId())
+                .stream().filter(a -> a.getStatus().equals(ApplicationStatus.PENDING)).toList();
+
+        for (Application a : applications){
+            Long projectId = a.getProjectId();
+            Project project = projectRepository.findById(projectId).get();
+
+            LocalDate currentDate = LocalDate.now();
+            // ili je buduci projekt (open) ili je in_progress
+            if (project.getStartDate().isAfter(currentDate) || (currentDate.isEqual(project.getStartDate()) || currentDate.isAfter(project.getStartDate())) &&
+                    (currentDate.isEqual(project.getEndDate()) || currentDate.isBefore(project.getEndDate()))){
+
+                VolunteerProjectProfileDto dto = new VolunteerProjectProfileDto();
+                dto.setProjectID(project.getProjectId());
+                dto.setProjectname(project.getProjectName());
+                dto.setProjectdesc(project.getProjectDesc());
+                dto.setTypeofwork(project.getTypeOfWork());
+                dto.setBeginningdate(project.getStartDate());
+                dto.setEnddate(project.getEndDate());
+                dto.setOrganizationID(project.getOrganizationID());
+
+                Organization organization = organizationRepository.findById(project.getOrganizationID()).get();
+                dto.setOrganizationName(organization.getOrganizationName());
+
+                lista.add(dto);
+            }
+        }
+
+        return lista;
     }
 }

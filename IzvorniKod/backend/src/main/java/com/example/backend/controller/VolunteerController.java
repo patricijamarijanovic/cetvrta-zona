@@ -1,9 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.ProjectResponseDto;
-import com.example.backend.dto.ReviewDto;
-import com.example.backend.dto.VolunteerProfileDto;
-import com.example.backend.dto.VolunteerProjectDto;
+import com.example.backend.dto.*;
 import com.example.backend.model.MyUser;
 import com.example.backend.model.Project;
 import com.example.backend.model.Registration;
@@ -95,6 +92,31 @@ public class VolunteerController {
 
         return projectService.get_project_info_as_volunteer(vol.getId(), projectId);
     }
+
+    // prethodne aktivnosti (na koje je prihvacen)
+    @GetMapping("/volunteer/previous-activities")
+    public List<VolunteerProjectProfileDto> get_prev_projects (){
+        return volunteerService.previous_projects();
+    }
+
+    // aktivnosti koje su in_progress, a na njih je prihvacen
+    @GetMapping("/volunteer/in-progress-activities")
+    public List<VolunteerProjectProfileDto> get_in_progress_projects (){
+        return volunteerService.in_progress_projects();
+    }
+
+    // buduce aktivnosti na koje je prihvacen
+    @GetMapping("/volunteer/future-activities")
+    public List<VolunteerProjectProfileDto> get_future_projects (){
+        return volunteerService.future_accepted_projects();
+    }
+
+    // aktivnosti na koje ceka odgovor (buduce ili in progress)
+    @GetMapping("/volunteer/pending-activities")
+    public List<VolunteerProjectProfileDto> get_pending_projects (){
+        return volunteerService.waits_for_response_projects();
+    }
+
 
 
 //    @PostMapping("/volunteer/{projectID}/leavereview")
