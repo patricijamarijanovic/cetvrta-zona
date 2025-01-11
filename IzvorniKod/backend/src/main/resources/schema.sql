@@ -85,6 +85,13 @@ CREATE TABLE applications (
     status VARCHAR(255)
 );
 
+CREATE TABLE image (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    data BLOB,
+    type VARCHAR(255)
+);
+
 CREATE TABLE review
 (
   reviewID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -114,6 +121,15 @@ CREATE TABLE volunteer_skills
     volunteerID BIGINT NOT NULL,
     skill VARCHAR(100),
     FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
+);
+
+CREATE TABLE volunteer_picture
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    volunteerId BIGINT NOT NULL,
+    imageId BIGINT NOT NULL,
+    FOREIGN KEY (volunteerId) REFERENCES volunteers(id),
+    FOREIGN KEY (imageId) REFERENCES image(id)
 );
 
 CREATE TABLE volunteer_interests

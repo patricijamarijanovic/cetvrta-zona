@@ -1,16 +1,14 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.*;
-import com.example.backend.model.MyUser;
-import com.example.backend.model.Project;
-import com.example.backend.model.Registration;
-import com.example.backend.model.Volunteer;
+import com.example.backend.model.*;
 import com.example.backend.repository.MyUserRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.RegistrationRepository;
 import com.example.backend.repository.VolunteerRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
+import com.example.backend.service.ImageService;
 import com.example.backend.service.ProjectService;
 import com.example.backend.service.VolunteerService;
 
@@ -20,7 +18,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +28,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = {"http://localhost:5173", "https://volontirajsnama.onrender.com"})
 public class VolunteerController {
-    @Autowired
-    private ProjectRepository projectrepository;
 
-    @Autowired
-    private MyUserRepository myUserRepository;
-
-    @Autowired
-    private RegistrationRepository registrationRepository;
-    
     @Autowired
     private VolunteerService volunteerService;
 
@@ -46,18 +38,14 @@ public class VolunteerController {
     @Autowired
     private VolunteerRepository volunteerRepository;
 
+    @Autowired
+    private ImageService imageService;
+
     // volonterski homepage
     @GetMapping("/volunteer/home")
     public List<ProjectResponseDto> volunteer_home() {
         return projectService.getAllProjects();
     }
-
-//    @GetMapping("/volunteer/myRegistrations")
-//    public List<Registration> volunteer_registrations() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        MyUser volunteer = myUserRepository.findByUsername(authentication.getName()).get();
-//        return registrationRepository.findAllByVolunteerID(volunteer.getId());
-//    }
 
     // svi moguci projekti
     @GetMapping("/volunteer/activities")
@@ -71,6 +59,12 @@ public class VolunteerController {
         return volunteerService.my_profile_info();
     }
 
+    // my profile picture
+    @GetMapping("/volunteer/profile-picture")
+    public ResponseEntity<byte[]> get_picture() {
+        return volunteerService.get_profile_picture();
+    }
+
     // prijava na projekt
     @PostMapping("/volunteer/apply/{projectID}")
     public String apply_for_project (@PathVariable Long projectID){
@@ -81,6 +75,12 @@ public class VolunteerController {
     @PostMapping("/volunteer/edit-profile")
     public String edit (@RequestBody VolunteerProfileDto dto){
         return volunteerService.edit_profile(dto);
+    }
+
+    // uredivanje slike profila
+    @PostMapping("/volunteer/edit-picture")
+    public Long uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
+        return imageService.saveProfileImage(file);
     }
 
     // dohvati specificni projekt

@@ -65,6 +65,12 @@ public class VolunteerService {
     @Autowired
     private InterestsRepository interestsRepository;
 
+    @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private VolunteerPictureRepository volunteerPictureRepository;
+
 
     public ResponseEntity<String> registerVolunteer(VolunteerRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
@@ -272,6 +278,29 @@ public class VolunteerService {
         dto.setSkills(skills);
 
         return dto;
+    }
+
+    public ResponseEntity<byte[]> get_profile_picture(){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer vol = volunteerRepository.findByUsername(username);
+
+        Optional<VolunteerPicture> o = volunteerPictureRepository.findByVolunteerId(vol.getId());
+        if (o.isPresent()) {
+            VolunteerPicture vp = o.get();
+
+            try {
+                Image image = imageService.getImage(vp.getImageId());
+                return ResponseEntity.ok()
+                        .header("Content-Type", image.getType())
+                        .body(image.getData());
+            } catch (Exception e) {
+                return ResponseEntity.noContent().build();
+            }
+
+        }
+        return ResponseEntity.noContent().build();
     }
 
     // prosli prihvaceni projekti

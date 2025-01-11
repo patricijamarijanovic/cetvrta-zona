@@ -3,10 +3,12 @@ package com.example.backend.controller;
 import com.example.backend.dto.LoginDto;
 import com.example.backend.dto.OrganizationProfileDto;
 import com.example.backend.dto.ProjectResponseDto;
+import com.example.backend.model.Image;
 import com.example.backend.repository.MyUserRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
+import com.example.backend.service.ImageService;
 import com.example.backend.service.OrganizationService;
 import com.example.backend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +49,27 @@ public class AuthenticationController {
 
     @Autowired
     private OrganizationService organizationService;
+
+    @Autowired
+    private ImageService imageService;
+
+    @PostMapping("/home/upload")
+    public Long uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
+        return imageService.saveImage(file);
+    }
+
+    // Dohvat slike po ID-u
+    @GetMapping("/home/image/{id}")
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+        try {
+            Image image = imageService.getImage(id);
+            return ResponseEntity.ok()
+                    .header("Content-Type", image.getType())
+                    .body(image.getData());
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(null);
+        }
+    }
 
     // anonimni homepage
     @GetMapping("/home")

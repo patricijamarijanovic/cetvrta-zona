@@ -23,12 +23,73 @@ function VolunteerProfileEdit() {
 
   const navigate = useNavigate();
 
+
+
+
+
+
+
+
+
+
+  const [image, setImage] = useState("")
+  const [imageUrl, setImageUrl] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(null);
+
+  function handleImage(e){
+    console.log(e.target.files)
+    setImage(e.target.files[0])
+
+    const file = e.target.files[0];
+    if (file) {
+      const imageURL = URL.createObjectURL(file);
+      setProfilePicture(imageURL); // Postavljamo novu sliku u stanje
+      console.log("odabrana slika " + imageURL)
+    }
+  }
+
+
+
+
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/not-authorized", { replace: true });
       return;
     }
+
+    // dohvati profilnu sliku s backenda
+axios.get(`${BACK_URL}/volunteer/profile-picture`, { 
+  headers: { 
+    Authorization: `Bearer ${token}` 
+  },
+  responseType: 'arraybuffer'
+})
+.then((res) => {
+    if (res.status === 204) {
+        // Ako backend vraća 204 No Content (slika nije pronađena), postavi defaultnu sliku
+        console.log("Slika nije pronađena, koristi se defaultna slika");
+        setProfilePicture("/images/nekaovog.jpg");  // Zamijeni s URL-om defaultne slike
+    } else {
+        console.log("Uspješno dobio sliku:", res);
+
+        // Pretvori bajtove u URL koristeći Blob
+        const imageBlob = new Blob([res.data], { type: 'image/jpeg' }); // Pretpostavljamo da je tip slike 'jpeg'
+        const imageUrl = URL.createObjectURL(imageBlob);
+        
+        // Postavi sliku u stanje
+        setProfilePicture(imageUrl);  
+    }
+})
+.catch((err) => {
+    console.error("Došlo je do pogreške pri dohvaćanju slike:", err);
+    // Ako dođe do pogreške, također možeš postaviti defaultnu sliku
+    setProfilePicture("/images/nekaovog.jpg");  // Zamijeni s URL-om defaultne slike
+});
+
+
+
 
     axios
       .get(`${BACK_URL}/volunteer/my-profile`, {
@@ -53,6 +114,26 @@ function VolunteerProfileEdit() {
 
   const handleSaveAll = () => {
     const token = localStorage.getItem("token");
+
+
+
+    const formData = new FormData()
+    formData.append('image', image)
+
+    // Pošaljemo sliku na backend
+    axios.post(`${BACK_URL}/volunteer/edit-picture`, formData, { 
+      headers: { 
+          Authorization: `Bearer ${token}` 
+      }
+    })
+    .then((res) => {
+        console.log("Slika uspješno poslana, ID = " + res.data);
+    })
+    .catch((err) => {
+        console.error("Došlo je do pogreške pri slanju slike: ", err);
+    });
+
+
     axios
       .post(
         `${BACK_URL}/volunteer/edit-profile`,
@@ -97,6 +178,7 @@ function VolunteerProfileEdit() {
     );
   }
 
+
   return (
     <div className="bg-slate-700 min-h-screen">
       <NavBarLoggedIn />
@@ -107,9 +189,9 @@ function VolunteerProfileEdit() {
           {/* Profile Picture */}
           <div className="flex flex-col items-center mb-6">
             <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center ring-4 ring-yellow-400">
-              {profileData.profilePicture ? (
+              {profilePicture ? (
                 <img
-                  src={profileData.profilePicture}
+                  src={profilePicture}
                   alt="Profile"
                   className="rounded-full w-full h-full object-cover"
                 />
@@ -118,11 +200,34 @@ function VolunteerProfileEdit() {
               )}
             </div>
             {isEditMode && (
-              <button className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500">
-                Promijeni sliku
-              </button>
+              <div>
+                <input 
+                  type="file" 
+                  name="file" 
+                  onChange={handleImage} 
+                  style={{ display: 'none' }} // Sakrijemo input
+                  id="fileInput" // Dodajemo id za referencu
+                />
+
+                <button
+                    className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
+                    onClick={() => document.getElementById('fileInput').click()} // Aktivira input
+                >
+                    Promijeni sliku
+                </button>
+                
+              </div>
+
+              
             )}
           </div>
+
+
+
+
+
+
+
 
           {/* Editable Fields */}
           {renderField("Ime", "firstName")}
