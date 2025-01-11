@@ -84,6 +84,12 @@ public class OrganizationController {
         return organizationService.edit_profile(dto);
     }
 
+    // uredivanje projekta
+    @PostMapping("/organization/edit-project")
+    public String edit_project (@RequestBody ProjectResponseDto dto){
+        return projectService.edit_project(dto);
+    }
+
 //    @GetMapping("/organization/project/{projectID}/registrations")
 //    public List<Registration> view_project_registrations(@PathVariable Integer projectID) {
 //        return registrationRepository.findAllByProjectID(projectID);

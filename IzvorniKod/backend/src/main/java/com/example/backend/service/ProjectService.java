@@ -2,12 +2,12 @@ package com.example.backend.service;
 
 import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.dto.VolunteerProjectDto;
-import com.example.backend.model.Application;
-import com.example.backend.model.Organization;
-import com.example.backend.model.Project;
+import com.example.backend.model.*;
 import com.example.backend.repository.ApplicationRepository;
 import com.example.backend.repository.OrganizationRepository;
 import com.example.backend.repository.ProjectRepository;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +35,7 @@ public class ProjectService {
             ProjectResponseDto dto = new ProjectResponseDto();
             dto.setProjectname(project.getProjectName());
             dto.setProjectdesc(project.getProjectDesc());
-            dto.setTypeofwork(String.valueOf(project.getTypeOfWork()));
+            dto.setTypeofwork(project.getTypeOfWork());
             dto.setBeginningdate(project.getStartDate());
             dto.setEnddate(project.getEndDate());
             dto.setProjectlocation(project.getLocation());
@@ -77,7 +77,7 @@ public class ProjectService {
             ProjectResponseDto responseDto = new ProjectResponseDto();
             responseDto.setProjectname(project.getProjectName());
             responseDto.setProjectdesc(project.getProjectDesc());
-            responseDto.setTypeofwork(String.valueOf(project.getTypeOfWork()));
+            responseDto.setTypeofwork(project.getTypeOfWork());
             responseDto.setBeginningdate(project.getStartDate());
             responseDto.setEnddate(project.getEndDate());
             responseDto.setProjectlocation(project.getLocation());
@@ -113,7 +113,7 @@ public class ProjectService {
 
         dto.setOrganizationName(organization.getOrganizationName());
         dto.setOrganizationEmail(organization.getEmail());
-        dto.setTypeofwork(String.valueOf(project.getTypeOfWork()));
+        dto.setTypeofwork(project.getTypeOfWork());
         dto.setStatus(String.valueOf(project.getStatus()));
 
         return dto;
@@ -149,5 +149,24 @@ public class ProjectService {
         }
 
         return dto;
+    }
+
+    public String edit_project(ProjectResponseDto dto){
+        Long projectId = dto.getProjectID();
+        Project project = projectRepository.findById(projectId).get();
+
+        // edit project
+        project.setProjectName(dto.getProjectname());
+        project.setProjectDesc(dto.getProjectdesc());
+        project.setTypeOfWork(dto.getTypeofwork());
+        project.setStartDate(dto.getBeginningdate());
+        project.setEndDate(dto.getEnddate());
+        project.setLocation(dto.getProjectlocation());
+        project.setMaxNumVolunteers(dto.getMaxnumvolunteers());
+        project.setUrgent(dto.isUrgent());
+
+        projectRepository.save(project);
+
+        return project.toString();
     }
 }

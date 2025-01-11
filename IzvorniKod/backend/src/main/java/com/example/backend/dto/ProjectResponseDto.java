@@ -1,11 +1,13 @@
 package com.example.backend.dto;
 
+import com.example.backend.model.TypeOfWork;
+
 import java.time.LocalDate;
 
 public class ProjectResponseDto {
     private String projectname;
     private String projectdesc;
-    private String typeofwork;
+    private TypeOfWork typeofwork;
     private LocalDate beginningdate;
     private LocalDate enddate;
     private String projectlocation;
@@ -18,15 +20,15 @@ public class ProjectResponseDto {
     private long organizationID;
     private String organizationEmail;
 
-    public String getTypeofwork() {
-		return typeofwork;
-	}
+    public TypeOfWork getTypeofwork() {
+        return typeofwork;
+    }
 
-	public void setTypeofwork(String typeofwork) {
-		this.typeofwork = typeofwork;
-	}
+    public void setTypeofwork(TypeOfWork typeofwork) {
+        this.typeofwork = typeofwork;
+    }
 
-	public String getProjectname() {
+    public String getProjectname() {
         return projectname;
     }
 
@@ -136,7 +138,7 @@ public class ProjectResponseDto {
         return "ProjectResponseDto{" +
                 "projectname='" + projectname + '\'' +
                 ", projectdesc='" + projectdesc + '\'' +
-                ", typeofwork='" + typeofwork + '\'' +
+                ", typeofwork=" + typeofwork +
                 ", beginningdate=" + beginningdate +
                 ", enddate=" + enddate +
                 ", projectlocation='" + projectlocation + '\'' +
