@@ -53,23 +53,6 @@ public class AuthenticationController {
     @Autowired
     private ImageService imageService;
 
-    @PostMapping("/home/upload")
-    public Long uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
-        return imageService.saveImage(file);
-    }
-
-    // Dohvat slike po ID-u
-    @GetMapping("/home/image/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
-        try {
-            Image image = imageService.getImage(id);
-            return ResponseEntity.ok()
-                    .header("Content-Type", image.getType())
-                    .body(image.getData());
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body(null);
-        }
-    }
 
     // anonimni homepage
     @GetMapping("/home")
@@ -87,6 +70,18 @@ public class AuthenticationController {
     @GetMapping("/home/activity/{projectId}")
     public ProjectResponseDto specific(@PathVariable Long projectId) {
         return projectService.getSpecificProject(projectId);
+    }
+
+    // dohvacanje slike projekta
+    @GetMapping("/home/project-picture/{projectId}")
+    public ResponseEntity<byte[]> get_picture(@PathVariable Long projectId) {
+        return projectService.get_project_picture(projectId);
+    }
+
+    // slika specificne organizacije
+    @GetMapping("/home/organization/profile-picture/{organizationId}")
+    public ResponseEntity<byte[]> get_picture_organization(@PathVariable Long organizationId) {
+        return organizationService.get_picture_specific_org(organizationId);
     }
 
     // sve organizacija

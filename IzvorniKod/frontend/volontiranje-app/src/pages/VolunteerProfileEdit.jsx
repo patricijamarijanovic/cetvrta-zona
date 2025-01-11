@@ -60,33 +60,33 @@ function VolunteerProfileEdit() {
     }
 
     // dohvati profilnu sliku s backenda
-axios.get(`${BACK_URL}/volunteer/profile-picture`, { 
-  headers: { 
-    Authorization: `Bearer ${token}` 
-  },
-  responseType: 'arraybuffer'
-})
-.then((res) => {
-    if (res.status === 204) {
-        // Ako backend vraća 204 No Content (slika nije pronađena), postavi defaultnu sliku
-        console.log("Slika nije pronađena, koristi se defaultna slika");
-        setProfilePicture("/images/nekaovog.jpg");  // Zamijeni s URL-om defaultne slike
-    } else {
-        console.log("Uspješno dobio sliku:", res);
+    axios.get(`${BACK_URL}/volunteer/profile-picture`, { 
+      headers: { 
+        Authorization: `Bearer ${token}` 
+      },
+      responseType: 'arraybuffer'
+    })
+    .then((res) => {
+        if (res.status === 204) {
+            // Ako backend vraća 204 No Content (slika nije pronađena), postavi defaultnu sliku
+            console.log("Slika nije pronađena, koristi se defaultna slika");
+            setProfilePicture("/images/nekaovog.jpg");  // Zamijeni s URL-om defaultne slike
+        } else {
+            console.log("Uspješno dobio sliku:", res);
 
-        // Pretvori bajtove u URL koristeći Blob
-        const imageBlob = new Blob([res.data], { type: 'image/jpeg' }); // Pretpostavljamo da je tip slike 'jpeg'
-        const imageUrl = URL.createObjectURL(imageBlob);
-        
-        // Postavi sliku u stanje
-        setProfilePicture(imageUrl);  
-    }
-})
-.catch((err) => {
-    console.error("Došlo je do pogreške pri dohvaćanju slike:", err);
-    // Ako dođe do pogreške, također možeš postaviti defaultnu sliku
-    setProfilePicture("/images/nekaovog.jpg");  // Zamijeni s URL-om defaultne slike
-});
+            // Pretvori bajtove u URL koristeći Blob
+            const imageBlob = new Blob([res.data], { type: 'image/jpeg' }); // Pretpostavljamo da je tip slike 'jpeg'
+            const imageUrl = URL.createObjectURL(imageBlob);
+            
+            // Postavi sliku u stanje
+            setProfilePicture(imageUrl);  
+        }
+        })
+    .catch((err) => {
+        console.error("Došlo je do pogreške pri dohvaćanju slike:", err);
+        // Ako dođe do pogreške, također možeš postaviti defaultnu sliku
+        setProfilePicture("/images/nekaovog.jpg");  // Zamijeni s URL-om defaultne slike
+    });
 
 
 
@@ -134,6 +134,8 @@ axios.get(`${BACK_URL}/volunteer/profile-picture`, {
     });
 
 
+
+
     axios
       .post(
         `${BACK_URL}/volunteer/edit-profile`,
@@ -149,6 +151,10 @@ axios.get(`${BACK_URL}/volunteer/profile-picture`, {
         setMessage("Failed to update profile. Please try again.");
       });
   };
+
+
+
+  
 
   const handleChange = (field, value) => {
     setProfileData((prev) => ({ ...prev, [field]: value }));
@@ -217,8 +223,6 @@ axios.get(`${BACK_URL}/volunteer/profile-picture`, {
                 </button>
                 
               </div>
-
-              
             )}
           </div>
 

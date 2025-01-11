@@ -149,7 +149,7 @@ public class OrganizationService {
         return lista;
     }
 
-    public ResponseEntity<Object> createproject(ProjectDto dto) {
+    public Long createproject(ProjectDto dto) {
         System.out.println(dto);
         Project project = new Project();
 
@@ -180,7 +180,7 @@ public class OrganizationService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Projekt uspješno dodan :)");
-        return ResponseEntity.ok(response);
+        return project.getProjectId();
     }
 
     public List<AppliedVolunteersDto> applications(Long projectId){
@@ -312,6 +312,12 @@ public class OrganizationService {
         String username = authentication.getName();
         Organization org = organizationRepository.findByUsername(username);
 
+        return get_picture_specific_org(org.getId());
+    }
+
+    public ResponseEntity<byte[]> get_picture_specific_org(Long organizationId){
+        Organization org = organizationRepository.findById(organizationId).get();
+
         Optional<OrganizationPicture> o = organizationPictureRepository.findByOrganizationId(org.getId());
         if (o.isPresent()) {
             OrganizationPicture op = o.get();
@@ -328,4 +334,6 @@ public class OrganizationService {
         }
         return ResponseEntity.noContent().build();
     }
+
+
 }

@@ -3,19 +3,21 @@ package com.example.backend.service;
 import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.dto.VolunteerProjectDto;
 import com.example.backend.model.*;
-import com.example.backend.repository.ApplicationRepository;
-import com.example.backend.repository.OrganizationRepository;
-import com.example.backend.repository.ProjectRepository;
+import com.example.backend.repository.*;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProjectService {
@@ -27,6 +29,15 @@ public class ProjectService {
 
     @Autowired
     private ApplicationRepository applicationRepository;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
+    private ProjectPictureRepository projectPictureRepository;
 
     public List<ProjectResponseDto> getAllProjects() {
         List<Project> projects = projectRepository.findAll();
@@ -204,5 +215,48 @@ public class ProjectService {
         projectRepository.save(project);
 
         return project.toString();
+    }
+
+    public Long edit_project_picture(Long projectId, MultipartFile file) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Organization org = organizationRepository.findByUsername(username);
+
+        Optional<ProjectPicture> o = projectPictureRepository.findByProjectId(projectId);
+        if (o.isPresent()) {
+            ProjectPicture projectPicture = o.get();
+            projectPictureRepository.delete(projectPicture);
+        }
+
+        Image image = new Image();
+        image.setName(file.getOriginalFilename());
+        image.setType(file.getContentType());
+        image.setData(file.getBytes());
+        imageRepository.save(image);
+
+        ProjectPicture op = new ProjectPicture();
+        op.setProjectId(projectId);
+        op.setImageId(image.getId());
+        projectPictureRepository.save(op);
+        return image.getId();
+    }
+
+
+    public ResponseEntity<byte[]> get_project_picture(Long projectId){
+        Optional<ProjectPicture> o = projectPictureRepository.findByProjectId(projectId);
+        if (o.isPresent()) {
+            ProjectPicture op = o.get();
+
+            try {
+                Image image = imageService.getImage(op.getImageId());
+                return ResponseEntity.ok()
+                        .header("Content-Type", image.getType())
+                        .body(image.getData());
+            } catch (Exception e) {
+                return ResponseEntity.noContent().build();
+            }
+
+        }
+        return ResponseEntity.noContent().build();
     }
 }

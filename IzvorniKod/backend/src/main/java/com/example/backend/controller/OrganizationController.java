@@ -50,7 +50,7 @@ public class OrganizationController {
 
     // stvaranje projekta
     @PostMapping("/organization/createproject")
-    public ResponseEntity<Object> save_project(@RequestBody ProjectDto dto) {
+    public Long save_project(@RequestBody ProjectDto dto) {
         return organizationService.createproject(dto);
     }
 
@@ -107,6 +107,13 @@ public class OrganizationController {
     public String edit_project (@RequestBody ProjectResponseDto dto){
         return projectService.edit_project(dto);
     }
+
+    // uredivanje slike projekta
+    @PostMapping("/organization/edit-project-picture/{projectId}")
+    public Long edit_project_picture(@RequestParam("image") MultipartFile file, @PathVariable Long projectId) throws IOException {
+        return projectService.edit_project_picture(projectId, file);
+    }
+
 
 //    @GetMapping("/organization/project/{projectID}/registrations")
 //    public List<Registration> view_project_registrations(@PathVariable Integer projectID) {

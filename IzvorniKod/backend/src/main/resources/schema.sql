@@ -141,6 +141,15 @@ CREATE TABLE organization_picture
     FOREIGN KEY (imageId) REFERENCES image(id)
 );
 
+CREATE TABLE project_picture
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    projectId BIGINT NOT NULL,
+    imageId BIGINT NOT NULL,
+    FOREIGN KEY (projectId) REFERENCES projects(projectId),
+    FOREIGN KEY (imageId) REFERENCES image(id)
+);
+
 CREATE TABLE volunteer_interests
 (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
