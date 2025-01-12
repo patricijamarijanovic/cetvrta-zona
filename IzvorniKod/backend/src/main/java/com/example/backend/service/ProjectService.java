@@ -154,6 +154,7 @@ public class ProjectService {
         dto.setOrganizationName(organization.getOrganizationName());
         dto.setOrganizationEmail(organization.getEmail());
         dto.setTypeofwork(project.getTypeOfWork());
+        dto.setProjectID(project.getProjectId());
 
         LocalDate currentDate = LocalDate.now();
         if (dto.getBeginningdate().isAfter(currentDate)){
