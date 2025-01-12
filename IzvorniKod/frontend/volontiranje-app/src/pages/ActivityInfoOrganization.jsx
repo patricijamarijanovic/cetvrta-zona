@@ -197,7 +197,7 @@ function ActivityInfoOrganization() {
           numregisteredvolunteers: editData.numregisteredvolunteers,
           maxnumvolunteers: editData.maxnumvolunteers,
           status: editData.status,
-          projectID: id,
+          projectID: editData.projectID,
           urgent: editData.urgent,
           organizationName: editData.organizationName,
           organizationID: editData.organizationID,
@@ -349,7 +349,7 @@ function ActivityInfoOrganization() {
                     onChange={handleChange}
                     className="text-white bg-transparent border-b border-white w-full focus:outline-none"
                   >
-                    <option value="">Odaberi kategoriju</option>
+                    
                     {categories.map((category) => (
                       <option key={category} value={category}>
                         {category}
