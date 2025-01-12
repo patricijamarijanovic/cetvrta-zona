@@ -57,7 +57,7 @@ public class VolunteerController {
     }
     
     // filtrirani projekti
-    @GetMapping("/volunteer/activities/filter")
+    @PostMapping("/volunteer/activities/filter")
     public List<ProjectResponseDto> filtered_activities(@RequestBody ProjectFilteringRequestDto projectFilteringRequestDto) {
     	return projectService.filter_projects(projectFilteringRequestDto);
     }

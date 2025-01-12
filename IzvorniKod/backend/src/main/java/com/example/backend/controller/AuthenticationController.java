@@ -79,7 +79,7 @@ public class AuthenticationController {
     }
     
     //filtrirani projekti
-    @GetMapping("/home/activities/filter")
+    @PostMapping("/home/activities/filter")
     public List<ProjectResponseDto> filtered_activities(@RequestBody ProjectFilteringRequestDto projectFilteringRequestDto) {
     	return projectService.filter_projects(projectFilteringRequestDto);
     }
