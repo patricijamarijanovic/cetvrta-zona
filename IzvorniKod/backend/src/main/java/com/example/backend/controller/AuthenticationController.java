@@ -2,12 +2,15 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.LoginDto;
 import com.example.backend.dto.OrganizationProfileDto;
+import com.example.backend.dto.ProjectFilteringRequestDto;
 import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.model.Image;
+import com.example.backend.model.Project;
 import com.example.backend.repository.MyUserRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
+import com.example.backend.service.FilteringService;
 import com.example.backend.service.ImageService;
 import com.example.backend.service.OrganizationService;
 import com.example.backend.service.ProjectService;
@@ -52,6 +55,9 @@ public class AuthenticationController {
 
     @Autowired
     private ImageService imageService;
+    
+    @Autowired 
+    private FilteringService filteringService;
 
 
     // anonimni homepage
@@ -70,6 +76,12 @@ public class AuthenticationController {
     @GetMapping("/home/activity/{projectId}")
     public ProjectResponseDto specific(@PathVariable Long projectId) {
         return projectService.getSpecificProject(projectId);
+    }
+    
+    //filtrirani projekti
+    @GetMapping("/home/activities/filter")
+    public List<ProjectResponseDto> filtered_activities(@RequestBody ProjectFilteringRequestDto projectFilteringRequestDto) {
+    	return projectService.filter_projects(projectFilteringRequestDto);
     }
 
     // dohvacanje slike projekta

@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.ProjectFilteringRequestDto;
 import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.dto.VolunteerProjectDto;
 import com.example.backend.model.*;
@@ -38,6 +39,9 @@ public class ProjectService {
 
     @Autowired
     private ProjectPictureRepository projectPictureRepository;
+    
+    @Autowired
+    private FilteringService filteringService;
 
     public List<ProjectResponseDto> getAllProjects() {
         List<Project> projects = projectRepository.findAll();
@@ -164,6 +168,50 @@ public class ProjectService {
         }
 
         return dto;
+    }
+    
+    public List<ProjectResponseDto> filter_projects(ProjectFilteringRequestDto projectFilteringRequestDto) {
+    	List<Project> lista = filteringService.filterProjects(projectFilteringRequestDto.getTypeOfWork(), 
+    										   projectFilteringRequestDto.getProjectLocation(), 
+    										   projectFilteringRequestDto.getStartDate(), 
+    										   projectFilteringRequestDto.getEndDate());
+    	List<ProjectResponseDto> responseList = new ArrayList<ProjectResponseDto>();
+    	for (Project project: lista) {
+    		ProjectResponseDto dto = new ProjectResponseDto();
+            dto.setProjectname(project.getProjectName());
+            dto.setProjectdesc(project.getProjectDesc());
+            dto.setTypeofwork(project.getTypeOfWork());
+            dto.setBeginningdate(project.getStartDate());
+            dto.setEnddate(project.getEndDate());
+            dto.setProjectlocation(project.getLocation());
+            dto.setNumregisteredvolunteers(project.getNumVolunteers());
+            dto.setMaxnumvolunteers(project.getMaxNumVolunteers());
+
+            LocalDate currentDate = LocalDate.now();
+            if (dto.getBeginningdate().isAfter(currentDate)){
+                dto.setStatus(String.valueOf(Status.OPEN));
+            } else if(currentDate.isAfter(dto.getEnddate())){
+                dto.setStatus(String.valueOf(Status.CLOSED));
+            } else if ((currentDate.isEqual(dto.getBeginningdate()) || currentDate.isAfter(dto.getBeginningdate())) &&
+                    (currentDate.isEqual(dto.getEnddate()) || currentDate.isBefore(dto.getEnddate()))) {
+                dto.setStatus(String.valueOf(Status.IN_PROGRESS));
+            }else{
+                dto.setStatus(String.valueOf(Status.CLOSED));
+            }
+
+            dto.setProjectID(project.getProjectId());
+            dto.setUrgent(project.getUrgent());
+
+            // Fetch the organization name using the organization ID
+            Organization organization = organizationRepository.findById(project.getOrganizationID())
+                    .orElseThrow(() -> new RuntimeException("Organization not found"));
+            dto.setOrganizationName(organization.getOrganizationName());
+            dto.setOrganizationID(organization.getId());
+            dto.setOrganizationEmail(organization.getEmail());
+
+            responseList.add(dto);
+    	}
+    	return responseList;
     }
 
     public VolunteerProjectDto get_project_info_as_volunteer(Long volunteerId, Long projectId){

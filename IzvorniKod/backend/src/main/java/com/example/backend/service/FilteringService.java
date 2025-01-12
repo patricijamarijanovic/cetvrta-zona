@@ -3,11 +3,10 @@ package com.example.backend.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.backend.model.Project;
+import com.example.backend.model.TypeOfWork;
 import com.example.backend.repository.ProjectRepository;
 
 @Service
@@ -18,41 +17,42 @@ public class FilteringService {
 	
     public FilteringService() {}
     
-//    public List<Project> filterProjects(String typeOfWork, String projectLocation, LocalDate beginningdate, LocalDate enddate) {
-//    	List<Project> l = new ArrayList<Project>();
-//    	if (typeOfWork == null && projectLocation == null) {
-//    		l = projectRepository.findAll();
-//    	} else if (typeOfWork == null) {
-//    		l = projectRepository.findAllByProjectlocation(projectLocation);
-//    	} else if (projectLocation == null) {
-//    		l = projectRepository.findAllByTypeofwork(typeOfWork);
-//    	} else {
-//    		l = projectRepository.findAllByTypeofworkAndProjectlocation(typeOfWork, projectLocation);
-//    	}
-//    	List<Project> filteredList = new ArrayList<Project>();
-//
-//    	int s = l.size();
-//
-//    	for (int i = 0; i < s; i++) {
-//    		Project p = l.get(i);
-//    		if ((beginningdate == null) ||
-//    			(p.getBeginningdate().isAfter(beginningdate)) ||
-//    			(p.getBeginningdate().equals(beginningdate))) {
-//    			if ((enddate == null) ||
-//    				(p.getEnddate().isBefore(enddate)) ||
-//    				(p.getEnddate().equals(enddate))) {
-//    				filteredList.add(p);
-//    			}
-//    		}
-//    	}
-//
-//    	filteredList.sort((project1, project2) -> {
-//    		if(project1.getUrgent() && !project2.getUrgent()) return 1;
-//    		else if (!project1.getUrgent() && project2.getUrgent()) return -1;
-//    		else return 0;
-//    	});
-//
-//    	return filteredList;
-//    }
+    public List<Project> filterProjects(String typeOfWork, String projectLocation, LocalDate startDate, LocalDate endDate) {
+    	List<Project> l = new ArrayList<Project>();
+    	TypeOfWork tow = TypeOfWork.valueOf(typeOfWork);
+    	if (typeOfWork == null && projectLocation == null) {
+    		l = projectRepository.findAll();
+    	} else if (typeOfWork == null) {
+    		l = projectRepository.findAllByLocation(projectLocation);
+    	} else if (projectLocation == null) {
+    		l = projectRepository.findAllByTypeOfWork(tow);
+    	} else {
+    		l = projectRepository.findAllByTypeOfWorkAndLocation(tow, projectLocation);
+    	}
+    	List<Project> filteredList = new ArrayList<Project>();
+
+    	int s = l.size();
+
+    	for (int i = 0; i < s; i++) {
+    		Project p = l.get(i);
+    		if ((startDate == null) ||
+    			(p.getStartDate().isAfter(startDate)) ||
+    			(p.getStartDate().equals(startDate))) {
+    			if ((endDate == null) ||
+    				(p.getEndDate().isBefore(endDate)) ||
+    				(p.getEndDate().equals(endDate))) {
+    				filteredList.add(p);
+    			}
+    		}
+    	}
+
+    	filteredList.sort((project1, project2) -> {
+    		if(project1.getUrgent() && !project2.getUrgent()) return 1;
+    		else if (!project1.getUrgent() && project2.getUrgent()) return -1;
+    		else return 0;
+    	});
+
+    	return filteredList;
+    }
 	
 }

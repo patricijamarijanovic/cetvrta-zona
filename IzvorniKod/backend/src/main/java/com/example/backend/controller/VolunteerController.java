@@ -40,6 +40,9 @@ public class VolunteerController {
 
     @Autowired
     private ImageService imageService;
+    
+    @Autowired
+    private MyUserRepository myUserRepository;
 
     // volonterski homepage
     @GetMapping("/volunteer/home")
@@ -51,6 +54,12 @@ public class VolunteerController {
     @GetMapping("/volunteer/activities")
     public List<ProjectResponseDto> all_activities() {
         return projectService.getAllProjects();
+    }
+    
+    // filtrirani projekti
+    @GetMapping("/volunteer/activities/filter")
+    public List<ProjectResponseDto> filtered_activities(@RequestBody ProjectFilteringRequestDto projectFilteringRequestDto) {
+    	return projectService.filter_projects(projectFilteringRequestDto);
     }
 
     // my profile info
@@ -119,10 +128,10 @@ public class VolunteerController {
 
 
 
-//    @PostMapping("/volunteer/{projectID}/leavereview")
-//    public ResponseEntity<Object> leave_review (@PathVariable Integer projectID, @RequestBody ReviewDto dto) {
-//    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//    	MyUser prijavljeniVolonter = myUserRepository.findByUsername(authentication.getName()).get();
-//    	return volunteerService.saveReview(projectID, dto, prijavljeniVolonter.getId());
-//    }
+    @PostMapping("/volunteer/{projectID}/leavereview")
+    public ResponseEntity<Object> leave_review (@PathVariable Integer projectID, @RequestBody ReviewDto dto) {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	MyUser prijavljeniVolonter = myUserRepository.findByUsername(authentication.getName()).get();
+    	return volunteerService.saveReview(projectID, dto, prijavljeniVolonter.getId());
+    }
 }

@@ -20,7 +20,7 @@ public class Review {
 	private Integer projectID;
 	private Long volunteerID;
 	
-	//public Review() {}
+	public Review() {}
 	
 	public Integer getReviewID() {
 		return reviewID;
