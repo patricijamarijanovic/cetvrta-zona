@@ -222,7 +222,7 @@ function VolunteerProfileEdit() {
                   className="rounded-full w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-gray-500">No Image</span>
+                <span className="text-gray-500">Nema slike</span>
               )}
             </div>
             {isEditMode && (
