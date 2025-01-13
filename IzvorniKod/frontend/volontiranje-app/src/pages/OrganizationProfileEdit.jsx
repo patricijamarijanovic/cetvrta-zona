@@ -180,7 +180,7 @@ function OrganizationProfileEdit() {
   if (loading) {
     return (
       <div className="bg-slate-700 min-h-screen flex items-center justify-center text-white">
-        <p>Loading profile data...</p>
+        <p>Učitavanje...</p>
       </div>
     );
   }
