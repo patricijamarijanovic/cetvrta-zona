@@ -29,6 +29,8 @@ import OrgnizationsPageVol from "./pages/OrganizationsPageVol";
 import VolunteerProfileEdit from "./pages/VolunteerProfileEdit";
 import OrganizationProfileEdit from "./pages/OrganizationProfileEdit";
 
+import MyActivities from "./pages/myActivities";
+
 function App() {
   return (
     <BrowserRouter>
@@ -56,6 +58,9 @@ function App() {
           
         <Route path="/volunteer/profileEdit" element={<VolunteerProfileEdit />} />
         <Route path="/organization/profileEdit" element={<OrganizationProfileEdit />} />
+
+        <Route path="/volunteer/my-activities" element={<MyActivities />} />
+
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>

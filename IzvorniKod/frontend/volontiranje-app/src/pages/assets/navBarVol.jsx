@@ -8,7 +8,7 @@ function NavBarLoggedIn() {
 
   const handleNavigateToProfile = () => navigate("/volunteer/profileEdit");
   const handleNavigateToSaved = () => navigate("/saved");
-  const handleNavigateToActivities = () => navigate("/activities");
+  const handleNavigateToActivities = () => navigate("/volunteer/my-activities");
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
