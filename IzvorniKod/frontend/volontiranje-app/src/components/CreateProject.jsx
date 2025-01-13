@@ -13,7 +13,7 @@ function CreateProject() {
   const [beginDate, setBeginDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [location, setLocation] = useState("");
-  const [maxNumber, setMaxNumber] = useState(0);
+  const [maxNumber, setMaxNumber] = useState(1);
   const [emergency, setEmergency] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [errors, setError] = useState({});
