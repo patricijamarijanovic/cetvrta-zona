@@ -12,7 +12,7 @@ const BACK_URL = "http://localhost:8080";
 function ActivityInfoOrganization() {
   const { id } = useParams();
   const [activity, setActivity] = useState(null);
-  const [image, setImage] = useState("");
+
   const token = localStorage.getItem("token");
   const [volunteers, setVolunteers] = useState([]);
   const [loadingActivity, setLoadingActivity] = useState(true);
@@ -46,6 +46,19 @@ function ActivityInfoOrganization() {
     "OKOLIŠ",
     "OSTALO",
   ];
+
+
+  
+  const [image, setImage] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null);
+  function handleImage(e) {
+    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      const imageURL = URL.createObjectURL(file);
+      setProfilePicture(imageURL);
+    }
+  }
 
   useEffect(() => {
     axios
@@ -93,15 +106,15 @@ function ActivityInfoOrganization() {
         })
         .then((res) => {
           if (res.status === 204) {
-            setImage("/images/nekaovog.jpg"); // Ako nema slike, postavi zadanu
+            setProfilePicture("/images/nekaovog.jpg"); // Ako nema slike, postavi zadanu
           } else {
             const imageBlob = new Blob([res.data], { type: "image/jpeg" });
             const imageUrl = URL.createObjectURL(imageBlob);
-            setImage(imageUrl); // Postavi URL slike
+            setProfilePicture(imageUrl); // Postavi URL slike
           }
         })
         .catch(() => {
-          setImage("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
+          setProfilePicture("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
         });
     }
   }, [activity])
@@ -142,6 +155,8 @@ function ActivityInfoOrganization() {
 
   const handleAccept = async (volunteerId) => {
     console.log(volunteerId);
+    const token = localStorage.getItem("token");
+    
     axios
       .put(
         `${BACK_URL}/organization/applications/${id}/accept/${volunteerId}`,
@@ -196,6 +211,19 @@ function ActivityInfoOrganization() {
   };
 
   const handleSubmit = async (e) => {
+
+
+    const formData = new FormData();
+    formData.append("image", image);
+
+    axios
+      .post(`${BACK_URL}/organization/edit-project-picture/${activity.projectID}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .catch((err) => console.error("Error uploading picture: ", err));
+
     e.preventDefault(); // Prevent page reload on form submit
     console.log(editData.projectID)
     if(editData.typeofwork === "OKOLIŠ") {
@@ -250,16 +278,48 @@ function ActivityInfoOrganization() {
       </div>
 
       <div className="container mx-auto px-6 py-10">
+
+        {/* Project Picture */}
+        <div className="flex flex-col items-center mb-6">
+            <div className="w-24 h-24 bg-gray-300 flex items-center justify-center ring-4 ring-yellow-400">
+              {profilePicture ? (
+                <img
+                  src={profilePicture}
+                  alt="Profile"
+                  className="rounded-full w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-gray-500">Nema slike</span>
+              )}
+            </div>
+            {editMode && (
+              <div>
+                <input
+                  type="file"
+                  name="file"
+                  onChange={handleImage}
+                  style={{ display: "none" }}
+                  id="fileInput"
+                />
+
+                <button
+                  className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
+                  onClick={() => document.getElementById("fileInput").click()}
+                >
+                  Promijeni sliku
+                </button>
+              </div>
+            )}
+          </div>
+
+
         <div className="bg-slate-600 shadow-lg rounded-lg p-6">
         {!editMode ? (
             <>
               <h1 className="text-3xl font-bold text-white mb-4">
                 {activity.projectname}
               </h1>
-              <img
-                src={image}
-                className="rounded-lg object-cover h-40 w-full mb-4"
-              />
+              
               <p className="text-white text-lg mb-6">{activity.projectdesc}</p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -309,10 +369,6 @@ function ActivityInfoOrganization() {
                   className="text-3xl font-bold text-white mb-4 bg-transparent border-b border-white focus:outline-none"
                 />
 
-                <img
-                  src={image}
-                  className="rounded-lg object-cover h-40 w-full mb-4"
-                />
                 <textarea
                   name="projectdesc"
                   value={editData.projectdesc}
