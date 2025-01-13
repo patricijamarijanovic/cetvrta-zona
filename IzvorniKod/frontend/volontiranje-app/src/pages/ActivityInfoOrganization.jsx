@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import NavBarLoggedIn from "./assets/navBarOrg";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Card from "./assets/card";
 
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
@@ -19,21 +18,25 @@ function ActivityInfoOrganization() {
   const [loadingVolunteers, setLoadingVolunteers] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [editData, setEditData] = useState({
-    projectname: '',
-    projectdesc: '',
-    typeofwork: '',
-    beginningdate: '',
-    enddate: '',
-    projectlocation: '',
-    numregisteredvolunteers: '',
-    maxnumvolunteers: '',
-    status:'',
+    projectname: "",
+    projectdesc: "",
+    typeofwork: "",
+    beginningdate: "",
+    enddate: "",
+    projectlocation: "",
+    numregisteredvolunteers: "",
+    maxnumvolunteers: "",
+    status: "",
     projectID: id,
-    urgent: '',
-    organizationName: '',
-    organizationID: '',
-    organizationEmail: '',
+    urgent: "",
+    organizationName: "",
+    organizationID: "",
+    organizationEmail: "",
   });
+  const [emergency, setEmergency] = useState(false);
+  const [emergencyDropdownOpen, setEmergencyDropdownOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
 
   const categories = [
     "DJECA",
@@ -65,10 +68,10 @@ function ActivityInfoOrganization() {
       .get(`${BACK_URL}/home/activity/${id}`)
       .then((response) => {
         console.log(response.data);
-        if(response.data.typeofwork === "OKOLIS") {
+        if (response.data.typeofwork === "OKOLIS") {
           response.data.typeofwork = "OKOLIŠ";
         }
-        if(response.data.typeofwork === "ZIVOTINJE") {
+        if (response.data.typeofwork === "ZIVOTINJE") {
           response.data.typeofwork = "ŽIVOTINJE";
         }
         setActivity(response.data);
@@ -117,7 +120,7 @@ function ActivityInfoOrganization() {
           setProfilePicture("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
         });
     }
-  }, [activity])
+  }, [activity]);
 
   useEffect(() => {
     axios
@@ -225,15 +228,14 @@ function ActivityInfoOrganization() {
       .catch((err) => console.error("Error uploading picture: ", err));
 
     e.preventDefault(); // Prevent page reload on form submit
-    console.log(editData.projectID)
-    if(editData.typeofwork === "OKOLIŠ") {
+    console.log("bok" + id);
+    if (editData.typeofwork === "OKOLIŠ") {
       editData.typeofwork = "OKOLIS";
     }
-    if(editData.typeofwork === "ŽIVOTINJE") {
+    if (editData.typeofwork === "ŽIVOTINJE") {
       editData.typeofwork = "ZIVOTINJE";
     }
 
-    
     try {
       const response = await axios.post(
         `${BACK_URL}/organization/edit-project`,
@@ -242,7 +244,7 @@ function ActivityInfoOrganization() {
           projectdesc: editData.projectdesc,
           typeofwork: editData.typeofwork,
           beginningdate: editData.beginningdate,
-          enddate:editData.enddate,
+          enddate: editData.enddate,
           projectlocation: editData.projectlocation,
           numregisteredvolunteers: editData.numregisteredvolunteers,
           maxnumvolunteers: editData.maxnumvolunteers,
@@ -269,6 +271,34 @@ function ActivityInfoOrganization() {
 
   const handleDontSave = () => {
     setEditMode(false);
+  };
+
+  const toggleEmergencyDropdown = () => {
+    setEmergencyDropdownOpen(!emergencyDropdownOpen);
+    setCategoryDropdownOpen(false);
+  };
+
+  const toggleCategoryDropdown = () => {
+    setCategoryDropdownOpen(!categoryDropdownOpen);
+    setEmergencyDropdownOpen(false);
+  };
+
+  const handleCategoryChange = (category) => {
+    setEditData({
+      ...editData,
+      typeofwork: category,
+    });
+
+    setCategoryDropdownOpen(false);
+  };
+
+  const handleEmergencyChange = (value) => {
+    setEditData({
+      ...editData,
+      urgent: value,
+    });
+
+    setEmergencyDropdownOpen(false);
   };
 
   return (
@@ -314,12 +344,15 @@ function ActivityInfoOrganization() {
 
 
         <div className="bg-slate-600 shadow-lg rounded-lg p-6">
-        {!editMode ? (
+          {!editMode ? (
             <>
               <h1 className="text-3xl font-bold text-white mb-4">
                 {activity.projectname}
               </h1>
-              
+              <img
+                src={image}
+                className="rounded-lg object-cover h-80 w-full mb-4"
+              />
               <p className="text-white text-lg mb-6">{activity.projectdesc}</p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -344,7 +377,9 @@ function ActivityInfoOrganization() {
                   <p className="text-white">{activity.projectlocation}</p>
                 </div>
                 <div>
-                  <p className="font-bold text-white">Potreban broj volontera:</p>
+                  <p className="font-bold text-white">
+                    Potreban broj volontera:
+                  </p>
                   <p className="text-white">{activity.maxnumvolunteers}</p>
                 </div>
                 <div>
@@ -355,106 +390,205 @@ function ActivityInfoOrganization() {
                   <p className="font-bold text-white">Kategorija:</p>
                   <p className="text-white">{activity.typeofwork}</p>
                 </div>
-                <button onClick={handleEdit}>Uredi</button>
+                <div className="mt-6">
+                  <button
+                    onClick={handleEdit}
+                    className="bg-yellow-400 px-6 py-3 text-lg rounded hover:bg-yellow-500"
+                  >
+                    Uredi podatke
+                  </button>
+                </div>
               </div>
             </>
           ) : (
             <>
-              <form onSubmit={handleSubmit}>
-                <input
-                  type="text"
-                  name="projectname"
-                  value={editData.projectname}
-                  onChange={handleChange}
-                  className="text-3xl font-bold text-white mb-4 bg-transparent border-b border-white focus:outline-none"
-                />
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="projectName"
+                    className="text-white font-semibold"
+                  >
+                    Ime projekta
+                  </label>
+                  <input
+                    id="projectName"
+                    name="projectname"
+                    type="text"
+                    value={editData.projectname}
+                    onChange={handleChange}
+                    className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 border-gray-300"
+                    placeholder="Ime projekta"
+                  />
+                </div>
 
-                <textarea
-                  name="projectdesc"
-                  value={editData.projectdesc}
-                  onChange={handleChange}
-                  className="text-white text-lg mb-6 w-full bg-transparent border border-white rounded p-2 focus:outline-none"
-                />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <label className="font-bold text-white">Početak:</label>
+                <div className="space-y-2">
+                  <label
+                    htmlFor="description"
+                    className="text-white font-semibold"
+                  >
+                    Opis projekta
+                  </label>
+                  <textarea
+                    id="description"
+                    name="projectdesc"
+                    value={editData.projectdesc}
+                    onChange={handleChange}
+                    rows="3"
+                    className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 border-gray-300"
+                    placeholder="Opis projekta"
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="beginDate"
+                      className="text-white font-semibold"
+                    >
+                      Datum početka projekta
+                    </label>
                     <input
-                      type="date"
+                      id="beginDate"
                       name="beginningdate"
+                      type="date"
                       value={editData.beginningdate}
                       onChange={handleChange}
-                      className="text-white bg-transparent border-b border-white w-full focus:outline-none"
+                      className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 border-gray-300"
                     />
                   </div>
-                  <div>
-                    <label className="font-bold text-white">Kraj:</label>
+
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="endDate"
+                      className="text-white font-semibold"
+                    >
+                      Datum završetka projekta
+                    </label>
                     <input
-                      type="date"
+                      id="endDate"
                       name="enddate"
+                      type="date"
                       value={editData.enddate}
                       onChange={handleChange}
-                      className="text-white bg-transparent border-b border-white w-full focus:outline-none"
+                      className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 border-gray-300"
                     />
                   </div>
-                  <div>
-                    <label className="font-bold text-white">Lokacija:</label>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="location"
+                      className="text-white font-semibold"
+                    >
+                      Lokacija
+                    </label>
                     <input
-                      type="text"
+                      id="location"
                       name="projectlocation"
+                      type="text"
                       value={editData.projectlocation}
                       onChange={handleChange}
-                      className="text-white bg-transparent border-b border-white w-full focus:outline-none"
+                      className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 border-gray-300"
+                      placeholder="Lokacija"
                     />
                   </div>
-                  <div>
-                    <label className="font-bold text-white">Potreban broj volontera:</label>
+
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="maxVolunteers"
+                      className="text-white font-semibold"
+                    >
+                      Broj potrebnih volontera
+                    </label>
                     <input
-                      type="number"
+                      id="maxVolunteers"
                       name="maxnumvolunteers"
+                      type="number"
                       value={editData.maxnumvolunteers}
                       onChange={handleChange}
-                      className="text-white bg-transparent border-b border-white w-full focus:outline-none"
+                      min="1"
+                      className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 border-gray-300"
                     />
                   </div>
-                  <div>
-                    <label className="font-bold text-white">Hitno:</label>
-                    <select
-                      name="urgent"
-                      value={editData.urgent}
-                      onChange={handleChange}
-                      className="text-white bg-transparent border-b border-white w-full focus:outline-none"
-                    >
-                      <option value="true">DA</option>
-                      <option value="false">NE</option>
-                    </select>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-white font-semibold">Hitno</label>
+                    <div className="relative" onClick={toggleEmergencyDropdown}>
+                      <div className="border rounded-lg p-3 cursor-pointer bg-white text-gray-700 flex justify-between items-center">
+                        <span>{editData.urgent ? "Da" : "Ne"}</span>
+                        <img
+                          src="/images/one-down-arrow.png"
+                          alt="Arrow"
+                          className="w-4 h-4"
+                        />
+                      </div>
+                      {emergencyDropdownOpen && (
+                        <div className="absolute z-10 bg-white shadow-lg rounded-lg mt-2 w-full border">
+                          <div
+                            className="p-3 cursor-pointer hover:bg-gray-200 hover:rounded-t-lg"
+                            onClick={() => handleEmergencyChange(true)}
+                          >
+                            Da
+                          </div>
+                          <div
+                            className="p-3 cursor-pointer hover:bg-gray-200 hover:rounded-b-lg"
+                            onClick={() => handleEmergencyChange(false)}
+                          >
+                            Ne
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                  <label className="font-bold text-white">Kategorija:</label>
-                  <select
-                    name="typeofwork"
-                    value={editData.typeofwork}
-                    onChange={handleChange}
-                    className="text-white bg-transparent border-b border-white w-full focus:outline-none"
+
+                  <div className="space-y-2">
+                    <label className="text-white font-semibold">
+                      Kategorija projekta
+                    </label>
+                    <div className="relative" onClick={toggleCategoryDropdown}>
+                      <div className="border rounded-lg p-3 cursor-pointer bg-white text-gray-700 flex justify-between items-center">
+                        <span>{editData.typeofwork}</span>
+                        <img
+                          src="/images/one-down-arrow.png"
+                          alt="Arrow"
+                          className="w-4 h-4"
+                        />
+                      </div>
+                      {categoryDropdownOpen && (
+                        <div className="absolute z-10 bg-white shadow-lg rounded-lg mt-2 w-full border max-h-60 overflow-y-auto">
+                          {categories.map((category) => (
+                            <div
+                              key={category}
+                              className="p-3 cursor-pointer hover:bg-gray-200"
+                              onClick={() => handleCategoryChange(category)}
+                            >
+                              {category}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-center gap-4 pt-6">
+                  <button
+                    type="submit"
+                    className="bg-yellow-300 text-black text-2xl py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
                   >
-                    
-                    {categories.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
+                    Spremi promjene
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDontSave}
+                    className="bg-red-500 text-white text-2xl py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-red-600"
+                  >
+                    Odbaci
+                  </button>
                 </div>
-                </div>
-                <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-                  Spremi promjene
-                </button>
-                <button
-                  type="button"
-                  onClick={handleDontSave}
-                  className="bg-red-500 text-white p-2 rounded ml-2"
-                >
-                  Odbaci
-                </button>
               </form>
             </>
           )}
