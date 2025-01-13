@@ -5,6 +5,18 @@ import NavBarLoggedIn from "./assets/navBarOrg";
 
 const BACK_URL = "http://localhost:8080";
 
+const areasOfWorkMap = {
+    DJECA: "Djeca",
+    INVALIDI: "Invalidi",
+    STARIJI: "Stariji",
+    SPORT: "Sport",
+    ZIVOTINJE: "Životinje",
+    EDUKACIJA: "Edukacija",
+    ZDRAVLJE: "Zdravlje",
+    OKOLIS: "Okoliš",
+    OSTALO: "Ostalo",
+  };
+
 function OrganizationProfileEdit() {
   const [profileData, setProfileData] = useState({
     name: "",
@@ -19,30 +31,17 @@ function OrganizationProfileEdit() {
 
   const navigate = useNavigate();
 
-
-
-
-
-
-  const [image, setImage] = useState("")
-  const [imageUrl, setImageUrl] = useState(null);
+  const [image, setImage] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
-  
-    function handleImage(e){
-      console.log(e.target.files)
-      setImage(e.target.files[0])
-  
-      const file = e.target.files[0];
-      if (file) {
-        const imageURL = URL.createObjectURL(file);
-        setProfilePicture(imageURL); // Postavljamo novu sliku u stanje
-        console.log("odabrana slika " + imageURL)
-      }
+
+  function handleImage(e) {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      const imageURL = URL.createObjectURL(file);
+      setProfilePicture(imageURL);
     }
-
-
-
-
+  }
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -52,34 +51,23 @@ function OrganizationProfileEdit() {
       return;
     }
 
-    // dohvati profilnu sliku s backenda
-    axios.get(`${BACK_URL}/organization/profile-picture`, { 
-      headers: { 
-        Authorization: `Bearer ${token}` 
-      },
-      responseType: 'arraybuffer'
-    })
-    .then((res) => {
+    axios
+      .get(`${BACK_URL}/organization/profile-picture`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: "arraybuffer",
+      })
+      .then((res) => {
         if (res.status === 204) {
-            // Ako backend vraća 204 No Content (slika nije pronađena), postavi defaultnu sliku
-            console.log("Slika nije pronađena, koristi se defaultna slika");
-            setProfilePicture("/images/nekaovog.jpg");  // Zamijeni s URL-om defaultne slike
+          setProfilePicture("/images/nekaovog.jpg");
         } else {
-            console.log("Uspješno dobio sliku:", res);
-
-            // Pretvori bajtove u URL koristeći Blob
-            const imageBlob = new Blob([res.data], { type: 'image/jpeg' }); // Pretpostavljamo da je tip slike 'jpeg'
-            const imageUrl = URL.createObjectURL(imageBlob);
-            
-            // Postavi sliku u stanje
-            setProfilePicture(imageUrl);  
+          const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+          const imageUrl = URL.createObjectURL(imageBlob);
+          setProfilePicture(imageUrl);
         }
-        })
-    .catch((err) => {
-        console.error("Došlo je do pogreške pri dohvaćanju slike:", err);
-        // Ako dođe do pogreške, također možeš postaviti defaultnu sliku
-        setProfilePicture("/images/nekaovog.jpg");  // Zamijeni s URL-om defaultne slike
-    });
+      })
+      .catch(() => {
+        setProfilePicture("/images/nekaovog.jpg");
+      });
 
     axios
       .get(`${BACK_URL}/organization/my-profile`, {
@@ -89,8 +77,7 @@ function OrganizationProfileEdit() {
         setProfileData(response.data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error("Error fetching profile data:", err);
+      .catch(() => {
         setMessage("Failed to load profile data. Please try again later.");
         navigate("/not-authorized", { replace: true });
         setLoading(false);
@@ -109,28 +96,14 @@ function OrganizationProfileEdit() {
     }
 
     const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("image", image);
 
-
-    const formData = new FormData()
-    formData.append('image', image)
-
-
-
-    // Pošaljemo sliku na backend
-    axios.post(`${BACK_URL}/organization/edit-picture`, formData, { 
-      headers: { 
-          Authorization: `Bearer ${token}` 
-      }
-    })
-    .then((res) => {
-        console.log("Slika uspješno poslana, ID = " + res.data);
-    })
-    .catch((err) => {
-        console.error("Došlo je do pogreške pri slanju slike: ", err);
-    });
-
-
-
+    axios
+      .post(`${BACK_URL}/organization/edit-picture`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .catch((err) => console.error("Error uploading picture: ", err));
 
     axios
       .post(`${BACK_URL}/organization/edit-profile`, profileData, {
@@ -140,15 +113,51 @@ function OrganizationProfileEdit() {
         setIsEditMode(false);
         setMessage("Profile updated successfully!");
       })
-      .catch((err) => {
-        console.error("Error updating profile:", err);
+      .catch(() => {
         setMessage("Failed to update profile. Please try again.");
       });
   };
 
-  const handleChange = (field, value) => {
-    setProfileData((prev) => ({ ...prev, [field]: value }));
+  const handleCheckboxChange = (field, value) => {
+    setProfileData((prev) => {
+      const updatedList = prev[field].includes(value)
+        ? prev[field].filter((item) => item !== value)
+        : [...prev[field], value];
+      return { ...prev, [field]: updatedList };
+    });
   };
+
+  const renderCheckboxSection = (label, field, map) => (
+    <div className="flex flex-col mb-4">
+      <h4 className="text-gray-600 font-medium mb-2">{label}</h4>
+      {isEditMode ? (
+        <div className="grid grid-cols-2 gap-2">
+          {Object.entries(map).map(([key, value]) => (
+            <label key={key} className="inline-flex items-center">
+              <input
+                type="checkbox"
+                checked={profileData[field].includes(key)}
+                onChange={() => handleCheckboxChange(field, key)}
+                className="mr-2"
+              />
+              {value}
+            </label>
+          ))}
+        </div>
+      ) : (
+        <div>
+          {profileData[field].map((item) => (
+            <span
+              key={item}
+              className="inline-block bg-yellow-400 text-black px-2 py-1 rounded-full mr-2 mb-2"
+            >
+              {map[item]}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   const renderField = (label, field, type = "text") => (
     <div className="flex flex-col mb-4">
@@ -157,32 +166,13 @@ function OrganizationProfileEdit() {
         <input
           type={type}
           value={profileData[field] || ""}
-          onChange={(e) => handleChange(field, e.target.value)}
-          className="border rounded px-2 py-1 w-full"
-        />
-      ) : (
-        <p className="text-gray-800">{profileData[field] ?? "Nije navedeno"}</p>
-      )}
-    </div>
-  );
-
-  const renderArrayField = (label, field) => (
-    <div className="flex flex-col mb-4">
-      <h4 className="text-gray-600 font-medium">{label}</h4>
-      {isEditMode ? (
-        <textarea
-          value={profileData[field]?.join(", ") || ""}
           onChange={(e) =>
-            handleChange(field, e.target.value.split(",").map((item) => item.trim()))
+            setProfileData((prev) => ({ ...prev, [field]: e.target.value }))
           }
           className="border rounded px-2 py-1 w-full"
         />
       ) : (
-        <p className="text-gray-800">
-          {profileData[field]?.length > 0
-            ? profileData[field].join(", ")
-            : "Nije navedeno"}
-        </p>
+        <p className="text-gray-800">{profileData[field] || "Nije navedeno"}</p>
       )}
     </div>
   );
@@ -190,7 +180,7 @@ function OrganizationProfileEdit() {
   if (loading) {
     return (
       <div className="bg-slate-700 min-h-screen flex items-center justify-center text-white">
-        <p>Loading profile data...</p>
+        <p>Učitavanje...</p>
       </div>
     );
   }
@@ -211,26 +201,25 @@ function OrganizationProfileEdit() {
                   className="rounded-full w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-gray-500">No Image</span>
+                <span className="text-gray-500">Nema slike</span>
               )}
             </div>
             {isEditMode && (
               <div>
-                <input 
-                  type="file" 
-                  name="file" 
-                  onChange={handleImage} 
-                  style={{ display: 'none' }} // Sakrijemo input
-                  id="fileInput" // Dodajemo id za referencu
+                <input
+                  type="file"
+                  name="file"
+                  onChange={handleImage}
+                  style={{ display: "none" }}
+                  id="fileInput"
                 />
 
                 <button
-                    className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
-                    onClick={() => document.getElementById('fileInput').click()} // Aktivira input
+                  className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
+                  onClick={() => document.getElementById("fileInput").click()}
                 >
-                    Promijeni sliku
+                  Promijeni sliku
                 </button>
-                
               </div>
             )}
           </div>
@@ -238,7 +227,7 @@ function OrganizationProfileEdit() {
           {renderField("Naziv organizacije", "name")}
           {renderField("Email adresa", "email")}
           {renderField("Opis", "description")}
-          {renderArrayField("Područja rada", "areas_of_work")}
+          {renderCheckboxSection("Područja rada", "areas_of_work", areasOfWorkMap)}
 
           {message && (
             <p
