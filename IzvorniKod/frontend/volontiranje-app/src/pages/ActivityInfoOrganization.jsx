@@ -311,12 +311,12 @@ function ActivityInfoOrganization() {
 
         {/* Project Picture */}
         <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 bg-gray-300 flex items-center justify-center ring-4 ring-yellow-400">
+            <div className="rounded-lg object-cover h-80 w-full mb-4">
               {profilePicture ? (
                 <img
                   src={profilePicture}
                   alt="Profile"
-                  className="rounded-full w-full h-full object-cover"
+                  className="rounded-lg object-cover h-80 w-full mb-4"
                 />
               ) : (
                 <span className="text-gray-500">Nema slike</span>
@@ -349,10 +349,11 @@ function ActivityInfoOrganization() {
               <h1 className="text-3xl font-bold text-white mb-4">
                 {activity.projectname}
               </h1>
-              <img
+              {/* <img
                 src={image}
                 className="rounded-lg object-cover h-80 w-full mb-4"
-              />
+              /> */}
+
               <p className="text-white text-lg mb-6">{activity.projectdesc}</p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -420,6 +421,8 @@ function ActivityInfoOrganization() {
                     placeholder="Ime projekta"
                   />
                 </div>
+
+      
 
                 <div className="space-y-2">
                   <label
