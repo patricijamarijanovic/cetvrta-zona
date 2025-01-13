@@ -288,7 +288,7 @@ function ActivityInfoOrganization() {
               </h1>
               <img
                 src={image}
-                className="rounded-lg object-cover h-40 w-full mb-4"
+                className="rounded-lg object-cover h-80 w-full mb-4"
               />
               <p className="text-white text-lg mb-6">{activity.projectdesc}</p>
 
