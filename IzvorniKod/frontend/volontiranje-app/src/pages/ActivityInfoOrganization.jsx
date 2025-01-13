@@ -12,7 +12,7 @@ const BACK_URL = "http://localhost:8080";
 function ActivityInfoOrganization() {
   const { id } = useParams();
   const [activity, setActivity] = useState(null);
-
+  const [image, setImage] = useState("");
   const token = localStorage.getItem("token");
   const [volunteers, setVolunteers] = useState([]);
   const [loadingActivity, setLoadingActivity] = useState(true);
@@ -83,6 +83,28 @@ function ActivityInfoOrganization() {
         setLoadingActivity(false);
       });
   }, []);
+
+  useEffect(() => {
+    if (activity && activity.projectID) {
+      // Uvjet da se activity.projectID učita
+      axios
+        .get(`${BACK_URL}/home/project-picture/${activity.projectID}`, {
+          responseType: "arraybuffer",
+        })
+        .then((res) => {
+          if (res.status === 204) {
+            setImage("/images/nekaovog.jpg"); // Ako nema slike, postavi zadanu
+          } else {
+            const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+            const imageUrl = URL.createObjectURL(imageBlob);
+            setImage(imageUrl); // Postavi URL slike
+          }
+        })
+        .catch(() => {
+          setImage("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
+        });
+    }
+  }, [activity])
 
   useEffect(() => {
     axios
@@ -234,6 +256,10 @@ function ActivityInfoOrganization() {
               <h1 className="text-3xl font-bold text-white mb-4">
                 {activity.projectname}
               </h1>
+              <img
+                src={image}
+                className="rounded-lg object-cover h-40 w-full mb-4"
+              />
               <p className="text-white text-lg mb-6">{activity.projectdesc}</p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -281,6 +307,11 @@ function ActivityInfoOrganization() {
                   value={editData.projectname}
                   onChange={handleChange}
                   className="text-3xl font-bold text-white mb-4 bg-transparent border-b border-white focus:outline-none"
+                />
+
+                <img
+                  src={image}
+                  className="rounded-lg object-cover h-40 w-full mb-4"
                 />
                 <textarea
                   name="projectdesc"
