@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 //import axios from "axios";
 
 import NavBarLoggedInVol from "./assets/navBarVol";
-import ActivitiesList from "./assets/activitiesList";
+import ActivitiesListAll from "./assets/activitiesListAll";
 
 const BACK_URL = "http://localhost:8080";
 
@@ -55,7 +55,7 @@ function ActivitiesPageVol() {
             <div className="bg-slate-600 rounded-b-3xl text-white">
             <NavBarLoggedInVol />
             </div>
-            <ActivitiesList />
+            <ActivitiesListAll />
         </div>
     );
 }
