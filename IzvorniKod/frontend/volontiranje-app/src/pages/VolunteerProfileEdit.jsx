@@ -5,6 +5,34 @@ import NavBarLoggedIn from "./assets/navBarVol"; // Adjust path based on your st
 
 const BACK_URL = "http://localhost:8080"; // Update with your backend URL
 
+const interestsMap = {
+  DJECA: "Djeca",
+  INVALIDI: "Invalidi",
+  STARIJI: "Stariji",
+  SPORT: "Sport",
+  ZIVOTINJE: "Životinje",
+  EDUKACIJA: "Edukacija",
+  ZDRAVLJE: "Zdravlje",
+  OKOLIS: "Okoliš",
+  OSTALO: "Ostalo",
+};
+
+const skillsMap = {
+  ENGLESKI: "Engleski",
+  NJEMACKI: "Njemački",
+  OSTALI_JEZICI: "Ostali jezici",
+  ADMINISTRATIVNI_POSLOVI: "Administrativni poslovi",
+  PODUCAVANJE: "Podučavanje",
+  FIZICKI_POSLOVI: "Fizički poslovi",
+  RUKOTVORINE: "Rukotvorine",
+  GLAZBENA_UMJETNOST: "Glazbena umjetnost",
+  FOTOGRAFIJA: "Fotografija",
+  VIDEO: "Video",
+  DIZAJN: "Dizajn",
+  KREATIVNI_POSLOVI: "Kreativni poslovi",
+  RACUNOVODSTVO: "Računovodstvo",
+};
+
 function VolunteerProfileEdit() {
   const [profileData, setProfileData] = useState({
     profilePicture: "",
@@ -23,73 +51,44 @@ function VolunteerProfileEdit() {
 
   const navigate = useNavigate();
 
-
-
-
-
-
-
-
-
-
-  const [image, setImage] = useState("")
-  const [imageUrl, setImageUrl] = useState(null);
+  const [image, setImage] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
 
-  function handleImage(e){
-    console.log(e.target.files)
-    setImage(e.target.files[0])
-
+  function handleImage(e) {
+    setImage(e.target.files[0]);
     const file = e.target.files[0];
     if (file) {
       const imageURL = URL.createObjectURL(file);
-      setProfilePicture(imageURL); // Postavljamo novu sliku u stanje
-      console.log("odabrana slika " + imageURL)
+      setProfilePicture(imageURL);
     }
   }
-
-
-
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/not-authorized", { replace: true });
+      navigate("/volunteer/not-authorized ", { replace: true });
       return;
     }
 
-    // dohvati profilnu sliku s backenda
-    axios.get(`${BACK_URL}/volunteer/profile-picture`, { 
-      headers: { 
-        Authorization: `Bearer ${token}` 
-      },
-      responseType: 'arraybuffer'
-    })
-    .then((res) => {
+    axios
+      .get(`${BACK_URL}/volunteer/profile-picture`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: "arraybuffer",
+      })
+      .then((res) => {
         if (res.status === 204) {
-            // Ako backend vraća 204 No Content (slika nije pronađena), postavi defaultnu sliku
-            console.log("Slika nije pronađena, koristi se defaultna slika");
-            setProfilePicture("/images/nekaovog.jpg");  // Zamijeni s URL-om defaultne slike
+          setProfilePicture("/images/nekaovog.jpg");
         } else {
-            console.log("Uspješno dobio sliku:", res);
-
-            // Pretvori bajtove u URL koristeći Blob
-            const imageBlob = new Blob([res.data], { type: 'image/jpeg' }); // Pretpostavljamo da je tip slike 'jpeg'
-            const imageUrl = URL.createObjectURL(imageBlob);
-            
-            // Postavi sliku u stanje
-            setProfilePicture(imageUrl);  
+          const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+          const imageUrl = URL.createObjectURL(imageBlob);
+          setProfilePicture(imageUrl);
         }
-        })
-    .catch((err) => {
-        console.error("Došlo je do pogreške pri dohvaćanju slike:", err);
-        // Ako dođe do pogreške, također možeš postaviti defaultnu sliku
-        setProfilePicture("/images/nekaovog.jpg");  // Zamijeni s URL-om defaultne slike
-    });
-
-
-
+      })
+      .catch(() => {
+        setProfilePicture("/images/nekaovog.jpg");
+      });
 
     axios
       .get(`${BACK_URL}/volunteer/my-profile`, {
@@ -99,8 +98,7 @@ function VolunteerProfileEdit() {
         setProfileData(response.data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error("Error fetching profile data:", err);
+      .catch(() => {
         setMessage("Failed to load profile data. Please try again later.");
         navigate("/not-authorized", { replace: true });
         setLoading(false);
@@ -114,51 +112,74 @@ function VolunteerProfileEdit() {
 
   const handleSaveAll = () => {
     const token = localStorage.getItem("token");
-
-
-
-    const formData = new FormData()
-    formData.append('image', image)
-
-    // Pošaljemo sliku na backend
-    axios.post(`${BACK_URL}/volunteer/edit-picture`, formData, { 
-      headers: { 
-          Authorization: `Bearer ${token}` 
-      }
-    })
-    .then((res) => {
-        console.log("Slika uspješno poslana, ID = " + res.data);
-    })
-    .catch((err) => {
-        console.error("Došlo je do pogreške pri slanju slike: ", err);
-    });
-
-
-
+    const formData = new FormData();
+    formData.append("image", image);
 
     axios
-      .post(
-        `${BACK_URL}/volunteer/edit-profile`,
-        profileData,
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
+      .post(`${BACK_URL}/volunteer/edit-picture`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .catch((err) => console.error("Error uploading picture: ", err));
+
+    axios
+      .post(`${BACK_URL}/volunteer/edit-profile`, profileData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(() => {
         setIsEditMode(false);
         setMessage("Profile updated successfully!");
       })
-      .catch((err) => {
-        console.error("Error updating profile:", err);
+      .catch(() => {
         setMessage("Failed to update profile. Please try again.");
       });
   };
 
-
-
-  
-
   const handleChange = (field, value) => {
     setProfileData((prev) => ({ ...prev, [field]: value }));
   };
+
+  const handleCheckboxChange = (field, value) => {
+    setProfileData((prev) => {
+      const updatedList = prev[field].includes(value)
+        ? prev[field].filter((item) => item !== value)
+        : [...prev[field], value];
+      return { ...prev, [field]: updatedList };
+    });
+  };
+
+  const renderCheckboxSection = (label, field, map) => (
+    <div className="flex flex-col mb-4">
+      <h4 className="text-gray-600 font-medium mb-2">{label}</h4>
+      {isEditMode ? (
+        <div className="grid grid-cols-2 gap-2">
+          {Object.entries(map).map(([key, value]) => (
+            <label key={key} className="inline-flex items-center">
+              <input
+                type="checkbox"
+                checked={profileData[field].includes(key)}
+                onChange={() => handleCheckboxChange(field, key)}
+                className="mr-2"
+              />
+              {value}
+            </label>
+          ))}
+        </div>
+      ) : (
+        <div>
+          {profileData[field].map((item) => (
+            <span
+              key={item}
+              className="inline-block bg-yellow-400 text-black px-2 py-1 rounded-full mr-2 mb-2"
+            >
+              {map[item]}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   const renderField = (label, field, type = "text") => (
     <div className="flex flex-col mb-4">
@@ -178,13 +199,12 @@ function VolunteerProfileEdit() {
 
   if (loading) {
     return (
-      <div className="bg-slate-700 min-h-screen flex items-center justify-center text-white">
-        <p>Loading profile data...</p>
+      <div className="bg-slate-700 min-h-screen flex items-center justify-center">
+        <p className="text-white text-lg">Učitavanje...</p>
       </div>
     );
   }
-
-
+ 
   return (
     <div className="bg-slate-700 min-h-screen">
       <NavBarLoggedIn />
@@ -207,31 +227,23 @@ function VolunteerProfileEdit() {
             </div>
             {isEditMode && (
               <div>
-                <input 
-                  type="file" 
-                  name="file" 
-                  onChange={handleImage} 
-                  style={{ display: 'none' }} // Sakrijemo input
-                  id="fileInput" // Dodajemo id za referencu
+                <input
+                  type="file"
+                  name="file"
+                  onChange={handleImage}
+                  style={{ display: "none" }}
+                  id="fileInput"
                 />
 
                 <button
-                    className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
-                    onClick={() => document.getElementById('fileInput').click()} // Aktivira input
+                  className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
+                  onClick={() => document.getElementById("fileInput").click()}
                 >
-                    Promijeni sliku
+                  Promijeni sliku
                 </button>
-                
               </div>
             )}
           </div>
-
-
-
-
-
-
-
 
           {/* Editable Fields */}
           {renderField("Ime", "firstName")}
@@ -241,9 +253,11 @@ function VolunteerProfileEdit() {
           {renderField("Lokacija", "location")}
           {renderField("Broj telefona", "phone")}
 
-          {/* Interests and Skills */}
-          {renderField("Interesi", "interests")}
-          {renderField("Vještine", "skills")}
+          {/* Interests Section */}
+          {renderCheckboxSection("Interesi", "interests", interestsMap)}
+
+          {/* Skills Section */}
+          {renderCheckboxSection("Vještine", "skills", skillsMap)}
 
           {/* Feedback Message */}
           {message && (
