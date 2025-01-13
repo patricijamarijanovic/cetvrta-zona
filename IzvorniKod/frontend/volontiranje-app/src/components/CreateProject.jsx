@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import NavBarOrg from "../pages/assets/navBarOrg";
 import axios from "axios";
 
-
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
 const BACK_URL = "http://localhost:8080";
@@ -20,7 +19,7 @@ function CreateProject() {
   const [errors, setError] = useState({});
   const [emergencyDropdownOpen, setEmergencyDropdownOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const categories = [
     "DJECA",
@@ -64,32 +63,21 @@ function CreateProject() {
     return errors;
   };
 
-
-
-
-
-
-
-  const [image, setImage] = useState("")
+  const [image, setImage] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
   const [profilePicture, setProfilePicture] = useState(null);
-  
-  function handleImage(e){
-    console.log(e.target.files)
-    setImage(e.target.files[0])
+
+  function handleImage(e) {
+    console.log(e.target.files);
+    setImage(e.target.files[0]);
 
     const file = e.target.files[0];
     if (file) {
       const imageURL = URL.createObjectURL(file);
       setProfilePicture(imageURL); // Postavljamo novu sliku u stanje
-      console.log("odabrana slika " + imageURL)
+      console.log("odabrana slika " + imageURL);
     }
   }
-
-
-
-
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -134,11 +122,11 @@ function CreateProject() {
 
     setError(validationErrors);
 
-    if(selectedCategory === "OKOLIŠ") {
+    if (selectedCategory === "OKOLIŠ") {
       setCategory("OKOLIS");
     }
 
-    if(selectedCategory === "ŽIVOTINJE") {
+    if (selectedCategory === "ŽIVOTINJE") {
       setCategory("ZIVOTINJE");
     }
     console.log(selectedCategory);
@@ -170,39 +158,32 @@ function CreateProject() {
         const projectId = response.data; // Ovo dohvaća podatke koje backend vraća
         console.log("Response data:", projectId);
 
-
-
-
-        const formData = new FormData()
-        formData.append('image', image)
+        const formData = new FormData();
+        formData.append("image", image);
 
         // Pošaljemo sliku na backend
-        axios.post(`${BACK_URL}/organization/edit-project-picture/${projectId}`, formData, { 
-          headers: { 
-              Authorization: `Bearer ${token}` 
-          }
-        })
-        .then((res) => {
+        axios
+          .post(
+            `${BACK_URL}/organization/edit-project-picture/${projectId}`,
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((res) => {
             console.log("Slika uspješno poslana, ID = " + res.data);
-        })
-        .catch((err) => {
+          })
+          .catch((err) => {
             console.error("Došlo je do pogreške pri slanju slike: ", err);
-        });
-
-
-
-
-
+          });
 
         alert("Projekt uspješno registriran!");
         navigate("/organization/home");
       } catch (err) {
         console.error(err);
       }
-
-
-
-
     }
   };
 
@@ -250,49 +231,33 @@ function CreateProject() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-8">
-
-
-
-
-
-
-
-
-            <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center ring-4 ring-yellow-400">
-              {profilePicture ? (
-                <img
-                  src={profilePicture}
-                  alt="Profile"
-                  className="rounded-full w-full h-full object-cover"
-                />
-              ) : (
-                <span className="text-gray-500">No Image</span>
-              )}
-            </div>
+              <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center ring-4 ring-yellow-400">
+                {profilePicture ? (
+                  <img
+                    src={profilePicture}
+                    alt="Profile"
+                    className="rounded-full w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-gray-500">No Image</span>
+                )}
+              </div>
               <div>
-                <input 
-                  type="file" 
-                  name="file" 
-                  onChange={handleImage} 
-                  style={{ display: 'none' }} // Sakrijemo input
+                <input
+                  type="file"
+                  name="file"
+                  onChange={handleImage}
+                  style={{ display: "none" }} // Sakrijemo input
                   id="fileInput" // Dodajemo id za referencu
                 />
 
                 <button
-                    className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
-                    onClick={() => document.getElementById('fileInput').click()} // Aktivira input
+                  className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
+                  onClick={() => document.getElementById("fileInput").click()} // Aktivira input
                 >
-                    Promijeni sliku
+                  Promijeni sliku
                 </button>
-                
               </div>
-
-
-
-
-
-
-
 
               <div className="space-y-2">
                 <label
@@ -429,14 +394,14 @@ function CreateProject() {
                             key={category}
                             className="p-3 cursor-pointer hover:bg-gray-200"
                             onClick={() => {
-                              if (category === "OKOLIŠ"){
+                              if (category === "OKOLIŠ") {
                                 setSelectedCategory("OKOLIS");
-                              }else if (category === "ŽIVOTINJE"){
+                              } else if (category === "ŽIVOTINJE") {
                                 setSelectedCategory("ZIVOTINJE");
-                              }else{
+                              } else {
                                 setSelectedCategory(category);
                               }
-                              
+
                               setCategoryDropdownOpen(false);
                             }}
                           >
@@ -468,7 +433,7 @@ function CreateProject() {
                     type="number"
                     value={maxNumber}
                     onChange={(e) => setMaxNumber(e.target.value)}
-                    min="0"
+                    min="1"
                     className={`w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 ${
                       errors.maxNumber ? "border-red-500" : "border-gray-300"
                     }`}
