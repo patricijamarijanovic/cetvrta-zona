@@ -15,10 +15,44 @@ function ActivitiesListAll() {
   const role = localStorage.getItem("role");
   console.log(role);
 
+  const [pics, setPics] = useState([]);
+
   useEffect(() => {
     axios.get(`${BACK_URL}/home`)
       .then((response) => {
         console.log(response.data)
+
+        const ids = response.data.map((org) => org.projectID);
+        console.log("ids: " + ids)
+
+        // Pokreni zahtjeve za sve ID-eve paralelno
+        Promise.all(
+          ids.map((projectId) =>
+            axios
+              .get(`${BACK_URL}/home/project-picture/${projectId}`, {
+                responseType: "arraybuffer", // Ovisno o backendu, koristi arraybuffer za slike
+              })
+              .then((res) => {
+                if (res.status === 204) {
+                  return "/images/nekaovog.jpg"; // Ako nema slike, postavi default
+                } else {
+                  const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+                  const imageUrl = URL.createObjectURL(imageBlob);
+                  console.log("imam sliku!! " + imageUrl);
+                  return imageUrl; // Vrati URL slike
+                }
+              })
+              .catch(() => "/images/nekaovog.jpg") // U slučaju greške, postavi default
+          )
+        )
+          .then((logosArray) => {
+            setPics(logosArray); // Postavi sve logotipe odjednom
+          })
+          .catch((err) => {
+            console.error("Error fetching logos:", err);
+          });
+
+
         setActivities(response.data);
         setLoading(false);
       })
@@ -46,7 +80,7 @@ function ActivitiesListAll() {
     <section className="p-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {activities.length === 0 ? (
-          <h1>Nažalost trenutačno nema dostupnih aktivnosti :'( </h1>
+          <h1>Nažalost trenutno nema dostupnih aktivnosti :'( </h1>
         ) : (
           activities.map((activity, index) => (
             <Link to={getLink(activity.projectID)}>
@@ -56,7 +90,7 @@ function ActivitiesListAll() {
               location={activity.projectlocation}
               dates={`From: ${activity.beginningdate} To: ${activity.enddate}`}
               organization={activity.organizationName}
-              image={"/images/nekaovog.jpg"}
+              image={pics[index]}
             />
             </Link>
           ))

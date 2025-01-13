@@ -15,6 +15,7 @@ function ActivityInfoVolunteer() {
   const token = localStorage.getItem("token");
   console.log(token);
   const [hasApplied, setApplication] = useState(false);
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     axios
@@ -25,8 +26,8 @@ function ActivityInfoVolunteer() {
       })
       .then((response) => {
         console.log(response.data);
+    
         setActivity(response.data);
-
         setLoading(false);
       })
       .catch((err) => {
@@ -34,7 +35,30 @@ function ActivityInfoVolunteer() {
         //setError("Error fetching activities.");
         setLoading(false);
       });
+
   }, []);
+
+  useEffect(() => {
+    if (activity && activity.projectID) {
+      // Uvjet da se activity.projectID učita
+      axios
+        .get(`${BACK_URL}/home/project-picture/${activity.projectID}`, {
+          responseType: "arraybuffer",
+        })
+        .then((res) => {
+          if (res.status === 204) {
+            setImage("/images/nekaovog.jpg"); // Ako nema slike, postavi zadanu
+          } else {
+            const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+            const imageUrl = URL.createObjectURL(imageBlob);
+            setImage(imageUrl); // Postavi URL slike
+          }
+        })
+        .catch(() => {
+          setImage("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
+        });
+    }
+  }, [activity])
 
   if (loading)
     return <p className="p-8 text-gray-500">Učitavam aktivnosti...</p>;
@@ -72,6 +96,14 @@ function ActivityInfoVolunteer() {
 
       <div className="container mx-auto px-6 py-10">
         <div className="bg-slate-600 shadow-lg rounded-lg p-6">
+
+        <img
+           src={image}
+           className="rounded-lg object-cover h-40 w-full mb-4"
+        />
+
+
+
           <h1 className="text-3xl font-bold text-white mb-4">
             {activity.projectname}
           </h1>

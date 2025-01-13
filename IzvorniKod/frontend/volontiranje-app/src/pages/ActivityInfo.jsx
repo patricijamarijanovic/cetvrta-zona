@@ -12,12 +12,29 @@ function ActivityInfo() {
   const { id } = useParams();
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     axios
       .get(`${BACK_URL}/home/activity/${id}`)
       .then((response) => {
         console.log(response.data);
+
+        axios
+        .get(`${BACK_URL}/home/project-picture/${response.data.projectID}`)
+        .then((res) => {
+          if (res.status === 204) {
+            setImage("/images/nekaovog.jpg");
+          } else {
+            const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+            const imageUrl = URL.createObjectURL(imageBlob);
+            setImage(imageUrl);
+          }
+        })
+        .catch(() => {
+          setImage("/images/nekaovog.jpg");
+        });
+
         setActivity(response.data);
         setLoading(false);
       })
@@ -45,6 +62,12 @@ function ActivityInfo() {
 
       <div className="container mx-auto px-6 py-10">
         <div className="bg-slate-600 shadow-lg rounded-lg p-6">
+
+        <img
+           src={image}
+           className="rounded-lg object-cover h-40 w-full mb-4"
+         />
+
           <h1 className="text-3xl font-bold text-white mb-4">
             {activity.projectname}
           </h1>
