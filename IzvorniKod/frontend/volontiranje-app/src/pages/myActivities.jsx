@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 //import Card from "./card";
 import axios from "axios";
+import Filter from "./assets/filter";
 
 import NavBarLoggedInVol from "./assets/navBarVol";
 import PrevActivitiesList from "./assets/prevActivitiesList";
