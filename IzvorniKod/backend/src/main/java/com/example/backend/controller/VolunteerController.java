@@ -126,7 +126,17 @@ public class VolunteerController {
         return volunteerService.waits_for_response_projects();
     }
 
+    // prijava na newsletter
+    @PostMapping("/volunteer/newsletter/{organizationId}")
+    public String subscribe_newsletter (@PathVariable Long organizationId){
+        return volunteerService.subscribe(organizationId);
+    }
 
+    // odjava s newslettera
+    @PostMapping("/volunteer/unsubscribe/{organizationId}")
+    public String unsubscribe_newsletter (@PathVariable Long organizationId){
+        return volunteerService.unsubscribe(organizationId);
+    }
 
     @PostMapping("/volunteer/{projectID}/leavereview")
     public ResponseEntity<Object> leave_review (@PathVariable Integer projectID, @RequestBody ReviewDto dto) {

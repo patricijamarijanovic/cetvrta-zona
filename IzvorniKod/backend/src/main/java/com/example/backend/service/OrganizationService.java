@@ -64,6 +64,9 @@ public class OrganizationService {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private NewsletterRepository newsletterRepository;
+
     public ResponseEntity<String> registerOrganization(OrganizationRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
             return ResponseEntity.badRequest().body("Username already taken. Please choose another one.");
@@ -145,7 +148,6 @@ public class OrganizationService {
             dto = get_profile_info(organization.getId());
             lista.add(dto);
         }
-
         return lista;
     }
 
@@ -175,8 +177,22 @@ public class OrganizationService {
         project.setOrganizationID(organization.getId());
 
         System.out.println(project);
-
         projectRepository.save(project);
+
+        // pronadi prijavljene na newsletter i posalji im mail
+        List<Newsletter> newsletters = newsletterRepository.findAllByOrganizationId(organization.getId());
+
+        for (Newsletter n : newsletters) {
+            Volunteer v = volunteerRepository.findById(n.getVolunteerId()).get();
+
+            String poruka = "Bok " + v.getFirstName() + "! 🤗" +
+                    "\nOrganizacija " + organization.getOrganizationName() +
+                    " objavila je novi projekt koji bi te mogao zanimati: " + project.getProjectName() +
+                    "\n\nViše detalja možeš pronaći na njihovoj stranici profila. 🙌";
+
+            emailService.sendEmail(v.getEmail(), "Nova prilika za volontiranje! 💌", poruka);
+        }
+
 
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Projekt uspješno dodan :)");
