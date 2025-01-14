@@ -19,14 +19,15 @@ public class FilteringService {
     
     public List<Project> filterProjects(String typeOfWork, String projectLocation, LocalDate startDate, LocalDate endDate) {
     	List<Project> l = new ArrayList<Project>();
-    	TypeOfWork tow = TypeOfWork.valueOf(typeOfWork);
     	if (typeOfWork == null && projectLocation == null) {
     		l = projectRepository.findAll();
     	} else if (typeOfWork == null) {
     		l = projectRepository.findAllByLocation(projectLocation);
     	} else if (projectLocation == null) {
+    		TypeOfWork tow = TypeOfWork.valueOf(typeOfWork);
     		l = projectRepository.findAllByTypeOfWork(tow);
     	} else {
+    		TypeOfWork tow = TypeOfWork.valueOf(typeOfWork);
     		l = projectRepository.findAllByTypeOfWorkAndLocation(tow, projectLocation);
     	}
     	List<Project> filteredList = new ArrayList<Project>();

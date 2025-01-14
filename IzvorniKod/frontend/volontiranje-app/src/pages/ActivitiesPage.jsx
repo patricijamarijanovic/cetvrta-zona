@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 //import Card from "./card";
 //import axios from "axios";
+import Filter from "./assets/filter";
 
 import NavBar from "./assets/navBar"
 import ActivitiesListAll from "./assets/activitiesListAll";
@@ -21,6 +22,7 @@ function ActivitiesPage() {
         <div className="relative min-h-screen">
             <div className="bg-slate-600 rounded-b-3xl text-white">
             <NavBar />
+            <Filter />
             </div>
             <ActivitiesListAll />
         </div>
