@@ -484,7 +484,25 @@ public class VolunteerService {
 
         newsletterRepository.delete(newsletter);
 
-
         return "volonter " + vol.getId() + " se odjavio s newslettera kod " + organizationId;
+    }
+
+    public boolean is_subscribed(Long organizationId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer vol = volunteerRepository.findByUsername(username);
+
+        List<Newsletter> newsletters = newsletterRepository.findAllByVolunteerId(vol.getId());
+        if (newsletters.isEmpty()) {
+            return false; // ili možeš vratiti neki drugi tip
+        }
+
+        for (Newsletter n : newsletters){
+            if (n.getOrganizationId().equals(organizationId)){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

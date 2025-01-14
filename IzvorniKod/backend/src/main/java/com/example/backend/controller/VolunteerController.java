@@ -138,6 +138,12 @@ public class VolunteerController {
         return volunteerService.unsubscribe(organizationId);
     }
 
+    // je li prijavljen na newsletter
+    @GetMapping("/volunteer/is-subscribed/{organizationId}")
+    public boolean is_subscribed (@PathVariable Long organizationId){
+        return volunteerService.is_subscribed(organizationId);
+    }
+
     @PostMapping("/volunteer/{projectID}/leavereview")
     public ResponseEntity<Object> leave_review (@PathVariable Integer projectID, @RequestBody ReviewDto dto) {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
