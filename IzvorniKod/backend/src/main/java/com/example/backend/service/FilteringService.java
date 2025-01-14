@@ -19,11 +19,11 @@ public class FilteringService {
     
     public List<Project> filterProjects(String typeOfWork, String projectLocation, LocalDate startDate, LocalDate endDate) {
     	List<Project> l = new ArrayList<Project>();
-    	if (typeOfWork.equals(null) && projectLocation.equals(null)) {
+    	if (typeOfWork == null && projectLocation == null) {
     		l = projectRepository.findAll();
-    	} else if (typeOfWork.equals(null)) {
+    	} else if (typeOfWork == null) {
     		l = projectRepository.findAllByLocation(projectLocation);
-    	} else if (projectLocation.equals(null)) {
+    	} else if (projectLocation == null) {
     		TypeOfWork tow = TypeOfWork.valueOf(typeOfWork);
     		l = projectRepository.findAllByTypeOfWork(tow);
     	} else {
@@ -36,10 +36,10 @@ public class FilteringService {
 
     	for (int i = 0; i < s; i++) {
     		Project p = l.get(i);
-    		if ((startDate.equals(null)) ||
+    		if ((startDate == null) ||
     			(p.getStartDate().isAfter(startDate)) ||
     			(p.getStartDate().equals(startDate))) {
-    			if ((endDate.equals(null)) ||
+    			if ((endDate == null) ||
     				(p.getEndDate().isBefore(endDate)) ||
     				(p.getEndDate().equals(endDate))) {
     				filteredList.add(p);
