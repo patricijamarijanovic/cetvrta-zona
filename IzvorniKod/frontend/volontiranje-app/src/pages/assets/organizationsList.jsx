@@ -87,11 +87,6 @@ function OrganizationsList() {
   }, []);
 
   
-
-
-  
-
-  
   if (loading) return <p className="p-8 text-gray-500">Učitavam organizacije...</p>;
   if (error) return <p className="p-8 text-red-500">{error}</p>;
 
@@ -103,7 +98,7 @@ function OrganizationsList() {
         ) : (
           organizations.map((organization, index) => (
             <div 
-              onClick={() => navigate(`/organization/profile/${organization.id}`)}
+              onClick={() => navigate(`/organization/profile/${organization.organizationId}`)}
               className="cursor-pointer hover:shadow-lg transition-shadow duration-200"
             >
               <OrganizationCard

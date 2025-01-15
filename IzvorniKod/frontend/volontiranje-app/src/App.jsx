@@ -65,8 +65,8 @@ function App() {
 
         <Route path="/volunteer/my-activities" element={<MyActivities />} />
 
-        <Route path="/organization/profile/:organizationId" element={<OrganizationProfilePage />} />
-        <Route path="/volunteer/profile/:volunteerId" element={<VolunteerProfilePage />} />
+        <Route path="/profile/organization/:organizationId" element={<OrganizationProfilePage />} />
+        <Route path="/profile/volunteer/:volunteerId" element={<VolunteerProfilePage />} />
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>
