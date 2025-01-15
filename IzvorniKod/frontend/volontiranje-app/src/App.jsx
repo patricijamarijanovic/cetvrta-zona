@@ -62,7 +62,6 @@ function App() {
         <Route path="/volunteer/profileEdit" element={<VolunteerProfileEdit />} />
         <Route path="/organization/profileEdit" element={<OrganizationProfileEdit />} />
 
-
         <Route path="/volunteer/my-activities" element={<MyActivities />} />
 
         <Route path="/profile/organization/:organizationId" element={<OrganizationProfilePage />} />

@@ -614,7 +614,7 @@ function ActivityInfoOrganization() {
                     <div>
                       <p 
                         className="text-white font-bold cursor-pointer hover:text-yellow-400"
-                        onClick={() => navigate(`/volunteer/profile/${volunteer.volunteerId}`)}
+                        onClick={() => navigate(`/profile/volunteer/${volunteer.volunteerId}`)}
                       >
                         {volunteer.firstName} {volunteer.lastName}
                       </p>

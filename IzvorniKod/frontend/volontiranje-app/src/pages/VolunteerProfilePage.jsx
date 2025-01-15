@@ -37,27 +37,15 @@ const skillsMap = {
 function VolunteerProfilePage() {
   const { volunteerId } = useParams();
   const [profileData, setProfileData] = useState(null);
-  const [profilePicture, setProfilePicture] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userRole, setUserRole] = useState(localStorage.getItem("role"));
-
+  console.log(volunteerId)
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         const profileRes = await axios.get(`${BACK_URL}/home/profile-vol/${volunteerId}`);
         setProfileData(profileRes.data);
-
-        const pictureRes = await axios.get(`${BACK_URL}/volunteer/profile-picture/${volunteerId}`, {
-          responseType: "arraybuffer",
-        });
-        if (pictureRes.status === 204) {
-          setProfilePicture("/images/default.jpg");
-        } else {
-          const imageBlob = new Blob([pictureRes.data], { type: "image/jpeg" });
-          setProfilePicture(URL.createObjectURL(imageBlob));
-        }
-
         setLoading(false);
       } catch (err) {
         console.error("Error fetching profile data:", err);
@@ -126,16 +114,6 @@ function VolunteerProfilePage() {
       <div className="container mx-auto px-4 py-12">
         <div className="bg-white shadow-md rounded p-6 max-w-3xl w-full mx-auto">
           <h1 className="text-2xl font-bold text-center mb-6">Profil Volontera</h1>
-
-          <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center ring-4 ring-yellow-400">
-              <img
-                src={profilePicture || "/images/default.jpg"}
-                alt="Profile"
-                className="rounded-full w-full h-full object-cover"
-              />
-            </div>
-          </div>
 
           {renderField("Ime", profileData?.firstName)}
           {renderField("Prezime", profileData?.lastName)}
