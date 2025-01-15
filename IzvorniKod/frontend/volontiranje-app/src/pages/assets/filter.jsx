@@ -32,6 +32,19 @@ function Filter({ setFilteredActivities, setIsFiltered }) {
     setFilterData({ ...filterData, [name]: value });
   };
 
+  const resetFilters = () => {
+    setFilterData({
+      location: "",
+      typeofwork: "",
+      startDate: "",
+      enddate: "",
+    });
+    setSelectedCategory("");
+    localStorage.removeItem("filters");
+    setFilteredActivities([]);
+    setIsFiltered(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -46,15 +59,12 @@ function Filter({ setFilteredActivities, setIsFiltered }) {
     console.log(filterData);
 
     try {
-      const response = await axios.post(
-        `${BACK_URL}/home/activities/filter`,
-        {
-          typeOfWork: filterData.typeofwork,
-          projectLocation: filterData.location,
-          startDate: filterData.startDate,
-          endDate: filterData.enddate,
-        }
-      );
+      const response = await axios.post(`${BACK_URL}/home/activities/filter`, {
+        typeOfWork: filterData.typeofwork,
+        projectLocation: filterData.location,
+        startDate: filterData.startDate,
+        endDate: filterData.enddate,
+      });
       console.log("USPJESNO FILTRIRANJE!!");
       console.log("U FILTERU ");
       console.log(response.data);
@@ -66,16 +76,39 @@ function Filter({ setFilteredActivities, setIsFiltered }) {
     }
   };
 
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+
+  const toggleCategoryDropdown = () => {
+    setCategoryDropdownOpen(!categoryDropdownOpen);
+  };
+
+  const handleCategoryChange = (category) => {
+    if (category === "OKOLIŠ") {
+      setSelectedCategory("OKOLIS");
+    } else if (category === "ŽIVOTINJE") {
+      setSelectedCategory("ZIVOTINJE");
+    } else {
+      setSelectedCategory(category);
+    }
+
+    setFilterData({
+      ...filterData,
+      typeofwork: category,
+    });
+
+    setCategoryDropdownOpen(false);
+  };
+
   return (
-    <>
-      <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-        <form onSubmit={handleSubmit}>
-          {/* Lokacija */}
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              htmlFor="location"
-              style={{ display: "block", marginBottom: "5px", color: "black" }} // Dodano crno slovo
-            >
+    <div className="p-6 bg-gray-800 rounded-lg mx-auto">
+      <h2 className="text-white text-xl font-semibold mb-4">
+        Filtriraj Aktivnosti
+      </h2>
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex-1">
+            <label htmlFor="location" className="block text-white mb-2">
               Lokacija:
             </label>
             <input
@@ -85,40 +118,45 @@ function Filter({ setFilteredActivities, setIsFiltered }) {
               value={filterData.location}
               onChange={handleChange}
               placeholder="Unesite lokaciju"
-              style={{ width: "100%", padding: "8px", color: "black" }} // Dodano crno slovo
+              className="w-full p-2 rounded border border-gray-400 bg-gray-700 text-white"
             />
           </div>
 
-          {/* Kategorija */}
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              htmlFor="typeofwork"
-              style={{ display: "block", marginBottom: "5px", color: "black" }} // Dodano crno slovo
-            >
-              Kategorija:
+          <div className="flex-1">
+            <label className="block text-white mb-2">
+              Kategorija projekta:
             </label>
-            <select
-              id="typeofwork"
-              name="typeofwork"
-              value={filterData.typeofwork}
-              onChange={handleChange}
-              style={{ width: "100%", padding: "8px", color: "black" }} // Dodano crno slovo
-            >
-              <option value="">Odaberite kategoriju</option>
-              {categories.map((category, index) => (
-                <option key={index} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
+            <div className="relative" onClick={toggleCategoryDropdown}>
+              <div
+                className={`border rounded p-2 cursor-pointer border-gray-400 bg-gray-700 flex justify-between items-center ${
+                  selectedCategory ? "text-white" : "text-gray-400"
+                }`}
+              >
+                <span>{selectedCategory || "odaberite kategoriju"}</span>
+                <img
+                  src="/images/one-down-arrow-white.png"
+                  alt="Arrow"
+                  className="w-4 h-4"
+                />
+              </div>
+              {categoryDropdownOpen && (
+                <div className="absolute z-10 bg-white shadow-lg rounded-lg mt-2 w-full border max-h-60 overflow-y-auto">
+                  {categories.map((category) => (
+                    <div
+                      key={category}
+                      className="p-3 cursor-pointer hover:bg-gray-200 text-black"
+                      onClick={() => handleCategoryChange(category)}
+                    >
+                      {category}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Početni datum */}
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              htmlFor="begindate"
-              style={{ display: "block", marginBottom: "5px", color: "black" }} // Dodano crno slovo
-            >
+          <div className="flex-1">
+            <label htmlFor="startDate" className="block text-white mb-2">
               Početni datum:
             </label>
             <input
@@ -127,16 +165,12 @@ function Filter({ setFilteredActivities, setIsFiltered }) {
               name="startDate"
               value={filterData.startDate}
               onChange={handleChange}
-              style={{ width: "100%", padding: "8px", color: "black" }} // Dodano crno slovo
+              className="w-full p-2 rounded border border-gray-400 bg-gray-700 text-white"
             />
           </div>
 
-          {/* Završni datum */}
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              htmlFor="enddate"
-              style={{ display: "block", marginBottom: "5px", color: "black" }} // Dodano crno slovo
-            >
+          <div className="flex-1">
+            <label htmlFor="enddate" className="block text-white mb-2">
               Završni datum:
             </label>
             <input
@@ -145,27 +179,28 @@ function Filter({ setFilteredActivities, setIsFiltered }) {
               name="enddate"
               value={filterData.enddate}
               onChange={handleChange}
-              style={{ width: "100%", padding: "8px", color: "black" }} // Dodano crno slovo
+              className="w-full p-2 rounded border border-gray-400 bg-gray-700 text-white"
             />
           </div>
+        </div>
 
-          {/* Gumb za filtriranje */}
+        <div className="flex justify-end gap-4">
           <button
             type="submit"
-            style={{
-              width: "100%",
-              padding: "10px",
-              backgroundColor: "#4CAF50",
-              color: "white",
-              border: "none",
-              cursor: "pointer",
-            }}
+            className="px-4 py-2 rounded bg-yellow-500 text-gray-800 font-semibold hover:bg-yellow-600"
           >
             Filtriraj
           </button>
-        </form>
-      </div>
-    </>
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
+          >
+            Odbaci filtere
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
 

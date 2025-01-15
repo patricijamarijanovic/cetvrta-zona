@@ -54,21 +54,14 @@ function ActivitiesPage() {
     
         fetchFilteredActivities();
     }, []);
-
-      const handleClearFilters = () => {
-        localStorage.removeItem("filters"); // Ukloni spremljene filtere
-        setFilteredActivities([]);
-        setIsFiltered(false);
-      };
       
 
     return (
         <div className="relative min-h-screen">
-            <div className="bg-slate-600 rounded-b-3xl text-white">
+            <div className="bg-slate-600 rounded-b-3xl text-white pb-6">
             <NavBar />
             <Filter setFilteredActivities={setFilteredActivities}
             setIsFiltered={setIsFiltered}/>
-            <button onClick={handleClearFilters}>Poništi</button>
             </div>
             <ActivitiesListAll filteredActivities={filteredActivities}
             isFiltered={isFiltered}/>
