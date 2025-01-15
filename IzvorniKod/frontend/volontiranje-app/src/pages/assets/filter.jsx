@@ -1,76 +1,81 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-  
 
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
 const BACK_URL = "http://localhost:8080";
 
+function Filter({ setFilteredActivities, setIsFiltered }) {
+  const token = localStorage.getItem("token");
+  const categories = [
+    "DJECA",
+    "INVALIDI",
+    "STARIJI",
+    "SPORT",
+    "ŽIVOTINJE",
+    "EDUKACIJA",
+    "ZDRAVLJE",
+    "OKOLIŠ",
+    "OSTALO",
+  ];
 
-function Filter() {
-    const token = localStorage.getItem("token");
-    const categories = [
-        "DJECA",
-        "INVALIDI",
-        "STARIJI",
-        "SPORT",
-        "ŽIVOTINJE",
-        "EDUKACIJA",
-        "ZDRAVLJE",
-        "OKOLIŠ",
-        "OSTALO",
-      ];
-    const [filterData, setFilterData] = useState({
-        location: null,
-        typeofwork: null,
-        startDate: null,
-        enddate: null,
-    });
+  const [filterData, setFilterData] = useState({
+    location: null,
+    typeofwork: null,
+    startDate: null,
+    enddate: null,
+  });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFilterData({ ...filterData, [name]: value });
-      };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFilterData({ ...filterData, [name]: value });
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (filterData.typeofwork === "OKOLIŠ") {
-            filterData.typeofwork = "OKOLIS";
-          }
-          if (filterData.typeofwork === "ŽIVOTINJE") {
-            filterData.typeofwork = "ZIVOTINJE";
-          }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-          console.log(filterData)
-      
-          try {
-            const response = await axios.post(
-              `${BACK_URL}/home/activities/filter`,
-              { 
-                typeOfWork: filterData.typeofwork,
-                projectLocation: filterData.location,
-                startDate: filterData.startDate,
-                endDate: filterData.enddate,},
-               
-            );
-            console.log("USPJESNO FILTRIRANJE!!");
-            console.log(response)
-          
-            //window.location.reload();
-          } catch (error) {
-            console.error("Error updating activity:", error);
-          }
+    localStorage.setItem("filters", JSON.stringify(filterData));
+    if (filterData.typeofwork === "OKOLIŠ") {
+      filterData.typeofwork = "OKOLIS";
+    }
+    if (filterData.typeofwork === "ŽIVOTINJE") {
+      filterData.typeofwork = "ZIVOTINJE";
     }
 
+    console.log(filterData);
 
+    try {
+      const response = await axios.post(
+        `${BACK_URL}/home/activities/filter`,
+        {
+          typeOfWork: filterData.typeofwork,
+          projectLocation: filterData.location,
+          startDate: filterData.startDate,
+          endDate: filterData.enddate,
+        }
+      );
+      console.log("USPJESNO FILTRIRANJE!!");
+      console.log("U FILTERU ");
+      console.log(response.data);
 
-    return(<>
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
+      setFilteredActivities(response.data);
+      setIsFiltered(true);
+    } catch (error) {
+      console.error("Error updating activity:", error);
+    }
+  };
+
+  return (
+    <>
+      <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
         <form onSubmit={handleSubmit}>
           {/* Lokacija */}
           <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="location" style={{ display: "block", marginBottom: "5px" }}>
+            <label
+              htmlFor="location"
+              style={{ display: "block", marginBottom: "5px", color: "black" }} // Dodano crno slovo
+            >
               Lokacija:
             </label>
             <input
@@ -80,13 +85,16 @@ function Filter() {
               value={filterData.location}
               onChange={handleChange}
               placeholder="Unesite lokaciju"
-              style={{ width: "100%", padding: "8px" }}
+              style={{ width: "100%", padding: "8px", color: "black" }} // Dodano crno slovo
             />
           </div>
 
           {/* Kategorija */}
           <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="typeofwork" style={{ display: "block", marginBottom: "5px" }}>
+            <label
+              htmlFor="typeofwork"
+              style={{ display: "block", marginBottom: "5px", color: "black" }} // Dodano crno slovo
+            >
               Kategorija:
             </label>
             <select
@@ -94,7 +102,7 @@ function Filter() {
               name="typeofwork"
               value={filterData.typeofwork}
               onChange={handleChange}
-              style={{ width: "100%", padding: "8px" }}
+              style={{ width: "100%", padding: "8px", color: "black" }} // Dodano crno slovo
             >
               <option value="">Odaberite kategoriju</option>
               {categories.map((category, index) => (
@@ -107,7 +115,10 @@ function Filter() {
 
           {/* Početni datum */}
           <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="begindate" style={{ display: "block", marginBottom: "5px" }}>
+            <label
+              htmlFor="begindate"
+              style={{ display: "block", marginBottom: "5px", color: "black" }} // Dodano crno slovo
+            >
               Početni datum:
             </label>
             <input
@@ -116,13 +127,16 @@ function Filter() {
               name="startDate"
               value={filterData.startDate}
               onChange={handleChange}
-              style={{ width: "100%", padding: "8px" }}
+              style={{ width: "100%", padding: "8px", color: "black" }} // Dodano crno slovo
             />
           </div>
 
           {/* Završni datum */}
           <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="enddate" style={{ display: "block", marginBottom: "5px" }}>
+            <label
+              htmlFor="enddate"
+              style={{ display: "block", marginBottom: "5px", color: "black" }} // Dodano crno slovo
+            >
               Završni datum:
             </label>
             <input
@@ -131,7 +145,7 @@ function Filter() {
               name="enddate"
               value={filterData.enddate}
               onChange={handleChange}
-              style={{ width: "100%", padding: "8px" }}
+              style={{ width: "100%", padding: "8px", color: "black" }} // Dodano crno slovo
             />
           </div>
 
@@ -151,7 +165,8 @@ function Filter() {
           </button>
         </form>
       </div>
-    </>);
+    </>
+  );
 }
 
 export default Filter;
