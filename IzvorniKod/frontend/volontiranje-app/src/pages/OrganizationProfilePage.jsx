@@ -83,7 +83,7 @@ function OrganizationProfilePage() {
           {userRole === "ROLE_ORGANIZATION" ? <NavBarLoggedIn /> : <NavBarLoggedInVol />}
         </div>
         <div className="flex items-center justify-center text-gray-500 mt-8">
-          <p>Loading profile...</p>
+          <p>Učitavanje profila...</p>
         </div>
       </div>
     );
