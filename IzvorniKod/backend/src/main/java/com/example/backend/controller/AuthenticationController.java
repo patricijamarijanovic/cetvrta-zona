@@ -1,19 +1,13 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.LoginDto;
-import com.example.backend.dto.OrganizationProfileDto;
-import com.example.backend.dto.ProjectFilteringRequestDto;
-import com.example.backend.dto.ProjectResponseDto;
+import com.example.backend.dto.*;
 import com.example.backend.model.Image;
 import com.example.backend.model.Project;
 import com.example.backend.repository.MyUserRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
-import com.example.backend.service.FilteringService;
-import com.example.backend.service.ImageService;
-import com.example.backend.service.OrganizationService;
-import com.example.backend.service.ProjectService;
+import com.example.backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +52,8 @@ public class AuthenticationController {
     
     @Autowired 
     private FilteringService filteringService;
+    @Autowired
+    private VolunteerService volunteerService;
 
 
     // anonimni homepage
@@ -102,10 +98,16 @@ public class AuthenticationController {
         return organizationService.getAllOrganizations();
     }
 
-    // some profile info
+    // some organization profile info
     @GetMapping("/home/profile/{organizationId}")
     public OrganizationProfileDto get_profile_info(@PathVariable Long organizationId) {
         return organizationService.get_profile_info(organizationId);
+    }
+
+    // some volunteer profile info
+    @GetMapping("/home/profile-vol/{volunteerId}")
+    public VolunteerProfileDto get_vol_profile_info(@PathVariable Long volunteerId) {
+        return volunteerService.get_profile_info(volunteerId);
     }
 
     // login

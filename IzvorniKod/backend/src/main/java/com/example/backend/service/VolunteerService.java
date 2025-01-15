@@ -71,6 +71,8 @@ public class VolunteerService {
     @Autowired
     private VolunteerPictureRepository volunteerPictureRepository;
 
+    @Autowired
+    private NewsletterRepository newsletterRepository;
 
     public ResponseEntity<String> registerVolunteer(VolunteerRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
@@ -389,7 +391,6 @@ public class VolunteerService {
 
         List<VolunteerProjectProfileDto> lista = new ArrayList<>();
 
-
         // pronadi sve njegove prihvacene projekte
         List<Application> applications = applicationRepository.findAllByVolunteerId(vol.getId())
                 .stream().filter(a -> a.getStatus().equals(ApplicationStatus.ACCEPTED)).toList();
@@ -456,7 +457,52 @@ public class VolunteerService {
                 lista.add(dto);
             }
         }
-
         return lista;
+    }
+
+    public String subscribe(Long organizationId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer vol = volunteerRepository.findByUsername(username);
+
+        Newsletter newsletter = new Newsletter();
+        newsletter.setVolunteerId(vol.getId());
+        newsletter.setOrganizationId(organizationId);
+        newsletterRepository.save(newsletter);
+
+
+        return "volonter " + vol.getId() + " prijavljen na newsletter kod " + organizationId;
+    }
+
+    public String unsubscribe(Long organizationId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer vol = volunteerRepository.findByUsername(username);
+
+        List<Newsletter> newsletters = newsletterRepository.findAllByVolunteerId(vol.getId());
+        Newsletter newsletter = newsletters.stream().filter(n -> n.getOrganizationId().equals(organizationId)).toList().get(0);
+
+        newsletterRepository.delete(newsletter);
+
+        return "volonter " + vol.getId() + " se odjavio s newslettera kod " + organizationId;
+    }
+
+    public boolean is_subscribed(Long organizationId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Volunteer vol = volunteerRepository.findByUsername(username);
+
+        List<Newsletter> newsletters = newsletterRepository.findAllByVolunteerId(vol.getId());
+        if (newsletters.isEmpty()) {
+            return false; // ili možeš vratiti neki drugi tip
+        }
+
+        for (Newsletter n : newsletters){
+            if (n.getOrganizationId().equals(organizationId)){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

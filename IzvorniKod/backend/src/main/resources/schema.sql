@@ -105,6 +105,82 @@ CREATE TABLE registration
   FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
 
+CREATE TABLE newsletter
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    volunteerId BIGINT NOT NULL,
+    organizationId BIGINT NOT NULL,
+    FOREIGN KEY (organizationId) REFERENCES organizations(id),
+    FOREIGN KEY (volunteerId) REFERENCES volunteers(id)
+);
+
+CREATE TABLE applications (
+    applicationId BIGINT AUTO_INCREMENT PRIMARY KEY,
+    volunteerId BIGINT NOT NULL,
+    projectId BIGINT NOT NULL,
+    status VARCHAR(255),
+    FOREIGN KEY (projectId) REFERENCES projects(projectID),
+    FOREIGN KEY (volunteerId) REFERENCES volunteers(id)
+);
+
+CREATE TABLE image (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    data BLOB,
+    type VARCHAR(255)
+);
+
+CREATE TABLE volunteer_skills
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    volunteerID BIGINT NOT NULL,
+    skill VARCHAR(100),
+    FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
+);
+
+CREATE TABLE volunteer_picture
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    volunteerId BIGINT NOT NULL,
+    imageId BIGINT NOT NULL,
+    FOREIGN KEY (volunteerId) REFERENCES volunteers(id),
+    FOREIGN KEY (imageId) REFERENCES image(id)
+);
+
+CREATE TABLE organization_picture
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    organizationId BIGINT NOT NULL,
+    imageId BIGINT NOT NULL,
+    FOREIGN KEY (organizationId) REFERENCES organizations(id),
+    FOREIGN KEY (imageId) REFERENCES image(id)
+);
+
+CREATE TABLE project_picture
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    projectId BIGINT NOT NULL,
+    imageId BIGINT NOT NULL,
+    FOREIGN KEY (projectId) REFERENCES projects(projectId),
+    FOREIGN KEY (imageId) REFERENCES image(id)
+);
+
+CREATE TABLE volunteer_interests
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    volunteerID BIGINT NOT NULL,
+    interest VARCHAR(100),
+    FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
+);
+
+CREATE TABLE organization_areas
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    organizationID BIGINT NOT NULL,
+    area VARCHAR(100),
+    FOREIGN KEY (organizationID) REFERENCES organizations(id)
+);
+
 INSERT INTO users (username, password, role, email, verified)
 VALUES ('admin', '$2a$10$hd.K4YAUxErbA/F1IQvsAetXSaRHBG80cKTKFaJhUBuwGDhZDwu7a', 'ADMIN', 'admin@example.com', true);
 

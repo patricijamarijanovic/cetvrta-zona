@@ -612,7 +612,10 @@ function ActivityInfoOrganization() {
                     className="bg-slate-500 rounded-lg p-4 flex justify-between items-center"
                   >
                     <div>
-                      <p className="text-white font-bold">
+                      <p 
+                        className="text-white font-bold cursor-pointer hover:text-yellow-400"
+                        onClick={() => navigate(`/volunteer/profile/${volunteer.volunteerId}`)}
+                      >
                         {volunteer.firstName} {volunteer.lastName}
                       </p>
                     </div>
