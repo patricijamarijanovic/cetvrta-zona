@@ -63,8 +63,6 @@ function OrganizationsList() {
         setLoading(false);
       });
 
-      
-
       // setOrgID(response.data[0].organizationId)
 
     
@@ -98,7 +96,7 @@ function OrganizationsList() {
         ) : (
           organizations.map((organization, index) => (
             <div 
-              onClick={() => navigate(`/organization/profile/${organization.organizationId}`)}
+              onClick={() => navigate(`/profile/organization/${organization.organizationId}`)}
               className="cursor-pointer hover:shadow-lg transition-shadow duration-200"
             >
               <OrganizationCard
