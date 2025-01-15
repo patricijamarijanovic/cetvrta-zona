@@ -20,21 +20,6 @@ function ActivityInfo() {
       .then((response) => {
         console.log(response.data);
 
-        axios
-        .get(`${BACK_URL}/home/project-picture/${response.data.projectID}`)
-        .then((res) => {
-          if (res.status === 204) {
-            setImage("/images/nekaovog.jpg");
-          } else {
-            const imageBlob = new Blob([res.data], { type: "image/jpeg" });
-            const imageUrl = URL.createObjectURL(imageBlob);
-            setImage(imageUrl);
-          }
-        })
-        .catch(() => {
-          setImage("/images/nekaovog.jpg");
-        });
-
         setActivity(response.data);
         setLoading(false);
       })
@@ -44,6 +29,28 @@ function ActivityInfo() {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    if (activity && activity.projectID) {
+      // Uvjet da se activity.projectID učita
+      axios
+        .get(`${BACK_URL}/home/project-picture/${activity.projectID}`, {
+          responseType: "arraybuffer",
+        })
+        .then((res) => {
+          if (res.status === 204) {
+            setImage("/images/nekaovog.jpg"); // Ako nema slike, postavi zadanu
+          } else {
+            const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+            const imageUrl = URL.createObjectURL(imageBlob);
+            setImage(imageUrl); // Postavi URL slike
+          }
+        })
+        .catch(() => {
+          setImage("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
+        });
+    }
+  }, [activity])
 
   if (loading)
     return <p className="p-8 text-gray-500">Učitavam aktivnosti...</p>;

@@ -18,7 +18,35 @@ function ActivitiesListAll({ filteredActivities, isFiltered }) {
     if (isFiltered && filteredActivities.length > 0) {
       // Ako postoje filtrirane aktivnosti, postavi ih
       setActivities(filteredActivities);
-      setPics(new Array(filteredActivities.length).fill("/images/nekaovog.jpg")); // Default slike za filtrirane aktivnosti
+      // setPics(new Array(filteredActivities.length).fill("/images/nekaovog.jpg")); // Default slike za filtrirane aktivnosti
+
+      const ids = filteredActivities.map((org) => org.projectID);
+      // Pokreni zahtjeve za slike
+      Promise.all(
+        ids.map((projectId) =>
+          axios
+            .get(`${BACK_URL}/home/project-picture/${projectId}`, {
+              responseType: "arraybuffer",
+            })
+            .then((res) => {
+              if (res.status === 204) {
+                return "/images/nekaovog.jpg";
+              } else {
+                const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+                const imageUrl = URL.createObjectURL(imageBlob);
+                return imageUrl;
+              }
+            })
+            .catch(() => "/images/nekaovog.jpg")
+        )
+      )
+        .then((logosArray) => {
+          setPics(logosArray);
+        })
+        .catch((err) => {
+          console.error("Error fetching logos:", err);
+        });
+
       setLoading(false);
 
     }  else if (isFiltered && filteredActivities.length === 0) {
@@ -34,6 +62,7 @@ function ActivitiesListAll({ filteredActivities, isFiltered }) {
       axios
         .get(`${BACK_URL}/home`)
         .then((response) => {
+
           const ids = response.data.map((org) => org.projectID);
 
           // Pokreni zahtjeve za slike
