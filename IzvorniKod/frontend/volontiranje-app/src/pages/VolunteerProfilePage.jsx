@@ -41,22 +41,13 @@ function VolunteerProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userRole, setUserRole] = useState(localStorage.getItem("role"));
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         const profileRes = await axios.get(`${BACK_URL}/home/profile-vol/${volunteerId}`);
         setProfileData(profileRes.data);
-
-        const pictureRes = await axios.get(`${BACK_URL}/volunteer/profile-picture/${volunteerId}`, {
-          responseType: "arraybuffer",
-        });
-        if (pictureRes.status === 204) {
-          setProfilePicture("/images/default.jpg");
-        } else {
-          const imageBlob = new Blob([pictureRes.data], { type: "image/jpeg" });
-          setProfilePicture(URL.createObjectURL(imageBlob));
-        }
 
         setLoading(false);
       } catch (err) {
@@ -68,6 +59,25 @@ function VolunteerProfilePage() {
 
     fetchProfileData();
   }, [volunteerId]);
+
+  useEffect(() => {
+    axios
+        .get(`${BACK_URL}/home/volunteer/profile-picture/${volunteerId}`, {
+          responseType: "arraybuffer",
+        })
+        .then((res) => {
+          if (res.status === 204) {
+            setImage("/images/nekaovog.jpg"); // Ako nema slike, postavi zadanu
+          } else {
+            const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+            const imageUrl = URL.createObjectURL(imageBlob);
+            setImage(imageUrl); // Postavi URL slike
+          }
+        })
+        .catch(() => {
+          setImage("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
+        });
+  }, [volunteerId])
 
   const renderField = (label, value) => (
     <div className="flex flex-col mb-4">
@@ -130,7 +140,7 @@ function VolunteerProfilePage() {
           <div className="flex flex-col items-center mb-6">
             <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center ring-4 ring-yellow-400">
               <img
-                src={profilePicture || "/images/default.jpg"}
+                src={image || "/images/default.jpg"}
                 alt="Profile"
                 className="rounded-full w-full h-full object-cover"
               />

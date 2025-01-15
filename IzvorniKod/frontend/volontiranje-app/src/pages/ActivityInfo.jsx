@@ -13,6 +13,7 @@ function ActivityInfo() {
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);
   const [image, setImage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -83,7 +84,13 @@ function ActivityInfo() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <p className="font-bold text-white">Organizacija:</p>
-              <p className="text-white">{activity.organizationName}</p>
+              {/* <p className="text-white">{activity.organizationName}</p> */}
+              <p 
+                className="text-white font-bold cursor-pointer hover:text-yellow-400"
+                onClick={() => navigate(`/profile/organization/${activity.organizationID}`)}
+              >
+                {activity.organizationName}
+              </p>
             </div>
             <div>
               <p className="font-bold text-white">Email:</p>

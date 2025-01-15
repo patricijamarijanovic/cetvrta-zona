@@ -24,6 +24,7 @@ function OrganizationProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userRole, setUserRole] = useState(localStorage.getItem("role"));
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -40,6 +41,25 @@ function OrganizationProfilePage() {
 
     fetchProfileData();
   }, [organizationId]);
+
+  useEffect(() => {
+    axios
+        .get(`${BACK_URL}/home/organization/profile-picture/${organizationId}`, {
+          responseType: "arraybuffer",
+        })
+        .then((res) => {
+          if (res.status === 204) {
+            setImage("/images/nekaovog.jpg"); // Ako nema slike, postavi zadanu
+          } else {
+            const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+            const imageUrl = URL.createObjectURL(imageBlob);
+            setImage(imageUrl); // Postavi URL slike
+          }
+        })
+        .catch(() => {
+          setImage("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
+        });
+  }, [organizationId])
 
   const renderField = (label, value) => (
     <div className="flex flex-col mb-4">
@@ -98,6 +118,11 @@ function OrganizationProfilePage() {
       <div className="container mx-auto px-4 py-12">
         <div className="bg-white shadow-md rounded p-6 max-w-3xl w-full mx-auto">
           <h1 className="text-2xl font-bold text-center mb-6">Profil Organizacije</h1>
+
+          <img
+           src={image}
+           className="rounded-lg object-cover h-40 w-full mb-4"
+         />
 
           {renderField("Naziv organizacije", profileData?.name)}
           {renderField("Email adresa", profileData?.email)}

@@ -1,14 +1,16 @@
-import { useNavigate } from "react-router-dom";
+
 import { useEffect, useState } from "react";
 import NavBarLoggedIn from "./assets/navBarOrg";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
 const BACK_URL = "http://localhost:8080";
 
 function ActivityInfoOrganization() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [activity, setActivity] = useState(null);
 
@@ -272,6 +274,8 @@ function ActivityInfoOrganization() {
   const handleDontSave = () => {
     setEditMode(false);
   };
+
+ 
 
   const toggleEmergencyDropdown = () => {
     setEmergencyDropdownOpen(!emergencyDropdownOpen);
@@ -614,7 +618,7 @@ function ActivityInfoOrganization() {
                     <div>
                       <p 
                         className="text-white font-bold cursor-pointer hover:text-yellow-400"
-                        onClick={() => navigate(`/volunteer/profile/${volunteer.volunteerId}`)}
+                        onClick={() => navigate(`/profile/volunteer/${volunteer.volunteerId}`)}
                       >
                         {volunteer.firstName} {volunteer.lastName}
                       </p>

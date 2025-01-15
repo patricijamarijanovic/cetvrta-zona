@@ -283,12 +283,15 @@ public class VolunteerService {
     }
 
     public ResponseEntity<byte[]> get_profile_picture(){
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Volunteer vol = volunteerRepository.findByUsername(username);
 
-        Optional<VolunteerPicture> o = volunteerPictureRepository.findByVolunteerId(vol.getId());
+        return get_picture_specific_vol(vol.getId());
+    }
+
+    public ResponseEntity<byte[]> get_picture_specific_vol(Long volunteerId){
+        Optional<VolunteerPicture> o = volunteerPictureRepository.findByVolunteerId(volunteerId);
         if (o.isPresent()) {
             VolunteerPicture vp = o.get();
 

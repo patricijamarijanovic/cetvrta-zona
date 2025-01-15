@@ -92,6 +92,12 @@ public class AuthenticationController {
         return organizationService.get_picture_specific_org(organizationId);
     }
 
+    // slika specificnog volontera
+    @GetMapping("/home/volunteer/profile-picture/{volunteerId}")
+    public ResponseEntity<byte[]> get_picture_volunteer(@PathVariable Long volunteerId) {
+        return volunteerService.get_picture_specific_vol(volunteerId);
+    }
+
     // sve organizacija
     @GetMapping("/home/organizations")
     public List<OrganizationProfileDto> organizations() {
