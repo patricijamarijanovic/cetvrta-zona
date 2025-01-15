@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import OrganizationCard from "./organizationCard";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 // const BACK_URL = "backend-qns7.onrender.com";
@@ -15,7 +16,7 @@ function OrganizationsList() {
   const [logos, setLogos] = useState([]);
   const [orgIds, setOrgIds] = useState([]);
 
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`${BACK_URL}/home/organizations`)
@@ -101,13 +102,18 @@ function OrganizationsList() {
           <h1>Nažalost trenutno nema prijavljenih organizacija :'( </h1>
         ) : (
           organizations.map((organization, index) => (
-            <OrganizationCard
-              key={index}
-              OrganizationName={organization.name}
-              // image={"/images/nekaovog.jpg"}
-              image={logos[index]}
-             // image={organization.image}
-            />
+            <div 
+              onClick={() => navigate(`/organization/profile/${organization.id}`)}
+              className="cursor-pointer hover:shadow-lg transition-shadow duration-200"
+            >
+              <OrganizationCard
+                key={index}
+                OrganizationName={organization.name}
+                // image={"/images/nekaovog.jpg"}
+                image={logos[index]}
+               // image={organization.image}
+              />
+            </div>
           ))
         )}
       </div>
