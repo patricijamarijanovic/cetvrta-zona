@@ -8,6 +8,7 @@ function HomePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    localStorage.clear("filters");
     const token = localStorage.getItem("token");
     console.log("Tu je token!!" + token);
     if (token) {

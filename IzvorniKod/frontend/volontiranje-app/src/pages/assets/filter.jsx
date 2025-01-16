@@ -8,6 +8,30 @@ const BACK_URL = "http://localhost:8080";
 
 function Filter({ setFilteredActivities, setIsFiltered }) {
   const token = localStorage.getItem("token");
+  const [placeholder, setPlaceholder] = useState("Unesite lokaciju");
+
+  useEffect(() => {
+    // Provjeri ima li spremljenog filtera u localStorage
+    const savedFilters = JSON.parse(localStorage.getItem("filters"));
+    if (savedFilters) {
+      setFilterData({
+        location: savedFilters.location || "",
+        typeofwork: savedFilters.typeofwork || "",
+        startDate: savedFilters.startDate || "",
+        enddate: savedFilters.enddate || "",
+      });
+
+      if (savedFilters.typeofwork) {
+        const mappedCategory =
+          savedFilters.typeofwork === "OKOLIS"
+            ? "OKOLIŠ"
+            : savedFilters.typeofwork === "ZIVOTINJE"
+            ? "ŽIVOTINJE"
+            : savedFilters.typeofwork;
+        setSelectedCategory(mappedCategory);
+      }
+    }
+  }, []);
   const categories = [
     "DJECA",
     "INVALIDI",
@@ -34,15 +58,16 @@ function Filter({ setFilteredActivities, setIsFiltered }) {
 
   const resetFilters = () => {
     setFilterData({
-      location: "",
-      typeofwork: "",
-      startDate: "",
-      enddate: "",
+      location: null,
+      typeofwork: null,
+      startDate: null,
+      enddate: null,
     });
     setSelectedCategory("");
     localStorage.removeItem("filters");
     setFilteredActivities([]);
     setIsFiltered(false);
+    window.location.reload();
   };
 
   const handleSubmit = async (e) => {
@@ -117,7 +142,7 @@ function Filter({ setFilteredActivities, setIsFiltered }) {
               name="location"
               value={filterData.location}
               onChange={handleChange}
-              placeholder="Unesite lokaciju"
+              placeholder={placeholder}
               className="w-full p-2 rounded border border-gray-400 bg-gray-700 text-white"
             />
           </div>
