@@ -10,10 +10,6 @@ const BACK_URL = "http://localhost:8080";
 
 function InProgressActProfile({volunteerID}) {
   const token = localStorage.getItem("token");
-  if (!token) {
-    setError("Authentication token is missing. Please log in again.");
-    return;
-}
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
