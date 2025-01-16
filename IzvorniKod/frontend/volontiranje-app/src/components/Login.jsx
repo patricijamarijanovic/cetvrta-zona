@@ -73,28 +73,23 @@ function Login() {
           alert("Nema tokena u odgovoru.");
         }
       } catch (err) {
-        
         //alert(err);
-       
-          const serverError = err.response.data.error; 
-          
-          if (serverError === "verification needed") {
-            console.log(serverError)
-            setError((prevErrors) => ({
-              ...prevErrors,
-              pogreska: "Niste potvrdili mail adresu.", 
-            }));
-          } else if (serverError === "Invalid username or password") {
-            console.log(serverError)
-            setError((prevErrors) => ({
-              ...prevErrors,
-              pogreska: "Pogrešno korisničko ime ili lozinka.", 
-            }));
-          } 
-        
-      
-        
 
+        const serverError = err.response.data.error;
+
+        if (serverError === "verification needed") {
+          console.log(serverError);
+          setError((prevErrors) => ({
+            ...prevErrors,
+            pogreska: "Niste potvrdili mail adresu.",
+          }));
+        } else if (serverError === "Invalid username or password") {
+          console.log(serverError);
+          setError((prevErrors) => ({
+            ...prevErrors,
+            pogreska: "Pogrešno korisničko ime ili lozinka.",
+          }));
+        }
       }
     }
   };
@@ -200,11 +195,11 @@ function Login() {
                 )}
               </div>
 
-              <div className="text-right">
+              {/* <div className="text-right">
                 <a href="#" className="text-red-400 hover:text-red-500 text-sm">
                   Zaboravili ste lozinku?
                 </a>
-              </div>
+              </div> */}
 
               {errors.pogreska && (
                 <p className="text-sm text-red-500 text-center">
@@ -243,6 +238,13 @@ function Login() {
                 Nastavite sa svojim Google računom
               </button>
             </form>
+
+            <h1 className="text-white text-xl mt-4">Još nemaš račun?</h1>
+            <div className="text-right">
+              <a href="/register" className="text-yellow-300 hover:text-yellow-400">
+                Registriraj se ovdje!
+              </a>
+            </div>
           </div>
         </div>
       </div>
