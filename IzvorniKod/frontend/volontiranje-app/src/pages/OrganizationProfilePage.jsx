@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import NavBarLoggedIn from "./assets/navBarOrg";
 import NavBarLoggedInVol from "./assets/navBarVol";
+import NavBar from "./assets/navBar";
 
 const BACK_URL = "http://localhost:8080";
 
@@ -24,6 +25,7 @@ function OrganizationProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userRole, setUserRole] = useState(localStorage.getItem("role"));
+  const token = localStorage.getItem("token");
   const [image, setImage] = useState("");
 
   useEffect(() => {
@@ -84,11 +86,16 @@ function OrganizationProfilePage() {
     </div>
   );
 
+  const renderNavBar = () => {
+    if (!token) return <NavBar />;
+    return userRole === "ROLE_ORGANIZATION" ? <NavBarLoggedIn /> : <NavBarLoggedInVol />;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen">
         <div className="bg-slate-600 rounded-b-3xl text-white">
-          {userRole === "ROLE_ORGANIZATION" ? <NavBarLoggedIn /> : <NavBarLoggedInVol />}
+          {renderNavBar()}
         </div>
         <div className="flex items-center justify-center text-gray-500 mt-8">
           <p>Učitavanje profila...</p>
@@ -101,7 +108,7 @@ function OrganizationProfilePage() {
     return (
       <div className="min-h-screen">
         <div className="bg-slate-600 rounded-b-3xl text-white">
-          {userRole === "ROLE_ORGANIZATION" ? <NavBarLoggedIn /> : <NavBarLoggedInVol />}
+          {renderNavBar()}
         </div>
         <div className="flex items-center justify-center text-red-500 mt-8">
           <p>{error}</p>
@@ -113,7 +120,7 @@ function OrganizationProfilePage() {
   return (
     <div className="bg-slate-700 min-h-screen">
       <div className="bg-slate-600 rounded-b-3xl text-white">
-        {userRole === "ROLE_ORGANIZATION" ? <NavBarLoggedIn /> : <NavBarLoggedInVol />}
+        {renderNavBar()}
       </div>
       <div className="container mx-auto px-4 py-12">
         <div className="bg-white shadow-md rounded p-6 max-w-3xl w-full mx-auto">
