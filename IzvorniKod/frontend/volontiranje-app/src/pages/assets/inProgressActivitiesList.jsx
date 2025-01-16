@@ -39,7 +39,7 @@ function InProgressActivitiesList() {
               })
               .then((res) => {
                 if (res.status === 204) {
-                  return "/images/nekaovog.jpg"; // Ako nema slike, postavi default
+                  return "/images/nekaovog2.jpg"; // Ako nema slike, postavi default
                 } else {
                   const imageBlob = new Blob([res.data], { type: "image/jpeg" });
                   const imageUrl = URL.createObjectURL(imageBlob);
@@ -47,7 +47,7 @@ function InProgressActivitiesList() {
                   return imageUrl; // Vrati URL slike
                 }
               })
-              .catch(() => "/images/nekaovog.jpg") // U slučaju greške, postavi default
+              .catch(() => "/images/nekaovog2.jpg") // U slučaju greške, postavi default
           )
         )
           .then((logosArray) => {

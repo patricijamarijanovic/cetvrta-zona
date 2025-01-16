@@ -65,7 +65,7 @@ function PrevActOrg({organizationId}) {
                   location={activity.projectlocation}
                   dates={`From: ${activity.beginningdate} To: ${activity.enddate}`}
                   //organization={activity.organizationName}
-                  image={"/images/nekaovog.jpg"}
+                  image={"/images/nekaovog2.jpg"}
                 />
               </Link>
             ))}

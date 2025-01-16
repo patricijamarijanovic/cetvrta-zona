@@ -48,7 +48,7 @@ function ActivityInfoVolunteer() {
         })
         .then((res) => {
           if (res.status === 204) {
-            setImage("/images/nekaovog.jpg"); // Ako nema slike, postavi zadanu
+            setImage("/images/nekaovog2.jpg"); // Ako nema slike, postavi zadanu
           } else {
             const imageBlob = new Blob([res.data], { type: "image/jpeg" });
             const imageUrl = URL.createObjectURL(imageBlob);
@@ -56,7 +56,7 @@ function ActivityInfoVolunteer() {
           }
         })
         .catch(() => {
-          setImage("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
+          setImage("/images/nekaovog2.jpg"); // U slučaju greške, postavi zadanu sliku
         });
     }
   }, [activity])
