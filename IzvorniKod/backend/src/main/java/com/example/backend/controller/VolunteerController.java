@@ -105,13 +105,13 @@ public class VolunteerController {
     // prethodne aktivnosti (na koje je prihvacen)
     @GetMapping("/volunteer/previous-activities")
     public List<VolunteerProjectProfileDto> get_prev_projects (){
-        return volunteerService.previous_projects();
+        return volunteerService.my_previous_projects();
     }
 
     // aktivnosti koje su in_progress, a na njih je prihvacen
     @GetMapping("/volunteer/in-progress-activities")
     public List<VolunteerProjectProfileDto> get_in_progress_projects (){
-        return volunteerService.in_progress_projects();
+        return volunteerService.my_in_progress_projects();
     }
 
     // buduce aktivnosti na koje je prihvacen

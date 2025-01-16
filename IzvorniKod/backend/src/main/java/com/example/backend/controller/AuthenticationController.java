@@ -116,6 +116,19 @@ public class AuthenticationController {
         return volunteerService.get_profile_info(volunteerId);
     }
 
+    // prethodne volonterove aktivnosti (na koje je prihvacen)
+    @GetMapping("/home/volunteer/previous-activities/{volunteerId}")
+    public List<VolunteerProjectProfileDto> get_prev_projects (@PathVariable Long volunteerId){
+        return volunteerService.previous_projects(volunteerId);
+    }
+
+    // trenutne volonterove aktivnosti koje su in_progress, a na njih je prihvacen
+    @GetMapping("/home/volunteer/in-progress-activities/{volunteerId}")
+    public List<VolunteerProjectProfileDto> get_in_progress_projects (@PathVariable Long volunteerId){
+        return volunteerService.in_progress_projects(volunteerId);
+    }
+
+
     // login
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody LoginDto loginDto) {
