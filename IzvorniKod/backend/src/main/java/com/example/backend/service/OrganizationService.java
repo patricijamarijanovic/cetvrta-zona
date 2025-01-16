@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -66,6 +67,9 @@ public class OrganizationService {
 
     @Autowired
     private NewsletterRepository newsletterRepository;
+    
+    @Autowired
+    private ReviewResponseRepository reviewResponseRepository;
 
     public ResponseEntity<String> registerOrganization(OrganizationRegistrationDto dto) {
         if (myUserRepository.existsByUsername(dto.getUsername())) {
@@ -351,5 +355,18 @@ public class OrganizationService {
         return ResponseEntity.noContent().build();
     }
 
+    public ResponseEntity<Object> leave_response(ReviewResponseDto reviewResponseDto) {
+    	try {
+    		ReviewResponse reviewResponse = new ReviewResponse();
+    		reviewResponse.setOriginalReviewID(reviewResponseDto.getReviewID());
+    		reviewResponse.setComment(reviewResponseDto.getComment());
+    		reviewResponse.setResponseDate(LocalDate.now());
+    		reviewResponseRepository.save(reviewResponse);
+    		return ResponseEntity.ok("Response published successfully");
+    	}
+    	catch (Error e) {
+    		return ResponseEntity.badRequest().body(e);
+    	}
+    }
 
 }

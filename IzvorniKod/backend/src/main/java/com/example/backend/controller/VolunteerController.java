@@ -143,8 +143,9 @@ public class VolunteerController {
     public boolean is_subscribed (@PathVariable Long organizationId){
         return volunteerService.is_subscribed(organizationId);
     }
-
-    @PostMapping("/volunteer/{projectID}/leavereview")
+    
+    //objavljivanje recenzije na projekt 
+    @PostMapping("/volunteer/activity/{projectId}")
     public ResponseEntity<Object> leave_review (@PathVariable Integer projectID, @RequestBody ReviewDto dto) {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     	MyUser prijavljeniVolonter = myUserRepository.findByUsername(authentication.getName()).get();

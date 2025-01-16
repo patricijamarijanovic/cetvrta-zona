@@ -113,6 +113,12 @@ public class OrganizationController {
     public Long edit_project_picture(@RequestParam("image") MultipartFile file, @PathVariable Long projectId) throws IOException {
         return projectService.edit_project_picture(projectId, file);
     }
+    
+    // odgovor na recenziju
+    @PostMapping("/organization/{projectId}")
+    public ResponseEntity<Object> leave_response(@RequestBody ReviewResponseDto reviewResponseDto) {
+        return organizationService.leave_response(reviewResponseDto);
+    }
 
 
 //    @GetMapping("/organization/project/{projectID}/registrations")

@@ -154,12 +154,12 @@ public class VolunteerService {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
     }
     
-    public ResponseEntity<Object> saveReview(Integer reviewID, ReviewDto dto, Long volunteerID) {
+    public ResponseEntity<Object> saveReview(Integer projectID, ReviewDto dto, Long volunteerID) {
     	try {
     		Review review = new Review();
         	review.setRating(dto.getRating());
         	review.setComment(dto.getComment());
-        	review.setProjectID(reviewID);
+        	review.setProjectID(projectID);
         	review.setReviewDate(LocalDate.now());
         	review.setVolunteerID(volunteerID);
         	reviewRepository.save(review);
