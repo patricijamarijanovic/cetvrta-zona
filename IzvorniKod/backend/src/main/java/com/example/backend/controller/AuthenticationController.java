@@ -128,6 +128,23 @@ public class AuthenticationController {
         return volunteerService.in_progress_projects(volunteerId);
     }
 
+    // prethodne aktivnosti organizacije
+    @GetMapping("/home/organization/previous-activities/{organizationId}")
+    public List<VolunteerProjectProfileDto> get_prev_org_projects (@PathVariable Long organizationId){
+        return projectService.org_previous_projects(organizationId);
+    }
+
+    // trenutne aktivnosti organizacije
+    @GetMapping("/home/organization/in-progress-activities/{organizationId}")
+    public List<VolunteerProjectProfileDto> get_ip_projects (@PathVariable Long organizationId){
+        return projectService.org_in_progress_projects(organizationId);
+    }
+
+    // buduce aktivnosti organizacije
+    @GetMapping("/home/organization/future-activities/{organizationId}")
+    public List<VolunteerProjectProfileDto> get_future_projects (@PathVariable Long organizationId){
+        return projectService.org_future_projects(organizationId);
+    }
 
     // login
     @PostMapping("/authenticate")
