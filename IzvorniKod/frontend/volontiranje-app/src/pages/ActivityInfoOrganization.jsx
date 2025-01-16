@@ -1,9 +1,8 @@
-
 import { useEffect, useState } from "react";
 import NavBarLoggedIn from "./assets/navBarOrg";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
@@ -40,6 +39,8 @@ function ActivityInfoOrganization() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
 
+  const [originalData, setOriginalData] = useState(null);
+
   const categories = [
     "DJECA",
     "INVALIDI",
@@ -52,10 +53,9 @@ function ActivityInfoOrganization() {
     "OSTALO",
   ];
 
-
-  
   const [image, setImage] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
+
   function handleImage(e) {
     setImage(e.target.files[0]);
     const file = e.target.files[0];
@@ -161,7 +161,7 @@ function ActivityInfoOrganization() {
   const handleAccept = async (volunteerId) => {
     console.log(volunteerId);
     const token = localStorage.getItem("token");
-    
+
     axios
       .put(
         `${BACK_URL}/organization/applications/${id}/accept/${volunteerId}`,
@@ -204,6 +204,7 @@ function ActivityInfoOrganization() {
   };
 
   const handleEdit = () => {
+    setOriginalData(editData);
     setEditMode(true);
   };
 
@@ -216,17 +217,19 @@ function ActivityInfoOrganization() {
   };
 
   const handleSubmit = async (e) => {
-
-
     const formData = new FormData();
     formData.append("image", image);
 
     axios
-      .post(`${BACK_URL}/organization/edit-project-picture/${activity.projectID}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .post(
+        `${BACK_URL}/organization/edit-project-picture/${activity.projectID}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .catch((err) => console.error("Error uploading picture: ", err));
 
     e.preventDefault(); // Prevent page reload on form submit
@@ -272,10 +275,11 @@ function ActivityInfoOrganization() {
   };
 
   const handleDontSave = () => {
+    if (originalData) {
+      setEditData(originalData);
+    }
     setEditMode(false);
   };
-
- 
 
   const toggleEmergencyDropdown = () => {
     setEmergencyDropdownOpen(!emergencyDropdownOpen);
@@ -312,51 +316,26 @@ function ActivityInfoOrganization() {
       </div>
 
       <div className="container mx-auto px-6 py-10">
-
         {/* Project Picture */}
-        <div className="flex flex-col items-center mb-6">
-            <div className="rounded-lg object-cover h-80 w-full mb-4">
-              {profilePicture ? (
-                <img
-                  src={profilePicture}
-                  alt="Profile"
-                  className="rounded-lg object-cover h-80 w-full mb-4"
-                />
-              ) : (
-                <span className="text-gray-500">Nema slike</span>
-              )}
-            </div>
-            {editMode && (
-              <div>
-                <input
-                  type="file"
-                  name="file"
-                  onChange={handleImage}
-                  style={{ display: "none" }}
-                  id="fileInput"
-                />
-
-                <button
-                  className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
-                  onClick={() => document.getElementById("fileInput").click()}
-                >
-                  Promijeni sliku
-                </button>
-              </div>
-            )}
-          </div>
-
+        <div className="flex flex-col items-center mb-6"></div>
 
         <div className="bg-slate-600 shadow-lg rounded-lg p-6">
           {!editMode ? (
             <>
+              <div className="rounded-lg object-cover h-80 w-full mb-4">
+                {profilePicture ? (
+                  <img
+                    src={profilePicture}
+                    alt="Profile"
+                    className="rounded-lg object-cover h-80 w-full mb-4 border border-white"
+                  />
+                ) : (
+                  <span className="text-gray-500">Nema slike</span>
+                )}
+              </div>
               <h1 className="text-3xl font-bold text-white mb-4">
                 {activity.projectname}
               </h1>
-              {/* <img
-                src={image}
-                className="rounded-lg object-cover h-80 w-full mb-4"
-              /> */}
 
               <p className="text-white text-lg mb-6">{activity.projectdesc}</p>
 
@@ -407,7 +386,39 @@ function ActivityInfoOrganization() {
             </>
           ) : (
             <>
+              <div className="rounded-lg object-cover h-80 w-full mb-4">
+                {profilePicture ? (
+                  <img
+                    src={profilePicture}
+                    alt="Profile"
+                    className="rounded-lg object-cover h-80 w-full mb-1 border border-white"
+                  />
+                ) : (
+                  <span className="text-gray-500">Nema slike</span>
+                )}
+              </div>
+
               <form onSubmit={handleSubmit} className="space-y-8">
+                <div>
+                  <input
+                    type="file"
+                    name="file"
+                    onChange={handleImage}
+                    style={{ display: "none" }}
+                    id="fileInput"
+                  />
+
+                  <button
+                    className="bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById("fileInput").click();
+                    }}
+                  >
+                    Promijeni sliku
+                  </button>
+                </div>
+
                 <div className="space-y-2">
                   <label
                     htmlFor="projectName"
@@ -425,8 +436,6 @@ function ActivityInfoOrganization() {
                     placeholder="Ime projekta"
                   />
                 </div>
-
-      
 
                 <div className="space-y-2">
                   <label
@@ -616,9 +625,13 @@ function ActivityInfoOrganization() {
                     className="bg-slate-500 rounded-lg p-4 flex justify-between items-center"
                   >
                     <div>
-                      <p 
+                      <p
                         className="text-white font-bold cursor-pointer hover:text-yellow-400"
-                        onClick={() => navigate(`/profile/volunteer/${volunteer.volunteerId}`)}
+                        onClick={() =>
+                          navigate(
+                            `/profile/volunteer/${volunteer.volunteerId}`
+                          )
+                        }
                       >
                         {volunteer.firstName} {volunteer.lastName}
                       </p>

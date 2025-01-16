@@ -128,7 +128,7 @@ function OrganizationProfilePage() {
 
           <img
            src={image}
-           className="rounded-lg object-cover h-40 w-full mb-4"
+           className="rounded-lg object-cover h-80 w-full mb-4 border border-black"
          />
 
           {renderField("Naziv organizacije", profileData?.name)}
