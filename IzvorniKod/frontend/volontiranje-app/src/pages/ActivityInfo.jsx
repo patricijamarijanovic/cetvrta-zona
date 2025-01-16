@@ -73,7 +73,7 @@ function ActivityInfo() {
 
         <img
            src={image}
-           className="rounded-lg object-cover h-40 w-full mb-4"
+           className="rounded-lg object-cover h-80 w-full mb-4 border border-black"
          />
 
           <h1 className="text-3xl font-bold text-white mb-4">

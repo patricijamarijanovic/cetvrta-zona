@@ -79,7 +79,7 @@ function VolunteerProfileEdit() {
       })
       .then((res) => {
         if (res.status === 204) {
-          setProfilePicture("/images/nekaovog.jpg");
+          setProfilePicture("/images/profilna.jpg");
         } else {
           const imageBlob = new Blob([res.data], { type: "image/jpeg" });
           const imageUrl = URL.createObjectURL(imageBlob);
@@ -87,7 +87,7 @@ function VolunteerProfileEdit() {
         }
       })
       .catch(() => {
-        setProfilePicture("/images/nekaovog.jpg");
+        setProfilePicture("/images/profilna.jpg");
       });
 
     axios
@@ -181,10 +181,10 @@ function VolunteerProfileEdit() {
     </div>
   );
 
-  const renderField = (label, field, type = "text") => (
+  const renderField = (label, field, type = "text", readOnly = false) => (
     <div className="flex flex-col mb-4">
       <h4 className="text-gray-600 font-medium">{label}</h4>
-      {isEditMode ? (
+      {isEditMode && !readOnly ? (
         <input
           type={type}
           value={profileData[field] || ""}
@@ -249,7 +249,7 @@ function VolunteerProfileEdit() {
           {renderField("Ime", "firstName")}
           {renderField("Prezime", "lastName")}
           {renderField("Datum rođenja", "dateOfBirth", "date")}
-          {renderField("Email adresa", "email")}
+          {renderField("Email adresa", "email", "text", true)}
           {renderField("Lokacija", "location")}
           {renderField("Broj telefona", "phone")}
 

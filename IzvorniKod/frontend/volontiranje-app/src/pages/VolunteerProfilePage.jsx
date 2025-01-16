@@ -4,6 +4,9 @@ import axios from "axios";
 import NavBarLoggedIn from "./assets/navBarOrg";
 import NavBarLoggedInVol from "./assets/navBarVol";
 
+import PrevActProfile from "./assets/prevActProfile";
+import InProgressActProfile from "./assets/inProgressActProfile";
+
 const BACK_URL = "http://localhost:8080";
 
 const interestsMap = {
@@ -67,7 +70,7 @@ function VolunteerProfilePage() {
         })
         .then((res) => {
           if (res.status === 204) {
-            setImage("/images/nekaovog.jpg"); // Ako nema slike, postavi zadanu
+            setImage("/images/profilna.jpg"); // Ako nema slike, postavi zadanu
           } else {
             const imageBlob = new Blob([res.data], { type: "image/jpeg" });
             const imageUrl = URL.createObjectURL(imageBlob);
@@ -75,7 +78,7 @@ function VolunteerProfilePage() {
           }
         })
         .catch(() => {
-          setImage("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
+          setImage("/images/profilna.jpg"); // U slučaju greške, postavi zadanu sliku
         });
   }, [volunteerId])
 
@@ -156,6 +159,9 @@ function VolunteerProfilePage() {
 
           {renderTagSection("Interesi", profileData?.interests, interestsMap)}
           {renderTagSection("Vještine", profileData?.skills, skillsMap)}
+
+          <PrevActProfile volunteerID = {volunteerId}/>
+          <InProgressActProfile volunteerID = {volunteerId}/>
         </div>
       </div>
     </div>
