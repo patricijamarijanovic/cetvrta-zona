@@ -27,6 +27,7 @@ function OrganizationProfilePage() {
   const [userRole, setUserRole] = useState(localStorage.getItem("role"));
   const token = localStorage.getItem("token");
   const [image, setImage] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -63,6 +64,23 @@ function OrganizationProfilePage() {
         });
   }, [organizationId])
 
+  useEffect(() => {
+    const fetchSubscriptionStatus = async () => {
+      try {
+        const profileRes = await axios.get(`${BACK_URL}/volunteer/is-subscribed/${organizationId}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setSubscribed(profileRes.data);
+      } catch (err) {
+        console.error("Newsletter error:", err);
+      }
+    };
+  
+    fetchSubscriptionStatus(); // Pozovi asinhronu funkciju unutar useEffect
+  }, []); 
+
   const renderField = (label, value) => (
     <div className="flex flex-col mb-4">
       <h4 className="text-gray-600 font-medium">{label}</h4>
@@ -90,6 +108,46 @@ function OrganizationProfilePage() {
     if (!token) return <NavBar />;
     return userRole === "ROLE_ORGANIZATION" ? <NavBarLoggedIn /> : <NavBarLoggedInVol />;
   };
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const response = await axios.post(`${BACK_URL}/volunteer/newsletter/${organizationId}`, {
+        },{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      console.log("Uspjesna prijava na newsletter!!")
+      window.location.reload();
+
+      
+    } catch (error) {
+      console.error("Newsletter error:", error);
+    }
+
+  }
+
+  const handleUnsubscribe = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const response = await axios.post(`${BACK_URL}/volunteer/unsubscribe/${organizationId}`, {
+        },{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      console.log("Uspjesna odjava s newslettera!!")
+      window.location.reload();
+
+      
+    } catch (error) {
+      console.error("Newsletter error:", error);
+    }
+
+  }
 
   if (loading) {
     return (
@@ -136,6 +194,24 @@ function OrganizationProfilePage() {
           {renderField("Opis", profileData?.description)}
           {renderTagSection("Područja rada", profileData?.areas_of_work, areasOfWorkMap)}
         </div>
+        <div>
+  {!subscribed && (
+    <button 
+      onClick={handleSubscribe} 
+      className="bg-blue-500 text-white px-4 py-2 rounded"
+    >
+      Prijavi se na newsletter!
+    </button>
+  )}
+  {subscribed && (
+     <button 
+     onClick={handleUnsubscribe} 
+     className="bg-blue-500 text-white px-4 py-2 rounded"
+   >
+     Odjava s newslettera
+   </button>
+  )}
+</div>
       </div>
     </div>
   );
