@@ -159,10 +159,10 @@ function OrganizationProfileEdit() {
     </div>
   );
 
-  const renderField = (label, field, type = "text") => (
+  const renderField = (label, field, type = "text", readOnly = false) => (
     <div className="flex flex-col mb-4">
       <h4 className="text-gray-600 font-medium">{label}</h4>
-      {isEditMode ? (
+      {isEditMode && !readOnly ? (
         <input
           type={type}
           value={profileData[field] || ""}
@@ -225,7 +225,7 @@ function OrganizationProfileEdit() {
           </div>
 
           {renderField("Naziv organizacije", "name")}
-          {renderField("Email adresa", "email")}
+          {renderField("Email adresa", "email", "text", true)}
           {renderField("Opis", "description")}
           {renderCheckboxSection("Područja rada", "areas_of_work", areasOfWorkMap)}
 
