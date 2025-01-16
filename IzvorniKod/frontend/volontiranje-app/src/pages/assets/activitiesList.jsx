@@ -18,7 +18,7 @@ function ActivitiesList() {
   const [pics, setPics] = useState([]);
 
   useEffect(() => {
-    axios.get(`${BACK_URL}/home`)
+    axios.get(`${BACK_URL}/home/recent-activities`)
       .then((response) => {
         console.log(response.data)
 

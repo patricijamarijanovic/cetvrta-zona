@@ -5,6 +5,10 @@ import NavBarLoggedIn from "./assets/navBarOrg";
 import NavBarLoggedInVol from "./assets/navBarVol";
 import NavBar from "./assets/navBar";
 
+import PrevActOrg from "./assets/prevActOrg";
+import InProgressActOrg from "./assets/inProgressActOrg";
+import FutureActOrg from "./assets/futureActOrg";
+
 const BACK_URL = "http://localhost:8080";
 
 const areasOfWorkMap = {
@@ -193,6 +197,9 @@ function OrganizationProfilePage() {
           {renderField("Email adresa", profileData?.email)}
           {renderField("Opis", profileData?.description)}
           {renderTagSection("Područja rada", profileData?.areas_of_work, areasOfWorkMap)}
+          <PrevActOrg organizationId = {organizationId}/>
+          <InProgressActOrg organizationId = {organizationId}/>
+          <FutureActOrg organizationId = {organizationId}/>
         </div>
         <div>
   {!subscribed && (

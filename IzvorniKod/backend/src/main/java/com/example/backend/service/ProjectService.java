@@ -380,7 +380,53 @@ public class ProjectService {
                 dto.setOrganizationID(organization.getId());
                 lista.add(dto);
             }
+        });
 
+        return lista;
+    }
+
+    public List<ProjectResponseDto> get_recent_activities(){
+        List<ProjectResponseDto> lista = new ArrayList<>();
+        projectRepository.findAll().forEach(project -> {
+
+            LocalDate currentDate = LocalDate.now();
+            if (!currentDate.isAfter(project.getEndDate())){
+                ProjectResponseDto dto = new ProjectResponseDto();
+                dto.setProjectID(project.getProjectId());
+                dto.setProjectname(project.getProjectName());
+                dto.setProjectdesc(project.getProjectDesc());
+                dto.setTypeofwork(project.getTypeOfWork());
+                dto.setBeginningdate(project.getStartDate());
+                dto.setEnddate(project.getEndDate());
+                dto.setProjectlocation(project.getLocation());
+                dto.setNumregisteredvolunteers(project.getNumVolunteers());
+                dto.setMaxnumvolunteers(project.getMaxNumVolunteers());
+
+                if (dto.getBeginningdate().isAfter(currentDate)){
+                    dto.setStatus(String.valueOf(Status.OPEN));
+                } else if(currentDate.isAfter(dto.getEnddate())){
+                    dto.setStatus(String.valueOf(Status.CLOSED));
+                } else if ((currentDate.isEqual(dto.getBeginningdate()) || currentDate.isAfter(dto.getBeginningdate())) &&
+                        (currentDate.isEqual(dto.getEnddate()) || currentDate.isBefore(dto.getEnddate()))) {
+                    dto.setStatus(String.valueOf(Status.IN_PROGRESS));
+                }else{
+                    dto.setStatus(String.valueOf(Status.CLOSED));
+                }
+
+                dto.setProjectID(project.getProjectId());
+                dto.setUrgent(project.getUrgent());
+                dto.setOrganizationID(project.getOrganizationID());
+
+                Organization organization = organizationRepository.findById(project.getOrganizationID()).get();
+                System.out.println(organization.toString());
+                System.out.println(organization.getOrganizationName());
+
+                dto.setOrganizationName(organization.getOrganizationName());
+                dto.setOrganizationEmail(organization.getEmail());
+                if (lista.size() < 6){
+                    lista.add(dto);
+                }
+            }
         });
 
         return lista;

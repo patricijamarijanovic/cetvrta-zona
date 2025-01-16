@@ -59,7 +59,7 @@ public class BackendApplication {
 			project.setNumVolunteers(0);
 			project.setTypeOfWork(TypeOfWork.DJECA);
 			projectRepository.save(project);
-			
+
 			Application application = new Application();
 			application.setVolunteerId(user2.getId());
 			application.setProjectId(project.getProjectId());
