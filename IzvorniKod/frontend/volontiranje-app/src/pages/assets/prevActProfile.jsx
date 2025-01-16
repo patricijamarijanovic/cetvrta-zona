@@ -10,18 +10,11 @@ const BACK_URL = "http://localhost:8080";
 
 function PrevActProfile({volunteerID}) {
   const token = localStorage.getItem("token");
-  if (!token) {
-    setError("Authentication token is missing. Please log in again.");
-    return;
-}
-console.log("Token:", token);
-
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const role = localStorage.getItem("role");
   const [pics, setPics] = useState([]);
-  //const volunteerID = localStorage.getItem("volunteerID");
   console.log(role);
 
   useEffect(() => {
@@ -34,7 +27,6 @@ console.log("Token:", token);
       }
     )
       .then((response) => {
-        console.log("gettano");
         console.log(response.data)
 
         const ids = response.data.map((org) => org.projectID);
@@ -70,7 +62,6 @@ console.log("Token:", token);
         setLoading(false);
       })
       .catch((err) => {
-        console.log("NIJE gettano");
         console.error("Error fetching activities:", err);
         setError("Error fetching activities.");
         setLoading(false);
