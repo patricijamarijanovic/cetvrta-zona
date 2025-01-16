@@ -112,7 +112,7 @@ function ActivityInfoOrganization() {
         })
         .then((res) => {
           if (res.status === 204) {
-            setProfilePicture("/images/nekaovog.jpg"); // Ako nema slike, postavi zadanu
+            setProfilePicture("/images/nekaovog2.jpg"); // Ako nema slike, postavi zadanu
           } else {
             const imageBlob = new Blob([res.data], { type: "image/jpeg" });
             const imageUrl = URL.createObjectURL(imageBlob);
@@ -120,7 +120,7 @@ function ActivityInfoOrganization() {
           }
         })
         .catch(() => {
-          setProfilePicture("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
+          setProfilePicture("/images/nekaovog2.jpg"); // U slučaju greške, postavi zadanu sliku
         });
     }
   }, [activity]);

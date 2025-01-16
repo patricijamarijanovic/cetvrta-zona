@@ -197,9 +197,13 @@ function OrganizationProfilePage() {
           {renderField("Email adresa", profileData?.email)}
           {renderField("Opis", profileData?.description)}
           {renderTagSection("Područja rada", profileData?.areas_of_work, areasOfWorkMap)}
-          <PrevActOrg organizationId = {organizationId}/>
-          <InProgressActOrg organizationId = {organizationId}/>
-          <FutureActOrg organizationId = {organizationId}/>
+          {token && (
+                <>
+                  <PrevActOrg organizationId={organizationId} />
+                  <InProgressActOrg organizationId={organizationId} />
+                  <FutureActOrg organizationId={organizationId} />
+                </>
+              )}
         </div>
         <div>
   {!subscribed && (

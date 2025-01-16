@@ -30,14 +30,14 @@ function ActivitiesListAll({ filteredActivities, isFiltered }) {
             })
             .then((res) => {
               if (res.status === 204) {
-                return "/images/nekaovog.jpg";
+                return "/images/nekaovog2.jpg";
               } else {
                 const imageBlob = new Blob([res.data], { type: "image/jpeg" });
                 const imageUrl = URL.createObjectURL(imageBlob);
                 return imageUrl;
               }
             })
-            .catch(() => "/images/nekaovog.jpg")
+            .catch(() => "/images/nekaovog2.jpg")
         )
       )
         .then((logosArray) => {
@@ -74,14 +74,14 @@ function ActivitiesListAll({ filteredActivities, isFiltered }) {
                 })
                 .then((res) => {
                   if (res.status === 204) {
-                    return "/images/nekaovog.jpg";
+                    return "/images/nekaovog2.jpg";
                   } else {
                     const imageBlob = new Blob([res.data], { type: "image/jpeg" });
                     const imageUrl = URL.createObjectURL(imageBlob);
                     return imageUrl;
                   }
                 })
-                .catch(() => "/images/nekaovog.jpg")
+                .catch(() => "/images/nekaovog2.jpg")
             )
           )
             .then((logosArray) => {
