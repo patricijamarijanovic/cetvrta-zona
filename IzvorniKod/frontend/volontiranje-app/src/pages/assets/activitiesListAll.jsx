@@ -48,21 +48,17 @@ function ActivitiesListAll({ filteredActivities, isFiltered }) {
         });
 
       setLoading(false);
-
-    }  else if (isFiltered && filteredActivities.length === 0) {
+    } else if (isFiltered && filteredActivities.length === 0) {
       // Ako je filtriranje prazno, postavi activities na prazno polje
-     
+
       setActivities([]);
       setLoading(false);
-      console.log(filteredActivities)
-    }
-    
-    else {
+      console.log(filteredActivities);
+    } else {
       // Ako nema filtriranih aktivnosti, dohvaćaj sve aktivnosti
       axios
         .get(`${BACK_URL}/home`)
         .then((response) => {
-
           const ids = response.data.map((org) => org.projectID);
 
           // Pokreni zahtjeve za slike
@@ -76,7 +72,9 @@ function ActivitiesListAll({ filteredActivities, isFiltered }) {
                   if (res.status === 204) {
                     return "/images/nekaovog.jpg";
                   } else {
-                    const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+                    const imageBlob = new Blob([res.data], {
+                      type: "image/jpeg",
+                    });
                     const imageUrl = URL.createObjectURL(imageBlob);
                     return imageUrl;
                   }
@@ -112,7 +110,8 @@ function ActivitiesListAll({ filteredActivities, isFiltered }) {
     }
   };
 
-  if (loading) return <p className="p-8 text-gray-500">Učitavam aktivnosti...</p>;
+  if (loading)
+    return <p className="p-8 text-gray-500">Učitavam aktivnosti...</p>;
   if (error) return <p className="p-8 text-red-500">{error}</p>;
 
   return (
@@ -124,11 +123,15 @@ function ActivitiesListAll({ filteredActivities, isFiltered }) {
           activities.map((activity, index) => (
             <Link to={getLink(activity.projectID)} key={index}>
               <Card
+                key={index}
                 title={activity.projectname}
                 location={activity.projectlocation}
-                dates={`From: ${activity.beginningdate} To: ${activity.enddate}`}
+                startDate={activity.beginningdate}
+                endDate={activity.enddate}
                 organization={activity.organizationName}
                 image={pics[index]}
+                urgency={activity.urgent}
+                category={activity.typeofwork}
               />
             </Link>
           ))
