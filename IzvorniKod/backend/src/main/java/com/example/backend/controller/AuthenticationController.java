@@ -68,6 +68,12 @@ public class AuthenticationController {
         return projectService.getAllProjects();
     }
 
+    // aktualne aktivnosti
+    @GetMapping("/home/recent-activities")
+    public List<ProjectResponseDto> recent_activities() {
+        return projectService.get_recent_activities();
+    }
+
     // specifican projekt
     @GetMapping("/home/activity/{projectId}")
     public ProjectResponseDto specific(@PathVariable Long projectId) {
