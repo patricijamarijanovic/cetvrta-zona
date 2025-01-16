@@ -309,16 +309,21 @@ public class VolunteerService {
     }
 
     // prosli prihvaceni projekti
-    public List<VolunteerProjectProfileDto> previous_projects(){
+    public List<VolunteerProjectProfileDto> my_previous_projects(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Volunteer vol = volunteerRepository.findByUsername(username);
 
+        return previous_projects(vol.getId());
+    }
+
+    // prosli prihvaceni projekti
+    public List<VolunteerProjectProfileDto> previous_projects(Long volunteerId){
+
         List<VolunteerProjectProfileDto> lista = new ArrayList<>();
 
-
         // pronadi sve njegove prihvacene projekte
-        List<Application> applications = applicationRepository.findAllByVolunteerId(vol.getId())
+        List<Application> applications = applicationRepository.findAllByVolunteerId(volunteerId)
                 .stream().filter(a -> a.getStatus().equals(ApplicationStatus.ACCEPTED)).toList();
 
         for (Application a : applications){
@@ -347,16 +352,23 @@ public class VolunteerService {
         return lista;
     }
 
+
+
     // projekti koji su trenutno u tijeku
-    public List<VolunteerProjectProfileDto> in_progress_projects(){
+    public List<VolunteerProjectProfileDto> my_in_progress_projects(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Volunteer vol = volunteerRepository.findByUsername(username);
 
+        return in_progress_projects(vol.getId());
+    }
+
+    // projekti koji su trenutno u tijeku
+    public List<VolunteerProjectProfileDto> in_progress_projects(Long volunteerId){
         List<VolunteerProjectProfileDto> lista = new ArrayList<>();
 
         // pronadi sve njegove prihvacene projekte
-        List<Application> applications = applicationRepository.findAllByVolunteerId(vol.getId())
+        List<Application> applications = applicationRepository.findAllByVolunteerId(volunteerId)
                 .stream().filter(a -> a.getStatus().equals(ApplicationStatus.ACCEPTED)).toList();
 
         for (Application a : applications){
