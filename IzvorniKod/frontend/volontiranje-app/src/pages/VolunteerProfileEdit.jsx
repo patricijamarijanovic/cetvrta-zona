@@ -79,7 +79,7 @@ function VolunteerProfileEdit() {
       })
       .then((res) => {
         if (res.status === 204) {
-          setProfilePicture("/images/nekaovog.jpg");
+          setProfilePicture("/images/profilna.jpg");
         } else {
           const imageBlob = new Blob([res.data], { type: "image/jpeg" });
           const imageUrl = URL.createObjectURL(imageBlob);
@@ -87,7 +87,7 @@ function VolunteerProfileEdit() {
         }
       })
       .catch(() => {
-        setProfilePicture("/images/nekaovog.jpg");
+        setProfilePicture("/images/profilna.jpg");
       });
 
     axios

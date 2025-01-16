@@ -75,7 +75,7 @@ function VolunteerProfilePage() {
           }
         })
         .catch(() => {
-          setImage("/images/nekaovog.jpg"); // U slučaju greške, postavi zadanu sliku
+          setImage("/images/profilna.jpg"); // U slučaju greške, postavi zadanu sliku
         });
   }, [volunteerId])
 
