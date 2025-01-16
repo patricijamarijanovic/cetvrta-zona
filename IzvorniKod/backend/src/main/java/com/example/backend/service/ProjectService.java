@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.dto.ProjectFilteringRequestDto;
 import com.example.backend.dto.ProjectResponseDto;
 import com.example.backend.dto.VolunteerProjectDto;
+import com.example.backend.dto.VolunteerProjectProfileDto;
 import com.example.backend.model.*;
 import com.example.backend.repository.*;
 import jakarta.persistence.EnumType;
@@ -307,5 +308,81 @@ public class ProjectService {
 
         }
         return ResponseEntity.noContent().build();
+    }
+
+    public List<VolunteerProjectProfileDto> org_previous_projects(Long organizationId){
+        Organization organization = organizationRepository.findById(organizationId).get();
+
+        List<VolunteerProjectProfileDto> lista = new ArrayList<>();
+        projectRepository.findAllByOrganizationID(organizationId).forEach(project -> {
+
+            LocalDate currentDate = LocalDate.now();
+            if (currentDate.isAfter(project.getEndDate())){
+                VolunteerProjectProfileDto dto = new VolunteerProjectProfileDto();
+                dto.setProjectID(project.getProjectId());
+                dto.setProjectname(project.getProjectName());
+                dto.setProjectdesc(project.getProjectDesc());
+                dto.setTypeofwork(project.getTypeOfWork());
+                dto.setBeginningdate(project.getStartDate());
+                dto.setEnddate(project.getEndDate());
+                dto.setOrganizationName(organization.getOrganizationName());
+                dto.setOrganizationID(organization.getId());
+                lista.add(dto);
+            }
+
+        });
+
+        return lista;
+    }
+
+    public List<VolunteerProjectProfileDto> org_in_progress_projects(Long organizationId){
+        Organization organization = organizationRepository.findById(organizationId).get();
+
+        List<VolunteerProjectProfileDto> lista = new ArrayList<>();
+        projectRepository.findAllByOrganizationID(organizationId).forEach(project -> {
+
+            LocalDate currentDate = LocalDate.now();
+            if ((currentDate.isEqual(project.getStartDate()) || currentDate.isAfter(project.getStartDate())) &&
+                    (currentDate.isEqual(project.getEndDate()) || currentDate.isBefore(project.getEndDate()))){
+                VolunteerProjectProfileDto dto = new VolunteerProjectProfileDto();
+                dto.setProjectID(project.getProjectId());
+                dto.setProjectname(project.getProjectName());
+                dto.setProjectdesc(project.getProjectDesc());
+                dto.setTypeofwork(project.getTypeOfWork());
+                dto.setBeginningdate(project.getStartDate());
+                dto.setEnddate(project.getEndDate());
+                dto.setOrganizationName(organization.getOrganizationName());
+                dto.setOrganizationID(organization.getId());
+                lista.add(dto);
+            }
+
+        });
+
+        return lista;
+    }
+
+    public List<VolunteerProjectProfileDto> org_future_projects(Long organizationId){
+        Organization organization = organizationRepository.findById(organizationId).get();
+
+        List<VolunteerProjectProfileDto> lista = new ArrayList<>();
+        projectRepository.findAllByOrganizationID(organizationId).forEach(project -> {
+
+            LocalDate currentDate = LocalDate.now();
+            if (project.getStartDate().isAfter(currentDate)){
+                VolunteerProjectProfileDto dto = new VolunteerProjectProfileDto();
+                dto.setProjectID(project.getProjectId());
+                dto.setProjectname(project.getProjectName());
+                dto.setProjectdesc(project.getProjectDesc());
+                dto.setTypeofwork(project.getTypeOfWork());
+                dto.setBeginningdate(project.getStartDate());
+                dto.setEnddate(project.getEndDate());
+                dto.setOrganizationName(organization.getOrganizationName());
+                dto.setOrganizationID(organization.getId());
+                lista.add(dto);
+            }
+
+        });
+
+        return lista;
     }
 }
