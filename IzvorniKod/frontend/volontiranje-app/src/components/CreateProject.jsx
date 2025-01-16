@@ -231,18 +231,17 @@ function CreateProject() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-8">
-              {!profilePicture ? (
-                <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center ring-4 ring-yellow-400">
-                  <span className="text-gray-500">Bez slike</span>
-                </div>
-              ) : (
-                <div>
+              <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center ring-4 ring-yellow-400">
+                {profilePicture ? (
                   <img
                     src={profilePicture}
-                    className="rounded-lg object-cover h-80 w-full mb-4 border border-white"
+                    alt="Profile"
+                    className="rounded-full w-full h-full object-cover"
                   />
-                </div>
-              )}
+                ) : (
+                  <span className="text-gray-500">No Image</span>
+                )}
+              </div>
               <div>
                 <input
                   type="file"
@@ -254,10 +253,7 @@ function CreateProject() {
 
                 <button
                   className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById("fileInput").click();
-                  }}
+                  onClick={() => document.getElementById("fileInput").click()} // Aktivira input
                 >
                   Promijeni sliku
                 </button>
