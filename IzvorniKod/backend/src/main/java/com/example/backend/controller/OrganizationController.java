@@ -115,7 +115,7 @@ public class OrganizationController {
     }
     
     // odgovor na recenziju
-    @PostMapping("/organization/{projectId}")
+    @PostMapping("/organization/respond/{projectId}")
     public ResponseEntity<Object> leave_response(@RequestBody ReviewResponseDto reviewResponseDto) {
         return organizationService.leave_response(reviewResponseDto);
     }
