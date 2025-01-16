@@ -40,6 +40,7 @@ function ActivityInfoOrganization() {
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
 
   const [originalData, setOriginalData] = useState(null);
+  const [savedProfilePicture, setSavedProfilePicture] = useState(null);
 
   const categories = [
     "DJECA",
@@ -206,6 +207,7 @@ function ActivityInfoOrganization() {
   const handleEdit = () => {
     setOriginalData(editData);
     setEditMode(true);
+    setSavedProfilePicture(profilePicture);
   };
 
   const handleChange = (e) => {
@@ -279,6 +281,7 @@ function ActivityInfoOrganization() {
       setEditData(originalData);
     }
     setEditMode(false);
+    setProfilePicture(savedProfilePicture);
   };
 
   const toggleEmergencyDropdown = () => {
