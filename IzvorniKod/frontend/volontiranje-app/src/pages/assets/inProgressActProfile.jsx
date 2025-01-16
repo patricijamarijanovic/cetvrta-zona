@@ -19,7 +19,6 @@ function InProgressActProfile({volunteerID}) {
   const [error, setError] = useState(null);
   const role = localStorage.getItem("role");
   const [pics, setPics] = useState([]);
-  //const volunteerID = localStorage.getItem("volunteerID");
   console.log(role);
 
   useEffect(() => {
