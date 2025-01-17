@@ -22,6 +22,8 @@ function VolunteerLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   const Validation = (values) => {
     let errors = {};
 
@@ -86,6 +88,11 @@ function VolunteerLogin() {
     });
     setError(validationErrors);
 
+    setIsButtonDisabled(true);
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 2000);
+
     if (Object.keys(validationErrors).length === 0) {
       try {
         await axios.post(`${BACK_URL}/register/volunteer`, {
@@ -96,8 +103,10 @@ function VolunteerLogin() {
           email: email,
           dateOfBirth: date,
         });
-        alert("Registracija uspješna! Provjerite svoj inbox i kliknite na link za potvrdu email adrese kako biste završili proces registracije.");
-        navigate('/login');
+        alert(
+          "Registracija uspješna! Provjerite svoj inbox i kliknite na link za potvrdu email adrese kako biste završili proces registracije."
+        );
+        navigate("/login");
       } catch (err) {
         // alert(err);jel
         console.log(err.response);
@@ -252,8 +261,8 @@ function VolunteerLogin() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         className={`w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 ${
-                            errors.username ? "border-red-500" : "border-gray-300"
-                          }`}
+                          errors.username ? "border-red-500" : "border-gray-300"
+                        }`}
                       />
                       <button
                         type="button"
@@ -287,8 +296,8 @@ function VolunteerLogin() {
                         value={password2}
                         onChange={(e) => setPassword2(e.target.value)}
                         className={`w-full mt-1 p-3 border rounded-lg focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 ${
-                            errors.username ? "border-red-500" : "border-gray-300"
-                          }`}
+                          errors.username ? "border-red-500" : "border-gray-300"
+                        }`}
                       />
                       <button
                         type="button"
@@ -307,11 +316,8 @@ function VolunteerLogin() {
                     )}
                   </div>
 
-                <div className="space-y-2">
-                    <label
-                      htmlFor="date"
-                      className="text-white font-semibold"
-                    >
+                  <div className="space-y-2">
+                    <label htmlFor="date" className="text-white font-semibold">
                       Datum rođenja
                     </label>
                     <input
@@ -329,7 +335,6 @@ function VolunteerLogin() {
                       <p className="text-sm text-red-500">{errors.date}</p>
                     )}
                   </div>
-
                 </div>
 
                 {errors.general && (
@@ -342,31 +347,31 @@ function VolunteerLogin() {
                   <button
                     type="submit"
                     class="bg-yellow-300 text-black text-2xl py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
+                    disabled={isButtonDisabled}
                   >
                     Registriraj se
                   </button>
                 </div>
 
                 <div className="flex justify-end">
-                <button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    setUsername("");
-                    setEmail("");
-                    setFirstName("");
-                    setLastName("");
-                    setPassword("");
-                    setPassword2("");
-                    setDate(0);
-                    setError({});
-                  }}
-                  className="bg-red-500 text-white py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-red-400"
-                >
-                  Izbriši podatke
-                </button>
+                  <button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setUsername("");
+                      setEmail("");
+                      setFirstName("");
+                      setLastName("");
+                      setPassword("");
+                      setPassword2("");
+                      setDate(0);
+                      setError({});
+                    }}
+                    className="bg-red-500 text-white py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-red-400"
+                  >
+                    Izbriši podatke
+                  </button>
                 </div>
-
               </form>
             </div>
           </div>

@@ -20,6 +20,8 @@ function OrganizationLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   const Validation = (values) => {
     let errors = {};
 
@@ -76,6 +78,11 @@ function OrganizationLogin() {
     });
     setError(validationErrors);
 
+    setIsButtonDisabled(true);
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 2000);
+
     // Provjeravamo postoji li greška prije slanja
     if (Object.keys(validationErrors).length === 0) {
       try {
@@ -85,8 +92,10 @@ function OrganizationLogin() {
           email: email,
           organizationName: orgName,
         });
-        alert("Registracija uspješna! Provjerite svoj inbox i kliknite na link za potvrdu email adrese kako biste završili proces registracije.");
-        navigate('/login');
+        alert(
+          "Registracija uspješna! Provjerite svoj inbox i kliknite na link za potvrdu email adrese kako biste završili proces registracije."
+        );
+        navigate("/login");
       } catch (err) {
         //alert(err);
         // alert(err);jel
@@ -290,6 +299,7 @@ function OrganizationLogin() {
                   <button
                     type="submit"
                     class="bg-yellow-300 text-black text-2xl py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
+                    disabled={isButtonDisabled}
                   >
                     Registriraj se
                   </button>

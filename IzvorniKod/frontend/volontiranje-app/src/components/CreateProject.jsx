@@ -20,6 +20,7 @@ function CreateProject() {
   const [emergencyDropdownOpen, setEmergencyDropdownOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const categories = [
     "DJECA",
@@ -130,6 +131,11 @@ function CreateProject() {
       setCategory("ZIVOTINJE");
     }
     console.log(selectedCategory);
+
+    setIsButtonDisabled(true);
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 2000);
 
     if (Object.keys(validationErrors).length === 0) {
       const token = localStorage.getItem("token");
@@ -396,7 +402,10 @@ function CreateProject() {
                   </label>
                   <div className="relative" onClick={toggleCategoryDropdown}>
                     <div className="border rounded-lg p-3 cursor-pointer bg-white text-gray-700 flex justify-between items-center">
-                      <span>{formatCategory(selectedCategory) || "Odaberite kategoriju"}</span>
+                      <span>
+                        {formatCategory(selectedCategory) ||
+                          "Odaberite kategoriju"}
+                      </span>
                       <img
                         src="/images/one-down-arrow.png"
                         alt="Arrow"
@@ -508,6 +517,7 @@ function CreateProject() {
                 <button
                   type="submit"
                   className="bg-yellow-300 text-black text-2xl py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
+                  disabled={isButtonDisabled}
                 >
                   Registriraj projekt
                 </button>
