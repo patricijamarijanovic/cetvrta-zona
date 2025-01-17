@@ -208,6 +208,17 @@ function CreateProject() {
     }
   };
 
+  const formatCategory = (cat) => {
+    const categoryMap = {
+      ZIVOTINJE: "ŽIVOTINJE",
+      OKOLIS: "OKOLIŠ",
+    };
+    const mappedCategory = categoryMap[cat];
+    if (mappedCategory) return mappedCategory;
+
+    return cat;
+  };
+
   return (
     <>
       <div className="bg-slate-600 rounded-b-3xl text-white">
@@ -231,17 +242,19 @@ function CreateProject() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-8">
-              <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center ring-4 ring-yellow-400">
-                {profilePicture ? (
+              {!profilePicture ? (
+                <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center ring-4 ring-yellow-400">
+                  <span className="text-gray-500">Bez slike</span>
+                </div>
+              ) : (
+                <div>
                   <img
                     src={profilePicture}
                     alt="Profile"
-                    className="rounded-full w-full h-full object-cover"
+                    className="rounded-lg object-cover h-80 w-full mb-4 border border-white"
                   />
-                ) : (
-                  <span className="text-gray-500">No Image</span>
-                )}
-              </div>
+                </div>
+              )}
               <div>
                 <input
                   type="file"
@@ -253,7 +266,10 @@ function CreateProject() {
 
                 <button
                   className="mt-2 bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
-                  onClick={() => document.getElementById("fileInput").click()} // Aktivira input
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("fileInput").click();
+                  }}
                 >
                   Promijeni sliku
                 </button>
@@ -380,7 +396,7 @@ function CreateProject() {
                   </label>
                   <div className="relative" onClick={toggleCategoryDropdown}>
                     <div className="border rounded-lg p-3 cursor-pointer bg-white text-gray-700 flex justify-between items-center">
-                      <span>{selectedCategory || "Odaberite kategoriju"}</span>
+                      <span>{formatCategory(selectedCategory) || "Odaberite kategoriju"}</span>
                       <img
                         src="/images/one-down-arrow.png"
                         alt="Arrow"
