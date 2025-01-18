@@ -28,7 +28,7 @@ function ActivityInfoVolunteer() {
       })
       .then((response) => {
         console.log(response.data);
-    
+
         setActivity(response.data);
         setLoading(false);
       })
@@ -37,7 +37,6 @@ function ActivityInfoVolunteer() {
         //setError("Error fetching activities.");
         setLoading(false);
       });
-
   }, []);
 
   useEffect(() => {
@@ -60,7 +59,7 @@ function ActivityInfoVolunteer() {
           setImage("/images/nekaovog2.jpg"); // U slučaju greške, postavi zadanu sliku
         });
     }
-  }, [activity])
+  }, [activity]);
 
   if (loading)
     return <p className="p-8 text-gray-500">Učitavam aktivnosti...</p>;
@@ -101,13 +100,10 @@ function ActivityInfoVolunteer() {
 
       <div className="container mx-auto px-6 py-10">
         <div className="bg-slate-600 shadow-lg rounded-lg p-6">
-
-        <img
-           src={image}
-           className="rounded-lg object-cover h-80 w-full mb-4 border border-white"
-        />
-
-
+          <img
+            src={image}
+            className="rounded-lg object-cover h-80 w-full mb-4 border border-white"
+          />
 
           <h1 className="text-3xl font-bold text-white mb-4">
             {activity.projectname}
@@ -118,9 +114,11 @@ function ActivityInfoVolunteer() {
             <div>
               <p className="font-bold text-white">Organizacija:</p>
               {/* <p className="text-white">{activity.organizationName}</p> */}
-              <p 
+              <p
                 className="text-white font-bold cursor-pointer hover:text-yellow-400"
-                onClick={() => navigate(`/profile/organization/${activity.organizationID}`)}
+                onClick={() =>
+                  navigate(`/profile/organization/${activity.organizationID}`)
+                }
               >
                 {activity.organizationName}
               </p>
@@ -155,7 +153,15 @@ function ActivityInfoVolunteer() {
             </div>
           </div>
 
-          {!activity.hasApplied ? (
+          {activity.status === "CLOSED" ? (
+            <p className="text-red-500 font-bold text-center">
+              Aktivnost je završila.
+            </p>
+          ) : activity.numregisteredvolunteers >= activity.maxnumvolunteers ? (
+            <p className="text-orange-500 font-bold text-center">
+              Popunjena su sva mjesta za ovu aktivnost.
+            </p>
+          ) : !activity.hasApplied ? (
             <button
               onClick={handleSubmit}
               className="w-full bg-yellow-300 text-black font-bold py-2 px-4 rounded hover:bg-yellow-400"
