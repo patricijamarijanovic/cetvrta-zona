@@ -98,10 +98,20 @@ function PrevActProfile({volunteerID}) {
               <Link to={getLink(activity.projectID)} key={index}>
                 <Card
                   title={activity.projectname}
+                  /*location={
+                    "treba dodati lokaciju i hitnost u response i otkomentirati liniju ispod odnosno obriisati ovu"
+                  }*/
                   location={activity.projectlocation}
-                  dates={`From: ${activity.beginningdate} To: ${activity.enddate}`}
+                  startDate={activity.beginningdate}
+                  endDate={activity.enddate}
                   organization={activity.organizationName}
-                  image={pics[index]}
+                  image={"/images/nekaovog.jpg"}
+                  urgency={activity.urgent}
+                  category={activity.typeofwork}
+                  //location={activity.projectlocation}
+                  //dates={`From: ${activity.beginningdate} To: ${activity.enddate}`}
+                  //organization={activity.organizationName}
+                  //image={pics[index]}
                 />
               </Link>
             ))}
