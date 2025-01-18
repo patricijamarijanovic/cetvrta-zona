@@ -41,6 +41,8 @@ import AboutPage from "./pages/AboutPage";
 import AboutPageVol from "./pages/AboutPageVol";
 import AboutPageOrg from "./pages/AboutPageOrg";
 
+import ComplaintPage from "./pages/ComplaintPage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -81,6 +83,7 @@ function App() {
         <Route path="/about-page" element={<AboutPage/>}/>
         <Route path="/volunteer/about-page" element={<AboutPageVol/>}/>
         <Route path="/organization/about-page" element={<AboutPageOrg/>}/>
+        <Route path="/admin/complaint/:id" element={<ComplaintPage />} />
 
 
         <Route path="*" element={<ErrorPage />} />

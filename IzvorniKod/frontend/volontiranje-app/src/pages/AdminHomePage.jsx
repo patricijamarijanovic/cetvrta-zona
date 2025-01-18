@@ -2,8 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import NavBarLoggedIn from "./assets/navBarOrg";
+import NavBarLoggedIn from "./assets/NavBarAdmin";
 import ActivitiesListOrg from "./assets/activitiesListOrg";
+import Card from "./assets/complaintCard";
+import ComplaintList from "./assets/complaintList";
+
 
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
@@ -52,7 +55,8 @@ function AdminHomePage() {
             <NavBarLoggedIn />
           </div>
     
-          <h1 className="text-3xl font-bold text-gray-800">Admin Home Page</h1>
+         
+          <ComplaintList></ComplaintList>
         </div>
       );
 }
