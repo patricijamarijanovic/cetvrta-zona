@@ -237,6 +237,7 @@ public class OrganizationService {
 
             // povecaj broj prijavljenih
             pr.setNumVolunteers(pr.getNumVolunteers() + 1);
+            projectRepository.save(pr);
 
             String poruka = "Organizacija " + org.getOrganizationName() +
                     " želi da budeš volonter na njihovom projektu " +
