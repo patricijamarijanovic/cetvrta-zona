@@ -2,27 +2,20 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.*;
 import com.example.backend.model.*;
-import com.example.backend.repository.MyUserRepository;
-import com.example.backend.repository.ProjectRepository;
-import com.example.backend.repository.RegistrationRepository;
-import com.example.backend.repository.VolunteerRepository;
-import com.example.backend.security.JwtService;
-import com.example.backend.security.MyUserDetailsService;
+import com.example.backend.repository.*;
+import com.example.backend.service.ComplaintService;
 import com.example.backend.service.ImageService;
 import com.example.backend.service.ProjectService;
 import com.example.backend.service.VolunteerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -44,10 +37,19 @@ public class VolunteerController {
     @Autowired
     private MyUserRepository myUserRepository;
 
+    @Autowired
+    private ComplaintService complaintService;
+
     // volonterski homepage
     @GetMapping("/volunteer/home")
     public List<ProjectResponseDto> volunteer_home() {
         return projectService.getAllProjects();
+    }
+
+    //posalji prituzbu kao volonter
+    @PostMapping("/volunteer/send-complaint")
+    public String send_complaint_registered(@RequestBody SentComplaintRegisteredDto dto) {
+        return complaintService.send_complaint_vol(dto);
     }
 
     // svi moguci projekti

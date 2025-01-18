@@ -28,38 +28,38 @@ public class AuthenticationController {
 	
 	@Autowired
 	private ProjectRepository projectrepository;
-	
 	@Autowired
 	private MyUserRepository myUserRepository;
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private JwtService jwtService;
-
     @Autowired
     private MyUserDetailsService myUserDetailsService;
-
     @Autowired
     private ProjectService projectService;
-
     @Autowired
     private OrganizationService organizationService;
-
     @Autowired
     private ImageService imageService;
-    
     @Autowired 
     private FilteringService filteringService;
     @Autowired
     private VolunteerService volunteerService;
+    @Autowired
+    private ComplaintService complaintService;
 
 
     // anonimni homepage
     @GetMapping("/home")
     public List<ProjectResponseDto> home() {
         return projectService.getAllProjects();
+    }
+
+    //posalji prituzbu kao neregistrirani korisnik
+    @PostMapping("/home/send-complaint")
+    public String send_complaint_not_registered(@RequestBody SentComplaintDto dto) {
+        return complaintService.send_complaint_not_registered(dto);
     }
 
     // sve aktivnosti
