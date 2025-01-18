@@ -7,7 +7,6 @@ function NavBarLoggedIn() {
   const navigate = useNavigate();
 
   const handleNavigateToProfile = () => navigate("/volunteer/profileEdit");
-  const handleNavigateToSaved = () => navigate("/saved");
   const handleNavigateToActivities = () => navigate("/volunteer/my-activities");
   const handleLogout = () => {
     localStorage.clear();
@@ -73,12 +72,6 @@ function NavBarLoggedIn() {
               >
                 moje aktivnosti
               </a>
-              <a
-                onClick={handleNavigateToSaved}
-                className="block px-4 py-2 hover:bg-gray-700 cursor-pointer"
-              >
-                spremljeno
-              </a>
               <hr className="my-1 border-gray-500" />
               <a
                 onClick={handleLogout}
@@ -125,9 +118,6 @@ function NavBarLoggedIn() {
           </a>
           <a onClick={handleNavigateToActivities} className="block hover:text-yellow-400 cursor-pointer">
             moje aktivnosti
-          </a>
-          <a onClick={handleNavigateToSaved} className="block hover:text-yellow-400 cursor-pointer">
-            spremljeno
           </a>
           <a onClick={handleLogout} className="block hover:text-red-400 cursor-pointer">
             odjava
