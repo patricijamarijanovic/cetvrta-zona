@@ -37,9 +37,14 @@ function NavBar() {
         <a href="/organizations-page" className="hover:text-white/80 py-2">
           organizacije
         </a>
+        
         <a href="#" className="hover:text-white/80 py-2">
           o platformi
         </a>
+        <a href="/help" className="block hover:text-white/80 py-2">
+            pomoć
+          </a>
+
         <button
           onClick={handleNavigateToLogin}
           className="bg-yellow-300 text-black py-2 px-4 rounded-s-3xl rounded-e-3xl hover:bg-yellow-400"
@@ -67,15 +72,26 @@ function NavBar() {
         </button>
 
         <nav className="mt-16 space-y-4 p-4">
-          <a href="#" className="block hover:text-white/80">
+          <a href="/activities-page" className="block hover:text-white/80">
             aktivnosti
           </a>
-          <a href="#" className="block hover:text-white/80">
+          <a href="/organizations-page" className="block hover:text-white/80">
             organizacije
           </a>
+
+
+          
           <a href="#" className="block hover:text-white/80">
             o platformi
           </a>
+
+          <a href="/help" className="block hover:text-white/80">
+            pomoć
+          </a>
+
+
+          
+          
           <a onClick={handleNavigateToLogin} className="block hover:text-yellow-400 cursor-pointer">
             prijavi se
           </a>

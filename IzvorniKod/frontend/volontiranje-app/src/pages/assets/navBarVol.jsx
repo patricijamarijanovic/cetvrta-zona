@@ -45,6 +45,10 @@ function NavBarLoggedIn() {
         <a href="#" className="hover:text-white/80 py-2">
           o platformi
         </a>
+        <a href="/volunteer/help" className="hover:text-white/80 py-2">
+          pomoć
+        </a>
+
 
         <div className="relative">
           <button
@@ -73,12 +77,7 @@ function NavBarLoggedIn() {
               >
                 moje aktivnosti
               </a>
-              <a
-                onClick={handleNavigateToSaved}
-                className="block px-4 py-2 hover:bg-gray-700 cursor-pointer"
-              >
-                spremljeno
-              </a>
+             
               <hr className="my-1 border-gray-500" />
               <a
                 onClick={handleLogout}
@@ -110,14 +109,17 @@ function NavBarLoggedIn() {
         </button>
 
         <nav className="mt-16 space-y-4 p-4">
-          <a href="#" className="block hover:text-white/80">
+          <a href="/volunteer/activities-page" className="block hover:text-white/80">
             aktivnosti
           </a>
-          <a href="#" className="block hover:text-white/80">
+          <a href="/volunteer/organizations-page" className="block hover:text-white/80">
             organizacije
           </a>
           <a href="#" className="block hover:text-white/80">
             o platformi
+          </a>
+          <a href="/volunteer/help" className="block hover:text-white/80">
+            pomoć
           </a>
           <hr className="border-gray-600" />
           <a onClick={handleNavigateToProfile} className="block hover:text-yellow-400 cursor-pointer">
@@ -126,9 +128,7 @@ function NavBarLoggedIn() {
           <a onClick={handleNavigateToActivities} className="block hover:text-yellow-400 cursor-pointer">
             moje aktivnosti
           </a>
-          <a onClick={handleNavigateToSaved} className="block hover:text-yellow-400 cursor-pointer">
-            spremljeno
-          </a>
+         
           <a onClick={handleLogout} className="block hover:text-red-400 cursor-pointer">
             odjava
           </a>

@@ -39,6 +39,9 @@ function NavBarLoggedIn() {
         <a href="/about" className="hover:text-white/80 py-2 cursor-pointer">
           o platformi
         </a>
+        <a href="/organization/help" className="hover:text-white/80 py-2 cursor-pointer">
+          pomoć
+        </a>
 
         <div className="relative">
           <button
@@ -97,6 +100,9 @@ function NavBarLoggedIn() {
           </a>
           <a href="/about" className="block hover:text-white/80 cursor-pointer">
             o platformi
+          </a>
+          <a href="/organization/help" className="block hover:text-white/80 cursor-pointer">
+            pomoć
           </a>
           <hr className="border-gray-600" />
           <a href="/organization/profileEdit" className="block hover:text-yellow-400 cursor-pointer">

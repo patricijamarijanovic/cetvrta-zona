@@ -33,6 +33,9 @@ import MyActivities from "./pages/myActivities";
 
 import OrganizationProfilePage from "./pages/OrganizationProfilePage";
 import VolunteerProfilePage from "./pages/VolunteerProfilePage";
+import HelpForm from "./components/HelpForm";
+import HelpFormOrg from "./components/HelpFormOrg";
+import HelpFormVol from "./components/HelpFormVol";
 
 function App() {
   return (
@@ -67,6 +70,9 @@ function App() {
 
         <Route path="/profile/organization/:organizationId" element={<OrganizationProfilePage />} />
         <Route path="/profile/volunteer/:volunteerId" element={<VolunteerProfilePage />} />
+        <Route path="/help" element={<HelpForm />}/>
+        <Route path="/organization/help" element={<HelpFormOrg/>}/>
+        <Route path="/volunteer/help" element={<HelpFormVol/>}/>
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>
