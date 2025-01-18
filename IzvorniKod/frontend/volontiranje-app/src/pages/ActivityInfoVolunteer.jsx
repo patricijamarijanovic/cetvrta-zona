@@ -92,6 +92,14 @@ function ActivityInfoVolunteer() {
     }
   };
 
+  const formatDate = (date) =>
+    new Date(date).toLocaleDateString("hr-HR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+
   return (
     <>
       <div className="bg-slate-600 rounded-b-3xl text-white">
@@ -129,11 +137,11 @@ function ActivityInfoVolunteer() {
             </div>
             <div>
               <p className="font-bold text-white">Početak:</p>
-              <p className="text-white">{activity.beginningdate}</p>
+              <p className="text-white">{formatDate(activity.beginningdate)}</p>
             </div>
             <div>
               <p className="font-bold text-white">Kraj:</p>
-              <p className="text-white">{activity.enddate}</p>
+              <p className="text-white">{formatDate(activity.enddate)}</p>
             </div>
             <div>
               <p className="font-bold text-white">Lokacija:</p>
