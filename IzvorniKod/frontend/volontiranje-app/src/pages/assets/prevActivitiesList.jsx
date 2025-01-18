@@ -17,8 +17,7 @@ function PrevActivitiesList() {
   const [pics, setPics] = useState([]);
 
   const shareUrl = "https://volontirajsnama.onrender.com/"; // URL koji dijelim
-  const shareMessage =
-    "Sudjelovao/la sam u volonterskoj aktivnosti! Pridruži se i ti!";
+  const shareMessage = "Sudjelovao/la sam u volonterskoj aktivnosti! Pridruži se i ti!";
 
   console.log(role);
 
@@ -115,7 +114,6 @@ function PrevActivitiesList() {
               </Link>
 
               <div>
-                <h3>Podijeli svoje postignuće na Facebooku:</h3>
                 <FacebookShareButton
                   url={shareUrl}
                   quote={shareMessage}
