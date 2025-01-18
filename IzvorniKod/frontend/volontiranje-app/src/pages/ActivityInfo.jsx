@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import NavBar from "./assets/navBar";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
@@ -123,7 +124,9 @@ function ActivityInfo() {
           </div>
         </div>
         <h1 className="text-4xl md:text-3xl font-bold text-yellow-500 mt-2">
-          PRIJAVI SE KAKO BI SUDJELOVAO
+        <Link to="/login" className="hover:text-yellow-300 no-underline">
+        PRIJAVI SE KAKO BI SUDJELOVAO
+      </Link>
         </h1>
       </div>
     </>
