@@ -16,7 +16,7 @@ function InProgressActivitiesList() {
   const role = localStorage.getItem("role");
   const [pics, setPics] = useState([]);
 
-  const shareUrl = "https://volontirajsnama.onrender.com/"; // URL koji dijelim
+  const shareUrl = "https://volontirajsnama.onrender.com/activity/"; // URL koji dijelim
   const shareMessage = "Sudjelovao/la sam u volonterskoj aktivnosti! Pridruži se i ti!";
 
   console.log(role);
@@ -109,7 +109,7 @@ function InProgressActivitiesList() {
             </Link>
             <div>
                 <FacebookShareButton
-                  url={shareUrl}
+                  url={shareUrl+projectID}
                   quote={shareMessage}
                   hashtag="#Volontiranje"
                 >
