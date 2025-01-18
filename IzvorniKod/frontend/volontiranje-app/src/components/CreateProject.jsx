@@ -21,6 +21,7 @@ function CreateProject() {
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const categories = [
     "DJECA",
@@ -110,6 +111,8 @@ function CreateProject() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(loading) return;
+    setLoading(true);
 
     const validationErrors = Validation({
       projectName,
@@ -185,7 +188,8 @@ function CreateProject() {
             console.error("Došlo je do pogreške pri slanju slike: ", err);
           });
 
-        alert("Projekt uspješno registriran!");
+        //alert("Projekt uspješno registriran!");
+        setLoading(false);
         navigate("/organization/home");
       } catch (err) {
         console.error(err);

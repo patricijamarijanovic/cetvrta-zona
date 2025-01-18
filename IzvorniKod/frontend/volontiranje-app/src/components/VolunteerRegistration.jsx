@@ -23,6 +23,8 @@ function VolunteerLogin() {
   const [showPassword2, setShowPassword2] = useState(false);
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [registered, setRegistered] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const Validation = (values) => {
     let errors = {};
@@ -76,6 +78,8 @@ function VolunteerLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(loading) return;
+    setLoading(true);
 
     const validationErrors = Validation({
       username,
@@ -103,10 +107,12 @@ function VolunteerLogin() {
           email: email,
           dateOfBirth: date,
         });
-        alert(
+       alert(
           "Registracija uspješna! Provjerite svoj inbox i kliknite na link za potvrdu email adrese kako biste završili proces registracije."
         );
+        //setRegistered(true);
         navigate("/login");
+        setLoading(false);
       } catch (err) {
         // alert(err);jel
         console.log(err.response);
@@ -341,6 +347,10 @@ function VolunteerLogin() {
                   <p className="text-sm text-red-500 text-center">
                     {errors.general}
                   </p>
+                )}
+
+                {registered && (
+                  <p>Uspješno!</p>
                 )}
 
                 <div className="flex justify-center gap-4 pt-6">

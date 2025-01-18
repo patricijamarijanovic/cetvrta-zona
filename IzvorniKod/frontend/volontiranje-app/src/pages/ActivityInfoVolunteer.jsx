@@ -17,6 +17,7 @@ function ActivityInfoVolunteer() {
   const [hasApplied, setApplication] = useState(false);
   const [image, setImage] = useState("");
   const navigate = useNavigate();
+  const [loading1, setLoading1] = useState(false);
 
   useEffect(() => {
     axios
@@ -71,6 +72,8 @@ function ActivityInfoVolunteer() {
   }
 
   const handleSubmit = async (e) => {
+    if (loading1) return;
+    setLoading1(true);
     try {
       await axios.post(
         `${BACK_URL}/volunteer/apply/${id}`,
@@ -81,7 +84,8 @@ function ActivityInfoVolunteer() {
           },
         }
       );
-      alert("Uspješna prijava projekta!");
+      //alert("Uspješna prijava projekta!");
+      setLoading1(false);
       window.location.reload();
       //navigate("/organization/home");
     } catch (err) {
