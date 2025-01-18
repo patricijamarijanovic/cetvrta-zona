@@ -38,7 +38,7 @@ function NavBar() {
           organizacije
         </a>
         
-        <a href="#" className="hover:text-white/80 py-2">
+        <a href="/about-page" className="hover:text-white/80 py-2">
           o platformi
         </a>
         <a href="/help" className="block hover:text-white/80 py-2">
