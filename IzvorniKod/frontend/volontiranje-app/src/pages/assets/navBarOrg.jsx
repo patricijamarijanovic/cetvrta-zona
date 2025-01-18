@@ -6,14 +6,9 @@ function NavBarLoggedIn() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleNavigateToProfile = () => navigate("/organization/profileEdit");
-  const handleNavigateToSaved = () => navigate("/saved");
-  const handleNavigateToActivities = () => navigate("/organization/activities");
-  const handleNavigateToApplications = () => navigate("/organization/ApplicationsPage");
-  const handleNavigateToAbout = () => navigate("/about");
   const handleLogout = () => {
-    localStorage.clear(); // Clear any stored user data
-    navigate("/"); // Redirect to the home page
+    localStorage.clear();
+    navigate("/");
   };
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -38,13 +33,10 @@ function NavBarLoggedIn() {
       </a>
 
       <nav className="hidden md:flex space-x-4">
-        <a onClick={handleNavigateToApplications} className="hover:text-white/80 py-2 cursor-pointer">
-          prijave
+        <a href="/organization/create-project" className="hover:text-white/80 py-2 cursor-pointer">
+          kreiraj projekt
         </a>
-        <a onClick={handleNavigateToActivities} className="hover:text-white/80 py-2 cursor-pointer">
-          moje aktivnosti
-        </a>
-        <a onClick={handleNavigateToAbout} className="hover:text-white/80 py-2 cursor-pointer">
+        <a href="/about" className="hover:text-white/80 py-2 cursor-pointer">
           o platformi
         </a>
 
@@ -64,7 +56,7 @@ function NavBarLoggedIn() {
           {isProfileMenuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-gray-800 text-white rounded-lg shadow-lg z-50">
               <a
-                onClick={handleNavigateToProfile}
+                href="/organization/profileEdit"
                 className="block px-4 py-2 hover:bg-gray-700 hover:rounded-t-lg cursor-pointer"
               >
                 profil
@@ -100,17 +92,14 @@ function NavBarLoggedIn() {
         </button>
 
         <nav className="mt-16 space-y-4 p-4">
-          <a onClick={handleNavigateToApplications} className="block hover:text-white/80 cursor-pointer">
-            prijave
+          <a href="/organization/create-project" className="block hover:text-white/80 cursor-pointer">
+            kreiraj projekt
           </a>
-          <a onClick={handleNavigateToActivities} className="block hover:text-white/80 cursor-pointer">
-            moje aktivnosti
-          </a>
-          <a onClick={handleNavigateToAbout} className="block hover:text-white/80 cursor-pointer">
+          <a href="/about" className="block hover:text-white/80 cursor-pointer">
             o platformi
           </a>
           <hr className="border-gray-600" />
-          <a onClick={handleNavigateToProfile} className="block hover:text-yellow-400 cursor-pointer">
+          <a href="/organization/profileEdit" className="block hover:text-yellow-400 cursor-pointer">
             profil
           </a>
           <a onClick={handleLogout} className="block hover:text-red-400 cursor-pointer">
