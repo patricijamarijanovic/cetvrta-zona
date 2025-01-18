@@ -96,12 +96,13 @@ function InProgressActProfile({volunteerID}) {
               <Link to={getLink(activity.projectID)} key={index}>
                 <Card
                   title={activity.projectname}
-                  location={activity.projectlocation}
                   
+                  location={activity.projectlocation}
                   startDate={activity.beginningdate}
                   endDate={activity.enddate}
                   organization={activity.organizationName}
                   image={pics[index]}
+                  urgency={activity.urgent}
                   category={activity.typeofwork}
                 />
               </Link>
