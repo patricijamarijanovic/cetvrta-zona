@@ -17,6 +17,7 @@ function HelpFormOrg() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [errors, setError] = useState([]);
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,7 +33,7 @@ function HelpFormOrg() {
     
         console.log("saljem token na backend");
         axios
-          .get(`${BACK_URL}/volunteer/home`, {
+          .get(`${BACK_URL}/organization/home`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

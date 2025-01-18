@@ -17,6 +17,7 @@ function HelpFormVol() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [errors, setError] = useState([]);
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
 
