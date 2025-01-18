@@ -143,6 +143,7 @@ public class ProjectService {
         dto.setProjectlocation(project.getLocation());
         dto.setProjectdesc(project.getProjectDesc());
         dto.setMaxnumvolunteers(project.getMaxNumVolunteers());
+        dto.setNumregisteredvolunteers(project.getNumVolunteers());
         dto.setUrgent(project.getUrgent());
         dto.setOrganizationID(project.getOrganizationID());
 
@@ -218,11 +219,12 @@ public class ProjectService {
         VolunteerProjectDto dto = new VolunteerProjectDto();
 
         ProjectResponseDto dto0 = getSpecificProject(projectId);
+        Project project = projectRepository.findById(projectId).get();
 
-        dto.setBeginningdate(dto0.getBeginningdate());
-        dto.setEnddate(dto0.getEnddate());
-        dto.setMaxnumvolunteers(dto0.getMaxnumvolunteers());
-        dto.setNumregisteredvolunteers(dto0.getNumregisteredvolunteers());
+        dto.setBeginningdate(project.getStartDate());
+        dto.setEnddate(project.getEndDate());
+        dto.setMaxnumvolunteers(project.getMaxNumVolunteers());
+        dto.setNumvolunteers(project.getNumVolunteers());
         dto.setOrganizationEmail(dto0.getOrganizationEmail());
         dto.setOrganizationID(dto0.getOrganizationID());
         dto.setOrganizationName(dto0.getOrganizationName());
@@ -235,12 +237,16 @@ public class ProjectService {
         dto.setProjectID(dto0.getProjectID());
 
         List<Application> applications = applicationRepository.findAllByProjectId(projectId);
-        List<Long> ids = applications.stream().map(Application::getVolunteerId).toList();
-
-        if (ids.contains(volunteerId)){
-            dto.setHasApplied(true);
-        }else{
-            dto.setHasApplied(false);
+        dto.setHasParticipated(false);
+        dto.setHasApplied(false);
+        for (Application application : applications) {
+            if (application.getVolunteerId().equals(volunteerId)) {
+                dto.setHasApplied(true);
+                if (application.getStatus().equals(ApplicationStatus.ACCEPTED)){
+                    dto.setHasParticipated(true);
+                }
+                break;
+            }
         }
 
         return dto;

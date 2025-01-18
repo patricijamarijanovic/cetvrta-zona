@@ -11,7 +11,7 @@ public class VolunteerProjectDto {
     private LocalDate beginningdate;
     private LocalDate enddate;
     private String projectlocation;
-    private int numregisteredvolunteers;
+    private int numvolunteers;
     private int maxnumvolunteers;
     private String status;
     private long projectID;
@@ -20,6 +20,7 @@ public class VolunteerProjectDto {
     private long organizationID;
     private String organizationEmail;
     private boolean hasApplied;
+    private boolean hasParticipated;
 
     public String getProjectname() {
         return projectname;
@@ -69,12 +70,12 @@ public class VolunteerProjectDto {
         this.projectlocation = projectlocation;
     }
 
-    public int getNumregisteredvolunteers() {
-        return numregisteredvolunteers;
+    public int getNumvolunteers() {
+        return numvolunteers;
     }
 
-    public void setNumregisteredvolunteers(int numregisteredvolunteers) {
-        this.numregisteredvolunteers = numregisteredvolunteers;
+    public void setNumvolunteers(int numvolunteers) {
+        this.numvolunteers = numvolunteers;
     }
 
     public int getMaxnumvolunteers() {
@@ -141,6 +142,14 @@ public class VolunteerProjectDto {
         this.hasApplied = hasApplied;
     }
 
+    public boolean isHasParticipated() {
+        return hasParticipated;
+    }
+
+    public void setHasParticipated(boolean hasParticipated) {
+        this.hasParticipated = hasParticipated;
+    }
+
     @Override
     public String toString() {
         return "VolunteerProjectDto{" +
@@ -150,7 +159,7 @@ public class VolunteerProjectDto {
                 ", beginningdate=" + beginningdate +
                 ", enddate=" + enddate +
                 ", projectlocation='" + projectlocation + '\'' +
-                ", numregisteredvolunteers=" + numregisteredvolunteers +
+                ", numvolunteers=" + numvolunteers +
                 ", maxnumvolunteers=" + maxnumvolunteers +
                 ", status='" + status + '\'' +
                 ", projectID=" + projectID +
@@ -159,6 +168,7 @@ public class VolunteerProjectDto {
                 ", organizationID=" + organizationID +
                 ", organizationEmail='" + organizationEmail + '\'' +
                 ", hasApplied=" + hasApplied +
+                ", hasParticipated=" + hasParticipated +
                 '}';
     }
 }

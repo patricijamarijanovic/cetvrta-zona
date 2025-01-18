@@ -104,6 +104,7 @@ public class VolunteerController {
         return projectService.get_project_info_as_volunteer(vol.getId(), projectId);
     }
 
+
     // prethodne aktivnosti (na koje je prihvacen)
     @GetMapping("/volunteer/previous-activities")
     public List<VolunteerProjectProfileDto> get_prev_projects (){
