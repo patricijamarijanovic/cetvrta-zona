@@ -36,7 +36,7 @@ function NavBarLoggedIn() {
         <a href="/organization/create-project" className="hover:text-white/80 py-2 cursor-pointer">
           kreiraj projekt
         </a>
-        <a href="/about" className="hover:text-white/80 py-2 cursor-pointer">
+        <a href="/organization/about-page" className="hover:text-white/80 py-2 cursor-pointer">
           o platformi
         </a>
         <a href="/organization/help" className="hover:text-white/80 py-2 cursor-pointer">

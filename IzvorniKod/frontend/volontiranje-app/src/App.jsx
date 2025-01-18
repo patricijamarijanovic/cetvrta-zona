@@ -37,6 +37,10 @@ import HelpForm from "./components/HelpForm";
 import HelpFormOrg from "./components/HelpFormOrg";
 import HelpFormVol from "./components/HelpFormVol";
 
+import AboutPage from "./pages/AboutPage";
+import AboutPageVol from "./pages/AboutPageVol";
+import AboutPageOrg from "./pages/AboutPageOrg";
+
 function App() {
   return (
     <BrowserRouter>
@@ -73,6 +77,11 @@ function App() {
         <Route path="/help" element={<HelpForm />}/>
         <Route path="/organization/help" element={<HelpFormOrg/>}/>
         <Route path="/volunteer/help" element={<HelpFormVol/>}/>
+
+        <Route path="/about-page" element={<AboutPage/>}/>
+        <Route path="/volunteer/about-page" element={<AboutPageVol/>}/>
+        <Route path="/organization/about-page" element={<AboutPageOrg/>}/>
+
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>
