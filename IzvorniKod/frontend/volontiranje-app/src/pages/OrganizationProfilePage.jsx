@@ -34,9 +34,12 @@ function OrganizationProfilePage() {
   const [subscribed, setSubscribed] = useState(false);
 
   useEffect(() => {
+    console.log(organizationId)
     const fetchProfileData = async () => {
       try {
-        const profileRes = await axios.get(`${BACK_URL}/home/profile/${organizationId}`);
+        const profileRes = await axios.get(
+          `${BACK_URL}/home/profile/${organizationId}`
+        );
         setProfileData(profileRes.data);
         setLoading(false);
       } catch (err) {
@@ -51,39 +54,42 @@ function OrganizationProfilePage() {
 
   useEffect(() => {
     axios
-        .get(`${BACK_URL}/home/organization/profile-picture/${organizationId}`, {
-          responseType: "arraybuffer",
-        })
-        .then((res) => {
-          if (res.status === 204) {
-            setImage("/images/profilna.jpg"); // Ako nema slike, postavi zadanu
-          } else {
-            const imageBlob = new Blob([res.data], { type: "image/jpeg" });
-            const imageUrl = URL.createObjectURL(imageBlob);
-            setImage(imageUrl); // Postavi URL slike
-          }
-        })
-        .catch(() => {
-          setImage("/images/profilna.jpg"); // U slučaju greške, postavi zadanu sliku
-        });
-  }, [organizationId])
+      .get(`${BACK_URL}/home/organization/profile-picture/${organizationId}`, {
+        responseType: "arraybuffer",
+      })
+      .then((res) => {
+        if (res.status === 204) {
+          setImage("/images/profilna.jpg"); // Ako nema slike, postavi zadanu
+        } else {
+          const imageBlob = new Blob([res.data], { type: "image/jpeg" });
+          const imageUrl = URL.createObjectURL(imageBlob);
+          setImage(imageUrl); // Postavi URL slike
+        }
+      })
+      .catch(() => {
+        setImage("/images/profilna.jpg"); // U slučaju greške, postavi zadanu sliku
+      });
+  }, [organizationId]);
 
   useEffect(() => {
     const fetchSubscriptionStatus = async () => {
       try {
-        const profileRes = await axios.get(`${BACK_URL}/volunteer/is-subscribed/${organizationId}`,{
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const profileRes = await axios.get(
+          `${BACK_URL}/volunteer/is-subscribed/${organizationId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setSubscribed(profileRes.data);
       } catch (err) {
         console.error("Newsletter error:", err);
       }
     };
-  
+
     fetchSubscriptionStatus(); // Pozovi asinhronu funkciju unutar useEffect
-  }, []); 
+  }, []);
 
   const renderField = (label, value) => (
     <div className="flex flex-col mb-4">
@@ -110,48 +116,52 @@ function OrganizationProfilePage() {
 
   const renderNavBar = () => {
     if (!token) return <NavBar />;
-    return userRole === "ROLE_ORGANIZATION" ? <NavBarLoggedIn /> : <NavBarLoggedInVol />;
+    return userRole === "ROLE_ORGANIZATION" ? (
+      <NavBarLoggedIn />
+    ) : (
+      <NavBarLoggedInVol />
+    );
   };
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
-    
+
     try {
-      const response = await axios.post(`${BACK_URL}/volunteer/newsletter/${organizationId}`, {
-        },{
+      const response = await axios.post(
+        `${BACK_URL}/volunteer/newsletter/${organizationId}`,
+        {},
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-      console.log("Uspjesna prijava na newsletter!!")
+        }
+      );
+      console.log("Uspjesna prijava na newsletter!!");
       window.location.reload();
-
-      
     } catch (error) {
       console.error("Newsletter error:", error);
     }
-
-  }
+  };
 
   const handleUnsubscribe = async (e) => {
     e.preventDefault();
-    
+
     try {
-      const response = await axios.post(`${BACK_URL}/volunteer/unsubscribe/${organizationId}`, {
-        },{
+      const response = await axios.post(
+        `${BACK_URL}/volunteer/unsubscribe/${organizationId}`,
+        {},
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-      console.log("Uspjesna odjava s newslettera!!")
+        }
+      );
+      console.log("Uspjesna odjava s newslettera!!");
       window.location.reload();
-
-      
     } catch (error) {
       console.error("Newsletter error:", error);
     }
-
-  }
+  };
 
   if (loading) {
     return (
@@ -186,46 +196,53 @@ function OrganizationProfilePage() {
       </div>
       <div className="container mx-auto px-4 py-12">
         <div className="bg-white shadow-md rounded p-6 max-w-3xl w-full mx-auto">
-          <h1 className="text-2xl font-bold text-center mb-6">Profil Organizacije</h1>
+          <h1 className="text-2xl font-bold text-center mb-6">
+            Profil Organizacije
+          </h1>
 
           <img
-           src={image}
-           className="rounded-lg object-cover h-80 w-full mb-4 border border-black"
-         />
+            src={image}
+            className="rounded-lg object-cover h-80 w-full mb-4 border border-black"
+          />
 
-          {renderField("Naziv organizacije", profileData?.name)}
+          <div className="flex justify-between items-center">
+            {renderField("Naziv organizacije", profileData?.name)}
+            {!subscribed && userRole && (
+              <button
+                onClick={handleSubscribe}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded ml-4 whitespace-nowrap"
+              >
+                Prijavi se na newsletter!
+              </button>
+            )}
+            {subscribed && userRole && (
+              <button
+                onClick={handleUnsubscribe}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded ml-4 whitespace-nowrap"
+              >
+                Odjava s newslettera
+              </button>
+            )}
+          </div>
+
           {renderField("Email adresa", profileData?.email)}
           {renderField("Opis", profileData?.description)}
-          {renderTagSection("Područja rada", profileData?.areas_of_work, areasOfWorkMap)}
+          {renderTagSection(
+            "Područja rada",
+            profileData?.areas_of_work,
+            areasOfWorkMap
+          )}
           {token && (
-                <>
-                  <PrevActOrg organizationId={organizationId} />
-                  <InProgressActOrg organizationId={organizationId} />
-                  <FutureActOrg organizationId={organizationId} />
-                </>
-              )}
+            <>
+              <PrevActOrg organizationId={organizationId} />
+              <InProgressActOrg organizationId={organizationId} />
+              <FutureActOrg organizationId={organizationId} />
+            </>
+          )}
         </div>
-        <div>
-  {!subscribed && (
-    <button 
-      onClick={handleSubscribe} 
-      className="bg-blue-500 text-white px-4 py-2 rounded"
-    >
-      Prijavi se na newsletter!
-    </button>
-  )}
-  {subscribed && (
-     <button 
-     onClick={handleUnsubscribe} 
-     className="bg-blue-500 text-white px-4 py-2 rounded"
-   >
-     Odjava s newslettera
-   </button>
-  )}
-</div>
       </div>
     </div>
   );
 }
 
-export default OrganizationProfilePage; 
+export default OrganizationProfilePage;
