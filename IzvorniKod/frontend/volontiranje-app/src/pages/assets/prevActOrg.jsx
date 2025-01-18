@@ -13,6 +13,7 @@ function PrevActOrg({ organizationId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const role = localStorage.getItem("role");
+  const [pics, setPics] = useState([]);
   console.log(role);
 
   useEffect(() => {
@@ -27,6 +28,35 @@ function PrevActOrg({ organizationId }) {
       )
       .then((response) => {
         console.log(response.data);
+        const ids = response.data.map((org) => org.projectID);
+        console.log("ids: " + ids);
+        // Pokreni zahtjeve za sve ID-eve paralelno
+        Promise.all(
+          ids.map((projectId) =>
+            axios
+              .get(`${BACK_URL}/home/project-picture/${projectId}`, {
+                responseType: "arraybuffer", // Ovisno o backendu, koristi arraybuffer za slike
+              })
+              .then((res) => {
+                if (res.status === 204) {
+                  return "/images/nekaovog2.jpg"; // Ako nema slike, postavi default
+                } else {
+                  const imageBlob = new Blob([res.data], {
+                    type: "image/jpeg",
+                  });
+                  const imageUrl = URL.createObjectURL(imageBlob);
+                  console.log("imam sliku!! " + imageUrl);
+                  return imageUrl; // Vrati URL slike
+                }
+              })
+          )
+        )
+          .then((logosArray) => {
+            setPics(logosArray); // Postavi sve logotipe odjednom
+          })
+          .catch((err) => {
+            console.error("Error fetching logos:", err);
+          });
         setActivities(response.data);
         setLoading(false);
       })
@@ -68,14 +98,11 @@ function PrevActOrg({ organizationId }) {
                 <Card
                   key={index}
                   title={activity.projectname}
-                  location={
-                    "treba dodati lokaciju i hitnost u response i otkomentirati liniju ispod odnosno obriisati ovu"
-                  }
-                  // location={activity.projectlocation}
+                  location={activity.projectlocation}
                   startDate={activity.beginningdate}
                   endDate={activity.enddate}
                   organization={activity.organizationName}
-                  image={"/images/nekaovog.jpg"}
+                  image={pics[index]}
                   urgency={activity.urgent}
                   category={activity.typeofwork}
                 />

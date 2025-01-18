@@ -97,9 +97,12 @@ function InProgressActProfile({volunteerID}) {
                 <Card
                   title={activity.projectname}
                   location={activity.projectlocation}
-                  dates={`From: ${activity.beginningdate} To: ${activity.enddate}`}
+                  
+                  startDate={activity.beginningdate}
+                  endDate={activity.enddate}
                   organization={activity.organizationName}
                   image={pics[index]}
+                  category={activity.typeofwork}
                 />
               </Link>
             ))}

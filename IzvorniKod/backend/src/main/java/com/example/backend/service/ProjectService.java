@@ -6,8 +6,6 @@ import com.example.backend.dto.VolunteerProjectDto;
 import com.example.backend.dto.VolunteerProjectProfileDto;
 import com.example.backend.model.*;
 import com.example.backend.repository.*;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -327,6 +325,7 @@ public class ProjectService {
                 dto.setEnddate(project.getEndDate());
                 dto.setOrganizationName(organization.getOrganizationName());
                 dto.setOrganizationID(organization.getId());
+                dto.setProjectlocation(project.getLocation());
                 lista.add(dto);
             }
 
@@ -353,6 +352,7 @@ public class ProjectService {
                 dto.setEnddate(project.getEndDate());
                 dto.setOrganizationName(organization.getOrganizationName());
                 dto.setOrganizationID(organization.getId());
+                dto.setProjectlocation(project.getLocation());
                 lista.add(dto);
             }
 
@@ -378,6 +378,7 @@ public class ProjectService {
                 dto.setEnddate(project.getEndDate());
                 dto.setOrganizationName(organization.getOrganizationName());
                 dto.setOrganizationID(organization.getId());
+                dto.setProjectlocation(project.getLocation());
                 lista.add(dto);
             }
         });
@@ -401,6 +402,7 @@ public class ProjectService {
                 dto.setProjectlocation(project.getLocation());
                 dto.setNumregisteredvolunteers(project.getNumVolunteers());
                 dto.setMaxnumvolunteers(project.getMaxNumVolunteers());
+
 
                 if (dto.getBeginningdate().isAfter(currentDate)){
                     dto.setStatus(String.valueOf(Status.OPEN));

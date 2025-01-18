@@ -50,7 +50,7 @@ CREATE TABLE volunteers
   last_name VARCHAR(255) NOT NULL,
   date_of_birth DATE NOT NULL,
   contact_number VARCHAR(10),
-  location VARCHAR(30),
+  projectlocation VARCHAR(30),
   id BIGINT NOT NULL PRIMARY KEY,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -71,7 +71,7 @@ CREATE TABLE projects (
     typeOfWork VARCHAR(255) NOT NULL,
     startDate DATE NOT NULL,
     endDate DATE NOT NULL,
-    location VARCHAR(255) NOT NULL,
+    projectlocation VARCHAR(255) NOT NULL,
     numVolunteers INTEGER NOT NULL,
     maxNumVolunteers INTEGER NOT NULL,
     status VARCHAR(255),

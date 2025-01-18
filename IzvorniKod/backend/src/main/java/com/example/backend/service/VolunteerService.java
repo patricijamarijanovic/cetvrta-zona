@@ -8,7 +8,6 @@ import com.example.backend.model.*;
 import com.example.backend.repository.*;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -341,6 +340,7 @@ public class VolunteerService {
                 dto.setBeginningdate(project.getStartDate());
                 dto.setEnddate(project.getEndDate());
                 dto.setOrganizationID(project.getOrganizationID());
+                dto.setProjectlocation(project.getLocation());
 
                 Organization organization = organizationRepository.findById(project.getOrganizationID()).get();
                 dto.setOrganizationName(organization.getOrganizationName());
@@ -387,6 +387,7 @@ public class VolunteerService {
                 dto.setBeginningdate(project.getStartDate());
                 dto.setEnddate(project.getEndDate());
                 dto.setOrganizationID(project.getOrganizationID());
+                dto.setProjectlocation(project.getLocation());
 
                 Organization organization = organizationRepository.findById(project.getOrganizationID()).get();
                 dto.setOrganizationName(organization.getOrganizationName());
@@ -425,6 +426,7 @@ public class VolunteerService {
                 dto.setBeginningdate(project.getStartDate());
                 dto.setEnddate(project.getEndDate());
                 dto.setOrganizationID(project.getOrganizationID());
+                dto.setProjectlocation(project.getLocation());
 
                 Organization organization = organizationRepository.findById(project.getOrganizationID()).get();
                 dto.setOrganizationName(organization.getOrganizationName());
@@ -465,6 +467,7 @@ public class VolunteerService {
                 dto.setBeginningdate(project.getStartDate());
                 dto.setEnddate(project.getEndDate());
                 dto.setOrganizationID(project.getOrganizationID());
+                dto.setProjectlocation(project.getLocation());
 
                 Organization organization = organizationRepository.findById(project.getOrganizationID()).get();
                 dto.setOrganizationName(organization.getOrganizationName());

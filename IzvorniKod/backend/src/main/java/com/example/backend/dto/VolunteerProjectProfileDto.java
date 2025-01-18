@@ -15,6 +15,16 @@ public class VolunteerProjectProfileDto {
     private LocalDate enddate;
     private String organizationName;
     private long organizationID;
+    private String projectlocation;
+
+
+    public String getProjectlocation() {
+        return projectlocation;
+    }
+
+    public void setProjectlocation(String projectlocation) {
+        this.projectlocation = projectlocation;
+    }
 
     public Long getProjectID() {
         return projectID;
@@ -91,6 +101,7 @@ public class VolunteerProjectProfileDto {
                 ", enddate=" + enddate +
                 ", organizationName='" + organizationName + '\'' +
                 ", organizationID=" + organizationID +
+                ", projectlocation='" + projectlocation + '\'' +
                 '}';
     }
 }

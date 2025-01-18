@@ -42,7 +42,7 @@ CREATE TABLE projects
   typeOfWork VARCHAR(50) NOT NULL,
   beginningDate DATE NOT NULL,
   endDate DATE NOT NULL,
-  location VARCHAR(255) NOT NULL,
+  projectlocation VARCHAR(255) NOT NULL,
   numRegisteredVolunteers INT NOT NULL,
   maxNumVolunteers INT NOT NULL,
   status VARCHAR(10) CHECK (status IN ('OPEN', 'CLOSED', 'IN_PROGRESS')) NOT NULL,

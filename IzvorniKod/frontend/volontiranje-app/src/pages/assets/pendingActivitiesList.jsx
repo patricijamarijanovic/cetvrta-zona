@@ -97,10 +97,7 @@ function PendingActivitiesList() {
               <Card
                 key={index}
                 title={activity.projectname}
-                location={
-                  "treba dodati lokaciju i hitnost u response i otkomentirati liniju ispod odnosno obriisati ovu"
-                }
-                // location={activity.projectlocation}
+                location={activity.projectlocation}
                 startDate={activity.beginningdate}
                 endDate={activity.enddate}
                 organization={activity.organizationName}
