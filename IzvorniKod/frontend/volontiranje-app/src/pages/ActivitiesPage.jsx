@@ -60,6 +60,7 @@ function ActivitiesPage() {
         <div className="relative min-h-screen">
             <div className="bg-slate-600 rounded-b-3xl text-white pb-6">
             <NavBar />
+            
             <Filter setFilteredActivities={setFilteredActivities}
             setIsFiltered={setIsFiltered}/>
             </div>
