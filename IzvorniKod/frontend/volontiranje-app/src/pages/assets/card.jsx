@@ -8,55 +8,56 @@ function Card({
   urgency,
   category,
 }) {
-
   const formatCategory = (cat) => {
     const categoryMap = {
-      ZIVOTINJE: "Životinje",
-      OKOLIS: "Okoliš",
+      ZIVOTINJE: "ŽIVOTINJE",
+      OKOLIS: "OKOLIŠ",
     };
     const mappedCategory = categoryMap[cat];
     if (mappedCategory) return mappedCategory;
 
-    return cat.charAt(0) + cat.slice(1).toLowerCase();
+    return cat;
   };
 
   const formatDate = (date) =>
     new Date(date).toLocaleDateString("hr-HR", {
-      day: "numeric",
-      month: "long",
+      day: "2-digit",
+      month: "2-digit",
       year: "numeric",
     });
 
-    const formatLocation = (loc) =>
-      loc
-        .split(" ") // Razdvajanje riječi
-        .map(
-          (word) =>
-            word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() // Prvo slovo veliko, ostala mala
-        )
-        .join(" ");
+  const formatLocation = (loc) =>
+    loc
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
 
   return (
-    <div className={`rounded-lg shadow-md p-6 flex flex-col ${urgency ? "bg-red-100" : "bg-gray-100"}`}>
-      <img
-        src={image}
-        alt={title}
-        className="rounded-lg object-cover h-40 w-full mb-4"
-      />
+    <div className="rounded-lg shadow-lg overflow-hidden border border-gray-200">
+      <div className="relative">
+        <img src={image} alt={title} className="w-full h-40 object-cover" />
+        <div className="absolute top-2 right-2 bg-white bg-opacity-75 text-gray-800 font-bold text-xs px-2 py-1 rounded">
+          {formatCategory(category)}
+        </div>
+      </div>
 
-      <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-
-      <h3 className="text-sm font-semibold text-gray-500">{organization}</h3>
-
-      <p className="text-sm text-gray-500">{formatLocation(location)}</p>
-
-      <p className="text-sm text-green-600">
-        Početak: {formatDate(startDate)}
-      </p>
-
-      <p className="text-sm text-red-600">Kraj: {formatDate(endDate)}</p>
-
-      <p className="text-sm text-gray-600">{formatCategory(category)}</p>
+      <div
+        className={`shadow-md p-4 flex flex-col ${
+          urgency ? "bg-red-100" : "bg-gray-100"
+        }`}
+      >
+        <h2 className="text-lg font-bold text-gray-800">{title}</h2>
+        <h3 className="text-sm text-gray-500 font-bold tracking-wide">
+          {formatLocation(location)}
+        </h3>
+        <p className="text-sm text-gray-500 mt-2">
+          <strong>Organizacija:</strong> {organization}
+        </p>
+        <p className="text-sm text-gray-500 mt-1">
+          <strong>Vrijeme:</strong> {formatDate(startDate)} -{" "}
+          {formatDate(endDate)}
+        </p>
+      </div>
     </div>
   );
 }
