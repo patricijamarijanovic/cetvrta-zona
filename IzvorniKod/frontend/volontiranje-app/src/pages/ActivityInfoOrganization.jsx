@@ -41,6 +41,7 @@ function ActivityInfoOrganization() {
 
   const [originalData, setOriginalData] = useState(null);
   const [savedProfilePicture, setSavedProfilePicture] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const categories = [
     "DJECA",
@@ -160,6 +161,8 @@ function ActivityInfoOrganization() {
   }
 
   const handleAccept = async (volunteerId) => {
+    if(loading) return;
+    setLoading(true);
     console.log(volunteerId);
     const token = localStorage.getItem("token");
 
@@ -175,6 +178,7 @@ function ActivityInfoOrganization() {
       )
       .then((response) => {
         console.log(response.data);
+        setLoading(false);
         window.location.reload();
       })
       .catch((err) => {
@@ -184,6 +188,8 @@ function ActivityInfoOrganization() {
   };
 
   const handleReject = async (volunteerId) => {
+    if(loading) return;
+    setLoading(true);
     axios
       .put(
         `${BACK_URL}/organization/applications/${id}/reject/${volunteerId}`,
@@ -196,6 +202,7 @@ function ActivityInfoOrganization() {
       )
       .then((response) => {
         console.log(response.data);
+        setLoading(false);
         window.location.reload();
       })
       .catch((err) => {

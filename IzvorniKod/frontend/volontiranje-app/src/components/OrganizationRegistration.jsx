@@ -21,6 +21,7 @@ function OrganizationLogin() {
   const [showPassword2, setShowPassword2] = useState(false);
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const Validation = (values) => {
     let errors = {};
@@ -67,6 +68,8 @@ function OrganizationLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(loading) return;
+    setLoading(true);
 
     // Pokrećemo validaciju i pohranjujemo greške u varijablu
     const validationErrors = Validation({
@@ -95,7 +98,9 @@ function OrganizationLogin() {
         alert(
           "Registracija uspješna! Provjerite svoj inbox i kliknite na link za potvrdu email adrese kako biste završili proces registracije."
         );
+        setLoading(false);
         navigate("/login");
+
       } catch (err) {
         //alert(err);
         // alert(err);jel

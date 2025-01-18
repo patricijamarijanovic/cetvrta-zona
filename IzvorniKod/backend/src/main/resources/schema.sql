@@ -86,6 +86,18 @@ CREATE TABLE registration
   FOREIGN KEY (volunteerID) REFERENCES volunteers(id)
 );
 
+CREATE TABLE complaints
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    date DATE NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    title VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    firstName VARCHAR(50) NOT NULL,
+    lastName VARCHAR(50) NOT NULL,
+    description VARCHAR(500) NOT NULL
+);
+
 CREATE TABLE newsletter
 (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
