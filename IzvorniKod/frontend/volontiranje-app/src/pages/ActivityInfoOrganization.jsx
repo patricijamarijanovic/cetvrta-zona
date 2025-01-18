@@ -319,6 +319,14 @@ function ActivityInfoOrganization() {
     setEmergencyDropdownOpen(false);
   };
 
+  const formatDate = (date) =>
+    new Date(date).toLocaleDateString("hr-HR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+
   return (
     <>
       <div className="bg-slate-600 rounded-b-3xl text-white">
@@ -326,7 +334,6 @@ function ActivityInfoOrganization() {
       </div>
 
       <div className="container mx-auto px-6 py-10">
-        {/* Project Picture */}
         <div className="flex flex-col items-center mb-6"></div>
 
         <div className="bg-slate-600 shadow-lg rounded-lg p-6">
@@ -360,11 +367,11 @@ function ActivityInfoOrganization() {
                 </div>
                 <div>
                   <p className="font-bold text-white">Početak:</p>
-                  <p className="text-white">{activity.beginningdate}</p>
+                  <p className="text-white">{formatDate(activity.beginningdate)}</p>
                 </div>
                 <div>
                   <p className="font-bold text-white">Kraj:</p>
-                  <p className="text-white">{activity.enddate}</p>
+                  <p className="text-white">{formatDate(activity.enddate)}</p>
                 </div>
                 <div>
                   <p className="font-bold text-white">Lokacija:</p>
