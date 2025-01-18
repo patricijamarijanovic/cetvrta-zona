@@ -24,6 +24,8 @@ function AdminHomePage() {
           navigate('/not-authorized', { replace: true });
           return;
         }
+
+        console.log("admin token " + token)
     
         //ako postoji token, pošaljite zahtjev
         axios.get(`${BACK_URL}/admin/home`, {

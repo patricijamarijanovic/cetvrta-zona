@@ -8,6 +8,7 @@ import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.RegistrationRepository;
 import com.example.backend.security.JwtService;
 import com.example.backend.security.MyUserDetailsService;
+import com.example.backend.service.ComplaintService;
 import com.example.backend.service.ImageService;
 import com.example.backend.service.OrganizationService;
 import com.example.backend.service.ProjectService;
@@ -37,10 +38,19 @@ public class OrganizationController {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private ComplaintService complaintService;
+
     // projekti te organizacije
     @GetMapping("/organization/home")
     public List<ProjectResponseDto> organization_home() {
         return projectService.getProjectsForOrganization();
+    }
+
+    // posalji prituzbu kao organizacija
+    @PostMapping("/organization/send-complaint")
+    public String send_complaint_registered(@RequestBody SentComplaintRegisteredDto dto) {
+        return complaintService.send_complaint_org(dto);
     }
 
     @GetMapping("/organization/createproject")
