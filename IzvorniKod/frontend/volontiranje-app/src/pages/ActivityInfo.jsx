@@ -4,9 +4,8 @@ import NavBar from "./assets/navBar";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import ReviewSection from '../components/ReviewSection';
 
-// const BACK_URL = "backend-qns7.onrender.com";
-// const BACK_URL = "https://backend-qns7.onrender.com";
 const BACK_URL = "http://localhost:8080";
 
 function ActivityInfo() {
@@ -15,44 +14,57 @@ function ActivityInfo() {
   const [loading, setLoading] = useState(true);
   const [image, setImage] = useState("");
   const navigate = useNavigate();
+  const [participationStatus, setParticipationStatus] = useState({
+    hasParticipated: false,
+    hasApplied: false
+  });
 
   useEffect(() => {
     axios
       .get(`${BACK_URL}/home/activity/${id}`)
       .then((response) => {
         console.log(response.data);
-
         setActivity(response.data);
         setLoading(false);
+
+        // Fetch participation status
+        axios.get(`${BACK_URL}/volunteer/activity/${id}`)
+          .then((participationResponse) => {
+            setParticipationStatus({
+              hasParticipated: participationResponse.data.hasParticipated,
+              hasApplied: participationResponse.data.hasApplied
+            });
+          })
+          .catch((err) => {
+            console.error("Error fetching participation status:", err);
+          });
       })
       .catch((err) => {
         console.error("Error fetching activities:", err);
-        //setError("Error fetching activities.");
         setLoading(false);
       });
   }, []);
 
   useEffect(() => {
     if (activity && activity.projectID) {
-      // Uvjet da se activity.projectID učita
       axios
         .get(`${BACK_URL}/home/project-picture/${activity.projectID}`, {
           responseType: "arraybuffer",
         })
         .then((res) => {
           if (res.status === 204) {
-            setImage("/images/nekaovog2.jpg"); // Ako nema slike, postavi zadanu
+            setImage("/images/nekaovog2.jpg");
           } else {
             const imageBlob = new Blob([res.data], { type: "image/jpeg" });
             const imageUrl = URL.createObjectURL(imageBlob);
-            setImage(imageUrl); // Postavi URL slike
+            setImage(imageUrl);
           }
         })
         .catch(() => {
-          setImage("/images/nekaovog2.jpg"); // U slučaju greške, postavi zadanu sliku
+          setImage("/images/nekaovog2.jpg");
         });
     }
-  }, [activity])
+  }, [activity]);
 
   if (loading)
     return <p className="p-8 text-gray-500">Učitavam aktivnosti...</p>;
@@ -63,6 +75,8 @@ function ActivityInfo() {
     activity.hitno = "DA";
   }
 
+  const isActivityFinished = activity.status === "CLOSED";
+
   return (
     <>
       <div className="bg-slate-600 rounded-b-3xl text-white">
@@ -71,11 +85,10 @@ function ActivityInfo() {
 
       <div className="container mx-auto px-6 py-10">
         <div className="bg-slate-600 shadow-lg rounded-lg p-6">
-
-        <img
-           src={image}
-           className="rounded-lg object-cover h-80 w-full mb-4 border border-black"
-         />
+          <img
+            src={image}
+            className="rounded-lg object-cover h-80 w-full mb-4 border border-black"
+          />
 
           <h1 className="text-3xl font-bold text-white mb-4">
             {activity.projectname}
@@ -85,7 +98,6 @@ function ActivityInfo() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <p className="font-bold text-white">Organizacija:</p>
-              {/* <p className="text-white">{activity.organizationName}</p> */}
               <p 
                 className="text-white font-bold cursor-pointer hover:text-yellow-400"
                 onClick={() => navigate(`/profile/organization/${activity.organizationID}`)}
@@ -124,11 +136,19 @@ function ActivityInfo() {
           </div>
         </div>
         <h1 className="text-4xl md:text-3xl font-bold text-yellow-500 mt-2">
-        <Link to="/login" className="hover:text-yellow-300 no-underline">
-        PRIJAVI SE KAKO BI SUDJELOVAO
-      </Link>
+          <Link to="/login" className="hover:text-yellow-300 no-underline">
+            PRIJAVI SE KAKO BI SUDJELOVAO
+          </Link>
         </h1>
       </div>
+
+      <ReviewSection 
+        projectId={activity.id}
+        userRole={userRole}  // 'VOLUNTEER' or 'ORGANIZATION'
+        hasParticipated={participationStatus.hasParticipated}
+        isFinished={isActivityFinished}
+        isOrganizer={activity.organizationID === currentUserOrgId}
+      />
     </>
   );
 }
