@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Card from "./card";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { FacebookShareButton, FacebookIcon } from "react-share";
 
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
@@ -14,6 +15,10 @@ function FutureActivitiesList() {
   const [error, setError] = useState(null);
   const role = localStorage.getItem("role");
   const [pics, setPics] = useState([]);
+  const shareUrl = "https://volontirajsnama.onrender.com/"; // URL koji dijelim
+  const shareMessage = "Sudjelovao/la sam u volonterskoj aktivnosti! Pridruži se i ti!";
+
+  
   console.log(role);
 
   useEffect(() => {
@@ -93,6 +98,7 @@ function FutureActivitiesList() {
           <h1>Nažalost trenutačno nema aktivnosti u ovoj kategoriji :'( </h1>
         ) : (
           activities.map((activity, index) => (
+            <>
             <Link to={getLink(activity.projectID)}>
               <Card
                 key={index}
@@ -106,6 +112,19 @@ function FutureActivitiesList() {
                 category={activity.typeofwork}
               />
             </Link>
+
+            <div>
+                <FacebookShareButton
+                  url={shareUrl}
+                  quote={shareMessage}
+                  hashtag="#Volontiranje"
+                >
+                  <FacebookIcon size={32} round={true} />
+                </FacebookShareButton>
+              </div>
+
+            </>
+            
           ))
         )}
       </div>
