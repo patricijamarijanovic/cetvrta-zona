@@ -161,7 +161,7 @@ function ActivityInfoOrganization() {
   }
 
   const handleAccept = async (volunteerId) => {
-    if(loading) return;
+    if (loading) return;
     setLoading(true);
     console.log(volunteerId);
     const token = localStorage.getItem("token");
@@ -188,7 +188,7 @@ function ActivityInfoOrganization() {
   };
 
   const handleReject = async (volunteerId) => {
-    if(loading) return;
+    if (loading) return;
     setLoading(true);
     axios
       .put(
@@ -326,7 +326,6 @@ function ActivityInfoOrganization() {
       year: "numeric",
     });
 
-
   return (
     <>
       <div className="bg-slate-600 rounded-b-3xl text-white">
@@ -367,7 +366,9 @@ function ActivityInfoOrganization() {
                 </div>
                 <div>
                   <p className="font-bold text-white">Početak:</p>
-                  <p className="text-white">{formatDate(activity.beginningdate)}</p>
+                  <p className="text-white">
+                    {formatDate(activity.beginningdate)}
+                  </p>
                 </div>
                 <div>
                   <p className="font-bold text-white">Kraj:</p>
@@ -627,9 +628,52 @@ function ActivityInfoOrganization() {
           )}
 
           <div className="mt-8">
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-white mt-16">
               Prijavljeni volonteri
             </h2>
+            <div className="bg-slate-600 p-4 rounded-lg mb-6">
+              <p className="text-white text-lg font-bold">
+                Trenutne prijave:{" "}
+                {
+                  volunteers.filter(
+                    (volunteer) => volunteer.status === "PENDING"
+                  ).length
+                }
+              </p>
+              <p className="text-white text-lg font-bold">
+                Prihvaćeni volonteri: {activity.numregisteredvolunteers}/
+                {activity.maxnumvolunteers}
+              </p>
+            </div>
+
+            {activity.numregisteredvolunteers >= activity.maxnumvolunteers && (
+              <div className="bg-yellow-400 p-4 rounded-lg m-6 text-center">
+                <p className="text-black font-bold">
+                  Maksimalni broj volontera je dosegnut!
+                </p>
+                <p className="text-black">
+                  Možete povećati maksimalan broj volontera pri uređivanju
+                  projekta
+                </p>
+                {volunteers.filter(
+                  (volunteer) => volunteer.status === "PENDING"
+                ).length > 0 && (
+                  <button
+                    onClick={() => {
+                      volunteers
+                        .filter((volunteer) => volunteer.status === "PENDING")
+                        .forEach((volunteer) =>
+                          handleReject(volunteer.volunteerId)
+                        );
+                    }}
+                    className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 mt-2"
+                  >
+                    Odbij sve preostale prijave
+                  </button>
+                )}
+              </div>
+            )}
+
             {volunteers.length === 0 ? (
               <p className="text-gray-300 text-lg">
                 Nažalost trenutačno nema prijavljenih volontera.
@@ -653,19 +697,23 @@ function ActivityInfoOrganization() {
                         {volunteer.firstName} {volunteer.lastName}
                       </p>
                     </div>
+
                     <div className="flex gap-4">
                       {volunteer.status === "ACCEPTED" ? (
                         <p className="text-green-400 font-bold">Prihvaćen</p>
-                      ) : volunteer.status === "REJECTED" ? (
-                        <p className="text-red-400 font-bold">Odbijen</p>
                       ) : (
                         <>
-                          <button
-                            onClick={() => handleAccept(volunteer.volunteerId)}
-                            className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
-                          >
-                            Prihvati
-                          </button>
+                          {activity.numregisteredvolunteers <
+                            activity.maxnumvolunteers && (
+                            <button
+                              onClick={() => {
+                                handleAccept(volunteer.volunteerId);
+                              }}
+                              className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
+                            >
+                              Prihvati
+                            </button>
+                          )}
                           <button
                             onClick={() => handleReject(volunteer.volunteerId)}
                             className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
