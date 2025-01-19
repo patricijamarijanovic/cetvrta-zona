@@ -4,6 +4,7 @@ import NavBar from "./assets/navBar";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import ReviewSection from '../components/ReviewSection';
 
 const BACK_URL = "http://localhost:8080";
 
@@ -139,6 +140,17 @@ function ActivityInfo() {
             PRIJAVI SE KAKO BI SUDJELOVAO
           </Link>
         </h1>
+
+        {activity && (
+          <ReviewSection 
+            projectId={id}
+            isFinished={activity.status === "CLOSED"}
+            isOrganizer={false}
+            token={null}
+            hasParticipated={false}
+            hasReviewed={false}
+          />
+        )}
       </div>
     </>
   );

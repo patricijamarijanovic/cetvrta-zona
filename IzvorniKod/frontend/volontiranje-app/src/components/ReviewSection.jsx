@@ -16,8 +16,18 @@ function ReviewSection({ projectId, userRole, hasParticipated, isFinished, isOrg
   }, [hasReviewed]);
 
   useEffect(() => {
-    if (token) {
-      fetchReviews();
+    // For guests (no token), use the public endpoint
+    if (!token) {
+      axios.get(`${BACK_URL}/getreviews/${projectId}`)
+        .then(response => {
+          setReviews(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching reviews:', error);
+          setError('Došlo je do pogreške pri dohvaćanju recenzija.');
+        });
+    } else {
+      fetchReviews(); // This will use the authenticated endpoint
     }
   }, [projectId, token]);
 
