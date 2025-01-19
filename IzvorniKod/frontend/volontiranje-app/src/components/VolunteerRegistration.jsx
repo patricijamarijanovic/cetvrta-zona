@@ -125,22 +125,29 @@ function VolunteerLogin() {
             ...prevErrors,
             username: "Korisničko ime već postoji.",
           }));
+          setLoading(false)
         } else if (
           err.response &&
           err.response.data ===
             "Email already registered. Please choose another one."
-        ) {
+            
+        )
+        {
           setError((prevErrors) => ({
             ...prevErrors,
             email: "Email adresa već postoji.",
           }));
+          setLoading(false)
         } else {
           setError((prevErrors) => ({
             ...prevErrors,
             pogreska: "Došlo je do greške.",
           }));
+          setLoading(false)
         }
       }
+    } else {
+      setLoading(false)
     }
   };
 
