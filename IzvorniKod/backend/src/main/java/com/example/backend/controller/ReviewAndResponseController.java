@@ -19,7 +19,7 @@ public class ReviewAndResponseController {
 	private ReviewAndResponseService reviewAndResponseService;
 	
 	@GetMapping("/getreviews/{projectID}")
-	public List<ReviewDisplayDto> get_all_reviews_by_projectID(@PathVariable Integer projectId) {
-		return reviewAndResponseService.get_all_reviews_by_projectID(projectId);
+	public List<ReviewDisplayDto> get_all_reviews_by_projectID(@PathVariable Integer projectID) {
+		return reviewAndResponseService.get_all_reviews_by_projectID(projectID);
 	}
 }
