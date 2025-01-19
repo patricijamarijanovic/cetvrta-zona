@@ -99,7 +99,6 @@ function ActivityInfoVolunteer() {
       year: "numeric",
     });
 
-
   return (
     <>
       <div className="bg-slate-600 rounded-b-3xl text-white">
@@ -165,22 +164,22 @@ function ActivityInfoVolunteer() {
             <p className="text-red-500 font-bold text-center">
               Aktivnost je završila.
             </p>
-          ) : activity.numregisteredvolunteers >= activity.maxnumvolunteers ? (
+          ) : activity.hasApplied ? (
+            <p className="text-green-500 font-bold text-center">
+              Prijava na projekt uspješna! Kada vas organizacija prihvati, bit
+              ćete obaviješteni mailom.
+            </p>
+          ) : activity.numvolunteers >= activity.maxnumvolunteers ? (
             <p className="text-orange-500 font-bold text-center">
               Popunjena su sva mjesta za ovu aktivnost.
             </p>
-          ) : !activity.hasApplied ? (
+          ) : (
             <button
               onClick={handleSubmit}
               className="w-full bg-yellow-300 text-black font-bold py-2 px-4 rounded hover:bg-yellow-400"
             >
               Prijavi se!
             </button>
-          ) : (
-            <p className="text-green-500 font-bold text-center">
-              Prijava na projekt uspješna! Kada vas organizacija prihvati, bit
-              ćete obaviješteni mailom.
-            </p>
           )}
         </div>
       </div>
