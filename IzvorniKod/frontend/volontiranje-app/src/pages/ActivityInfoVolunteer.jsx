@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import NavBarLoggedIn from "./assets/navBarVol";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import ReviewSection from '../components/ReviewSection';
 
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
@@ -182,6 +183,18 @@ function ActivityInfoVolunteer() {
             </button>
           )}
         </div>
+
+        {activity && (
+          <ReviewSection 
+            projectId={id}
+            userRole="VOLUNTEER"
+            hasParticipated={activity.hasParticipated}
+            isFinished={activity.status === "CLOSED"}
+            isOrganizer={false}
+            token={token}
+            hasReviewed={activity.hasReviewed}
+          />
+        )}
       </div>
     </>
   );

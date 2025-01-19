@@ -1,59 +1,119 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function ReviewSection({ projectId, userRole, hasParticipated, isFinished, isOrganizer }) {
+const BACK_URL = "http://localhost:8080";
+
+function ReviewSection({ projectId, userRole, hasParticipated, isFinished, isOrganizer, token, hasReviewed }) {
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
-  const [replyText, setReplyText] = useState('');
+  const [replyTexts, setReplyTexts] = useState({});
   const [error, setError] = useState('');
+  const [canReview, setCanReview] = useState(!hasReviewed);
+
 
   useEffect(() => {
-    fetchReviews();
-  }, [projectId]);
+    setCanReview(!hasReviewed);
+  }, [hasReviewed]);
+
+  useEffect(() => {
+    if (token) {
+      fetchReviews();
+    }
+  }, [projectId, token]);
+
+  useEffect(() => {
+    // Check if the current volunteer has already reviewed
+    if (userRole === 'VOLUNTEER' && reviews.length > 0) {
+      const userHasReviewed = reviews.some(review => review.volunteerUsername === localStorage.getItem('username'));
+      setCanReview(userHasReviewed);
+    }
+  }, [reviews, userRole]);
 
   const fetchReviews = async () => {
     try {
-      const response = await axios.get(`/getreviews/${projectId}`);
-      setReviews(response.data);
+      const response = await axios.get(`${BACK_URL}/getreviews/${projectId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log('Reviews data:', response.data);
+      setReviews(response.data.map(review => ({
+        reviewID: review.reviewID,
+        rating: review.rating,
+        comment: review.comment,
+        reviewDate: review.reviewDate,
+        volunteerUsername: review.volunteerUsername,
+        response: review.response // This will be ReviewResponseDisplayDto
+      })));
     } catch (error) {
-      console.error('Error fetching reviews:', error);
+      console.error('Error fetching reviews:', error.response || error);
       setError('Došlo je do pogreške pri dohvaćanju recenzija.');
     }
   };
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!canReview) {
+      setError('Već ste napisali recenziju za ovu aktivnost.');
+      return;
+    }
+
     if (newReview.comment.length > 500) {
       setError('Komentar ne smije biti duži od 500 znakova.');
       return;
     }
 
     try {
-      await axios.post(`/volunteer/activity/${projectId}`, {
+      await axios.post(`${BACK_URL}/volunteer/activity/${projectId}`, {
         rating: newReview.rating,
         comment: newReview.comment
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
       setNewReview({ rating: 5, comment: '' });
-      fetchReviews();
+      window.location.reload();
     } catch (error) {
       setError('Došlo je do pogreške pri slanju recenzije.');
     }
   };
 
   const handleReplySubmit = async (reviewId) => {
-    if (replyText.length > 500) {
+    const currentReplyText = replyTexts[reviewId];
+    
+    if (!currentReplyText) {
+      setError('Odgovor ne može biti prazan.');
+      return;
+    }
+
+    if (currentReplyText.length > 500) {
       setError('Odgovor ne smije biti duži od 500 znakova.');
       return;
     }
 
     try {
-      await axios.post(`/organization/respond/${reviewId}`, {
-        comment: replyText,
-        reviewID: reviewId
-      });
-      setReplyText('');
-      fetchReviews();
+      const response = await axios.post(
+        `${BACK_URL}/organization/respond/${projectId}`,
+        {
+          comment: currentReplyText,
+          reviewID: reviewId
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      console.log('Reply response:', response.data);
+      // Clear the specific reply text
+      setReplyTexts(prev => ({ ...prev, [reviewId]: '' }));
+      // Refresh the reviews to show the new response
+      await fetchReviews();
     } catch (error) {
+      console.error('Error sending reply:', error.response || error);
       setError('Došlo je do pogreške pri slanju odgovora.');
     }
   };
@@ -68,8 +128,8 @@ function ReviewSection({ projectId, userRole, hasParticipated, isFinished, isOrg
         </div>
       )}
 
-      {/* Review Form for eligible volunteers */}
-      {userRole === 'VOLUNTEER' && hasParticipated && isFinished && (
+      {/* Review Form - only show if all conditions are met and canReview is true */}
+      {userRole === 'VOLUNTEER' && hasParticipated && isFinished && canReview && (
         <div className="bg-white rounded-lg p-6">
           <h3 className="text-lg font-medium mb-4">Napišite recenziju</h3>
           <form onSubmit={handleReviewSubmit} className="space-y-4">
@@ -78,7 +138,7 @@ function ReviewSection({ projectId, userRole, hasParticipated, isFinished, isOrg
               <div className="flex space-x-2 mt-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
-                    key={star}
+                    key={`rating-star-${star}`}
                     type="button"
                     onClick={() => setNewReview(prev => ({ ...prev, rating: star }))}
                     className={`text-2xl ${
@@ -114,16 +174,26 @@ function ReviewSection({ projectId, userRole, hasParticipated, isFinished, isOrg
         </div>
       )}
 
+      {/* Message when volunteer has already reviewed */}
+      {userRole === 'VOLUNTEER' && !canReview && (
+        <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
+          Već ste napisali recenziju za ovu aktivnost.
+        </div>
+      )}
+
       {/* Reviews List */}
       <div className="space-y-4">
         {reviews.map((review) => (
-          <div key={review.reviewDate} className="bg-white p-6 rounded-lg shadow">
+          <div key={review.volunteerUsername} className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium">{review.volunteerUsername}</p>
                 <div className="text-yellow-400">
-                  {'★'.repeat(review.rating)}
-                  {'☆'.repeat(5 - review.rating)}
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <span key={`star-${review.reviewID}-${i}`}>
+                      {i < review.rating ? '★' : '☆'}
+                    </span>
+                  ))}
                 </div>
               </div>
               <span className="text-sm text-gray-500">
@@ -134,26 +204,36 @@ function ReviewSection({ projectId, userRole, hasParticipated, isFinished, isOrg
             <p className="mt-2">{review.comment}</p>
 
             {/* Organization's Response */}
-            {review.response && (
+            {review.response && review.response.comment && (
               <div className="mt-4 ml-8 p-4 bg-gray-50 rounded">
                 <p className="text-sm font-medium">Odgovor organizacije:</p>
                 <p className="mt-1">{review.response.comment}</p>
+                {review.response.responseDate && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    {new Date(review.response.responseDate).toLocaleDateString()}
+                  </p>
+                )}
               </div>
             )}
 
-            {/* Reply Form for organization */}
+            {/* Reply Form for organization - only show if no response exists */}
             {isOrganizer && !review.response && (
               <div className="mt-4">
                 <div className="space-y-2">
                   <textarea
-                    value={replyText}
-                    onChange={(e) => setReplyText(e.target.value)}
+                    value={replyTexts[review.volunteerUsername] || ''}
+                    onChange={(e) => {
+                      setReplyTexts(prev => ({
+                        ...prev,
+                        [review.volunteerUsername]: e.target.value
+                      }));
+                    }}
                     maxLength={500}
                     className="w-full rounded border p-2"
                     placeholder="Napišite odgovor... (max 500 znakova)"
                   />
                   <button
-                    onClick={() => handleReplySubmit(review.reviewID)}
+                    onClick={() => handleReplySubmit(review.volunteerUsername)}
                     className="bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
                   >
                     Odgovori

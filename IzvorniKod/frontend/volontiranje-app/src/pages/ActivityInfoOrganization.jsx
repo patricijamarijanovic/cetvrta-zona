@@ -3,6 +3,7 @@ import NavBarLoggedIn from "./assets/navBarOrg";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ReviewSection from '../components/ReviewSection';
 
 // const BACK_URL = "backend-qns7.onrender.com";
 // const BACK_URL = "https://backend-qns7.onrender.com";
@@ -73,7 +74,7 @@ function ActivityInfoOrganization() {
       .then((response) => {
         console.log(response.data);
         if (response.data.typeofwork === "OKOLIS") {
-          response.data.typeofwork = "OKOLIŠ";
+          response.data.typeofwork = "OKOLIS";
         }
         if (response.data.typeofwork === "ZIVOTINJE") {
           response.data.typeofwork = "ŽIVOTINJE";
@@ -729,6 +730,17 @@ function ActivityInfoOrganization() {
             )}
           </div>
         </div>
+
+        {activity && (
+          <ReviewSection 
+            projectId={id}
+            userRole="ORGANIZATION"
+            hasParticipated={false}
+            isFinished={activity.status === "CLOSED"}
+            isOrganizer={true}
+            token={token}
+          />
+        )}
       </div>
     </>
   );

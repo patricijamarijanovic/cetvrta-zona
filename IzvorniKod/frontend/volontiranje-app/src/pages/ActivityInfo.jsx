@@ -4,7 +4,6 @@ import NavBar from "./assets/navBar";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import ReviewSection from '../components/ReviewSection';
 
 const BACK_URL = "http://localhost:8080";
 
@@ -141,14 +140,6 @@ function ActivityInfo() {
           </Link>
         </h1>
       </div>
-
-      <ReviewSection 
-        projectId={activity.id}
-        userRole={userRole}  // 'VOLUNTEER' or 'ORGANIZATION'
-        hasParticipated={participationStatus.hasParticipated}
-        isFinished={isActivityFinished}
-        isOrganizer={activity.organizationID === currentUserOrgId}
-      />
     </>
   );
 }
