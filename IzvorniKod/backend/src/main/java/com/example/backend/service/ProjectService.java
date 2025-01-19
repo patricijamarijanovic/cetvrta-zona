@@ -41,6 +41,9 @@ public class ProjectService {
     
     @Autowired
     private FilteringService filteringService;
+    
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     public List<ProjectResponseDto> getAllProjects() {
         List<Project> projects = projectRepository.findAll();
@@ -248,7 +251,17 @@ public class ProjectService {
                 break;
             }
         }
-
+        Integer pid = projectId.intValue();
+        dto.setHasReviewed(false);
+        List<Review> reviews = reviewRepository.findAllByProjectID(pid);
+        
+        for (Review review : reviews) {
+        	if (review.getVolunteerID().equals(volunteerId)) {
+        		dto.setHasReviewed(true);
+        		break;
+        	}
+        }
+        
         return dto;
     }
 

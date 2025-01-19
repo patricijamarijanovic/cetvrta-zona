@@ -21,8 +21,17 @@ public class VolunteerProjectDto {
     private String organizationEmail;
     private boolean hasApplied;
     private boolean hasParticipated;
+    private boolean hasReviewed;
 
-    public String getProjectname() {
+    public boolean isHasReviewed() {
+		return hasReviewed;
+	}
+
+	public void setHasReviewed(boolean hasReviewed) {
+		this.hasReviewed = hasReviewed;
+	}
+
+	public String getProjectname() {
         return projectname;
     }
 
