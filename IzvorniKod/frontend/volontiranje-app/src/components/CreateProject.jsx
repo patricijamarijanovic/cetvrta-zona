@@ -194,6 +194,8 @@ function CreateProject() {
       } catch (err) {
         console.error(err);
       }
+    } else {
+      setLoading(false);
     }
   };
 

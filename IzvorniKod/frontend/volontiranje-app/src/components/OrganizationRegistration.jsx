@@ -114,6 +114,7 @@ function OrganizationLogin() {
             ...prevErrors,
             username: "Korisničko ime već postoji.",
           }));
+          setLoading(false);
         } else if (
           err.response &&
           err.response.data ===
@@ -123,18 +124,23 @@ function OrganizationLogin() {
             ...prevErrors,
             email: "Email adresa već postoji.",
           }));
+          setLoading(false);
         } else if (err.response && err.response.data === "") {
           setError((prevErrors) => ({
             ...prevErrors,
             orgName: "Ime organizacije već postoji.",
           }));
+          setLoading(false);
         } else {
           setError((prevErrors) => ({
             ...prevErrors,
             pogreska: "Došlo je do greške.",
           }));
+          setLoading(false);
         }
       }
+    }else {
+      setLoading(false);
     }
   };
 
