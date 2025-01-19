@@ -148,7 +148,7 @@ public class VolunteerController {
     }
     
     //objavljivanje recenzije na projekt 
-    @PostMapping("/volunteer/activity/{projectId}")
+    @PostMapping("/volunteer/activity/{projectID}")
     public ResponseEntity<Object> leave_review (@PathVariable Integer projectID, @RequestBody ReviewDto dto) {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     	MyUser prijavljeniVolonter = myUserRepository.findByUsername(authentication.getName()).get();
